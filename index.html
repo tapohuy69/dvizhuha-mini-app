@@ -98,28 +98,15 @@
             margin-top: 0;
         }
 
-        /* Заголовок списка кентов */
-        .members-title {
-            text-align: center;
-            padding: 12px;
-            margin-top: 15px;
-            margin-bottom: 8px;
-        }
+        /* КАРТОЧКА КЕНТА */
 
-        .members-title h2 {
-            margin: 0;
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        /* Карточка кента */
         .member {
             width: 100%;
             border: none;
             text-align: left;
-            padding: 16px;
-            margin-top: 10px;
-            border-radius: 16px;
+            padding: 11px 14px;
+            margin-top: 7px;
+            border-radius: 14px;
             background: var(--tg-theme-secondary-bg-color, #222222);
             color: var(--tg-theme-text-color, #ffffff);
             cursor: pointer;
@@ -130,21 +117,21 @@
         }
 
         .member-name {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 3px;
         }
 
         .member-info {
-            font-size: 14px;
-            opacity: 0.75;
-            line-height: 1.5;
+            font-size: 12px;
+            opacity: 0.7;
+            line-height: 1.3;
         }
 
         .member-trophies {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
-            margin-top: 8px;
+            margin-top: 4px;
         }
     </style>
 </head>
@@ -236,7 +223,6 @@
 
         <div class="header">
             <h1>👥 Кенты</h1>
-            <p>Участники клана</p>
         </div>
 
         <div id="membersResult">
@@ -300,14 +286,12 @@
 
 <script>
 
-    // Telegram Mini App
     const tg = window.Telegram.WebApp;
 
     tg.ready();
     tg.expand();
 
 
-    // Переключение экранов
     function showScreen(screenId) {
 
         document.querySelectorAll('.screen').forEach(screen => {
@@ -320,7 +304,6 @@
     }
 
 
-    // Открытие профиля
     function openProfile() {
 
         showScreen('profile');
@@ -331,7 +314,6 @@
     }
 
 
-    // Запуск Mini App через startapp
     function openStartAppScreen() {
 
         const startParam =
@@ -363,7 +345,6 @@
     }
 
 
-    // Загрузка клана
     async function loadClan() {
 
         const result = document.getElementById("clanResult");
@@ -435,7 +416,6 @@
     }
 
 
-    // Загрузка кентов
     async function loadMembers() {
 
         const result = document.getElementById("membersResult");
@@ -480,7 +460,7 @@
             }
 
             let html = `
-                <div class="card members-title">
+                <div class="card">
                     <h2>👥 Кенты: ${members.length}</h2>
                 </div>
             `;
@@ -527,7 +507,6 @@
     }
 
 
-    // Профиль кента из списка
     async function openMemberProfile(tag) {
 
         showScreen('memberProfile');
@@ -607,7 +586,7 @@
 
             result.innerHTML = `
                 <div class="card">
-                    <h2>❌ Ошибка</h2>
+                    <h2>❌ Ошибка подключения</h2>
                     <p>Не удалось подключиться к серверу.</p>
                 </div>
             `;
@@ -616,7 +595,6 @@
     }
 
 
-    // Поиск игрока
     async function searchPlayer() {
 
         const tag = document
@@ -722,7 +700,6 @@
     }
 
 
-    // Защита текста
     function escapeHtml(value) {
 
         return String(value)
@@ -734,7 +711,6 @@
     }
 
 
-    // Запуск startapp
     openStartAppScreen();
 
 </script>
