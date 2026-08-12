@@ -8,7 +8,8 @@ export default async function handler(req, res) {
   }
 
   const webhookUrl =
-    "https://dvizhuha-mini-lo4yssmjs-danya5.vercel.app/api/telegram";
+    const webhookUrl =
+  "https://dvizhuha-mini-app.vercel.app/api/telegram";
 
   const response = await fetch(
     `https://api.telegram.org/bot${token}/setWebhook?url=${encodeURIComponent(webhookUrl)}`
