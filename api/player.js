@@ -14,10 +14,9 @@ export default async function handler(req, res) {
     const response = await fetch(
       `https://proxy.royaleapi.dev/v1/players/%23${encodeURIComponent(tag)}`,
       {
-        method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json"
+          "Authorization": `Bearer ${token}`,
+          "auth": token
         }
       }
     );
@@ -26,7 +25,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       status: response.status,
-      body: body
+      body
     });
 
   } catch (error) {
