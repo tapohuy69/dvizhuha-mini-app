@@ -99,26 +99,36 @@
         }
 
         /* =========================
-           ФИКСИРОВАННАЯ КНОПКА ОБНОВИТЬ
+           КНОПКА ОБНОВИТЬ
         ========================= */
 
         .refresh-button {
             position: fixed;
             top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: auto;
-            min-width: 125px;
-            padding: 8px 14px;
+            right: 10px;
+
+            width: 42px;
+            height: 42px;
+
+            min-width: 0;
+            padding: 0;
             margin: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
             border-radius: 12px;
-            font-size: 14px;
+            font-size: 20px;
+            line-height: 1;
+
             z-index: 9999;
+
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
         }
 
         .refresh-button:active {
-            transform: translateX(-50%) scale(0.96);
+            transform: scale(0.92);
         }
 
         /* =========================
@@ -279,8 +289,9 @@
         <button
             class="button refresh-button"
             onclick="loadClan()"
+            aria-label="Обновить"
         >
-            🔄 Обновить
+            🔄
         </button>
 
         <div class="header">
@@ -309,8 +320,9 @@
         <button
             class="button refresh-button"
             onclick="loadMembers()"
+            aria-label="Обновить"
         >
-            🔄 Обновить
+            🔄
         </button>
 
         <div id="membersResult">
@@ -508,9 +520,7 @@
             const members = membersData.items || [];
 
 
-            // =========================
             // ТОП-3 ПО ТЕКУЩИМ КУБКАМ
-            // =========================
 
             const topTrophies = [...members]
                 .sort((a, b) =>
@@ -520,9 +530,7 @@
                 .slice(0, 3);
 
 
-            // =========================
             // ТОП-3 ДОНАТЕРОВ
-            // =========================
 
             const topDonators = [...members]
                 .sort((a, b) =>
@@ -532,9 +540,7 @@
                 .slice(0, 3);
 
 
-            // =========================
             // ОСНОВНАЯ ИНФОРМАЦИЯ
-            // =========================
 
             let html = `
                 <div class="card">
@@ -564,9 +570,7 @@
             `;
 
 
-            // =========================
             // ТОП-3 ПО КУБКАМ
-            // =========================
 
             html += `
                 <div class="ranking-title">
@@ -623,9 +627,7 @@
             `;
 
 
-            // =========================
             // ТОП-3 ДОНАТЕРОВ
-            // =========================
 
             html += `
                 <div class="ranking-title">
