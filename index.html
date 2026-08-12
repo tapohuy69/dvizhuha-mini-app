@@ -98,16 +98,13 @@
             margin-top: 0;
         }
 
-        /* КАРТОЧКИ КЕНТОВ — УМЕНЬШЕННЫЕ */
-
         .member {
-            width: 92%;
-            margin: 6px auto 0;
-            display: block;
+            width: 100%;
             border: none;
             text-align: left;
-            padding: 9px 12px;
-            border-radius: 12px;
+            padding: 12px;
+            margin-top: 8px;
+            border-radius: 14px;
             background: var(--tg-theme-secondary-bg-color, #222222);
             color: var(--tg-theme-text-color, #ffffff);
             cursor: pointer;
@@ -118,21 +115,21 @@
         }
 
         .member-name {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 700;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
         .member-info {
-            font-size: 12px;
+            font-size: 13px;
             opacity: 0.75;
-            line-height: 1.3;
+            line-height: 1.4;
         }
 
         .member-trophies {
             font-size: 14px;
             font-weight: 600;
-            margin-top: 4px;
+            margin-top: 6px;
         }
     </style>
 </head>
@@ -222,6 +219,11 @@
     <!-- КЕНТЫ -->
     <div id="players" class="screen">
 
+        <div class="header">
+            <h1>👥 Кенты</h1>
+            <p>Участники клана</p>
+        </div>
+
         <div id="membersResult">
 
             <div class="card">
@@ -283,19 +285,11 @@
 
 <script>
 
-    // =========================
-    // TELEGRAM MINI APP
-    // =========================
-
     const tg = window.Telegram.WebApp;
 
     tg.ready();
     tg.expand();
 
-
-    // =========================
-    // ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ
-    // =========================
 
     function showScreen(screenId) {
 
@@ -309,10 +303,6 @@
     }
 
 
-    // =========================
-    // ОТКРЫТИЕ ПРОФИЛЯ
-    // =========================
-
     function openProfile() {
 
         showScreen('profile');
@@ -322,10 +312,6 @@
         }, 100);
     }
 
-
-    // =========================
-    // ЗАПУСК MINI APP ЧЕРЕЗ startapp
-    // =========================
 
     function openStartAppScreen() {
 
@@ -357,10 +343,6 @@
         }
     }
 
-
-    // =========================
-    // ЗАГРУЗКА КЛАНА
-    // =========================
 
     async function loadClan() {
 
@@ -403,7 +385,7 @@
                     </p>
 
                     <p>
-                        👥 Участники:
+                        👥 Кенты:
                         <b>${data.members ?? "—"}</b>
                     </p>
 
@@ -432,10 +414,6 @@
         }
     }
 
-
-    // =========================
-    // ЗАГРУЗКА КЕНТОВ
-    // =========================
 
     async function loadMembers() {
 
@@ -482,9 +460,7 @@
 
             let html = `
                 <div class="card">
-                    <h2 style="text-align:center; font-size:18px; margin:0;">
-                        👥 Кенты — ${members.length}
-                    </h2>
+                    <h2>👥 Кенты: ${members.length}</h2>
                 </div>
             `;
 
@@ -529,10 +505,6 @@
         }
     }
 
-
-    // =========================
-    // ПРОФИЛЬ КЕНТА ИЗ СПИСКА
-    // =========================
 
     async function openMemberProfile(tag) {
 
@@ -621,10 +593,6 @@
         }
     }
 
-
-    // =========================
-    // ПОИСК ИГРОКА
-    // =========================
 
     async function searchPlayer() {
 
@@ -731,10 +699,6 @@
     }
 
 
-    // =========================
-    // ЗАЩИТА ТЕКСТА
-    // =========================
-
     function escapeHtml(value) {
 
         return String(value)
@@ -745,10 +709,6 @@
             .replace(/'/g, "&#039;");
     }
 
-
-    // =========================
-    // ЗАПУСК startapp
-    // =========================
 
     openStartAppScreen();
 
