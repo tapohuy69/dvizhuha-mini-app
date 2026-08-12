@@ -97,6 +97,41 @@
         .card h2 {
             margin-top: 0;
         }
+
+        /* Карточка кента */
+        .member {
+            width: 100%;
+            border: none;
+            text-align: left;
+            padding: 16px;
+            margin-top: 10px;
+            border-radius: 16px;
+            background: var(--tg-theme-secondary-bg-color, #222222);
+            color: var(--tg-theme-text-color, #ffffff);
+            cursor: pointer;
+        }
+
+        .member:active {
+            transform: scale(0.98);
+        }
+
+        .member-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .member-info {
+            font-size: 14px;
+            opacity: 0.75;
+            line-height: 1.5;
+        }
+
+        .member-trophies {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
     </style>
 </head>
 
@@ -120,7 +155,7 @@
             🏰 Клан
         </button>
 
-        <button class="button secondary" onclick="showScreen('players')">
+        <button class="button secondary" onclick="showScreen('players'); loadMembers()">
             👥 Кенты
         </button>
 
@@ -190,13 +225,38 @@
             <p>Участники клана</p>
         </div>
 
-        <div class="card">
-            <p>⏳ Данные пока не подключены.</p>
-            <p>Скоро здесь будет список участников клана.</p>
+        <div id="membersResult">
+
+            <div class="card">
+                <p>⏳ Загружаю участников...</p>
+            </div>
+
         </div>
 
         <button class="button secondary back" onclick="showScreen('menu')">
             ⬅️ Назад
+        </button>
+
+    </div>
+
+
+    <!-- ПРОФИЛЬ УЧАСТНИКА -->
+    <div id="memberProfile" class="screen">
+
+        <div class="header">
+            <h1>👤 Профиль кента</h1>
+        </div>
+
+        <div id="memberProfileResult">
+
+            <div class="card">
+                <p>⏳ Загружаю профиль...</p>
+            </div>
+
+        </div>
+
+        <button class="button secondary back" onclick="showScreen('players')">
+            ⬅️ К кентам
         </button>
 
     </div>
@@ -233,7 +293,10 @@
     tg.expand();
 
 
-    // Переключение экранов
+    // =========================
+    // ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ
+    // =========================
+
     function showScreen(screenId) {
 
         document.querySelectorAll('.screen').forEach(screen => {
@@ -246,7 +309,10 @@
     }
 
 
-    // Открытие профиля
+    // =========================
+    // ОТКРЫТИЕ ПРОФИЛЯ
+    // =========================
+
     function openProfile() {
 
         showScreen('profile');
@@ -333,42 +399,23 @@
 
 
     // =========================
-    // ПОИСК ИГРОКА
+    // ЗАГРУЗКА КЕНТОВ
     // =========================
 
-    async function searchPlayer() {
+    async function loadMembers() {
 
-        const tag = document
-            .getElementById('playerTag')
-            .value
-            .trim();
-
-        const result = document.getElementById('profileResult');
-
-        if (!tag) {
-
-            result.innerHTML = `
-                <div class="card">
-                    ❌ Введи тег игрока.
-                </div>
-            `;
-
-            return;
-        }
-
-        const cleanTag = tag.replace("#", "");
+        const result = document.getElementById("membersResult");
 
         result.innerHTML = `
             <div class="card">
-                <h2>🔎 Поиск</h2>
-                <p>Ищу игрока <b>#${cleanTag}</b>...</p>
+                <p>⏳ Загружаю участников клана...</p>
             </div>
         `;
 
         try {
 
             const response = await fetch(
-                `/api/player?tag=${encodeURIComponent(cleanTag)}`
+                "/api/members?tag=GCGJ9VJV"
             );
 
             const data = await response.json();
@@ -377,8 +424,105 @@
 
                 result.innerHTML = `
                     <div class="card">
-                        <h2>❌ Игрок не найден</h2>
-                        <p>Проверь правильность тега.</p>
+                        <h2>❌ Ошибка</h2>
+                        <p>${data.reason || data.error || "Не удалось загрузить участников"}</p>
+                    </div>
+                `;
+
+                return;
+            }
+
+            const members = data.items || [];
+
+            if (members.length === 0) {
+
+                result.innerHTML = `
+                    <div class="card">
+                        <p>😕 Участники не найдены.</p>
+                    </div>
+                `;
+
+                return;
+            }
+
+            let html = `
+                <div class="card">
+                    <h2>👥 Участники: ${members.length}</h2>
+                </div>
+            `;
+
+            members.forEach((member, index) => {
+
+                const safeName = escapeHtml(member.name || "Без имени");
+                const safeTag = escapeHtml(member.tag || "");
+
+                html += `
+                    <button
+                        class="member"
+                        onclick="openMemberProfile('${safeTag}')"
+                    >
+
+                        <div class="member-name">
+                            ${index + 1}. ${safeName}
+                        </div>
+
+                        <div class="member-info">
+                            ${member.tag ? "#" + safeTag : ""}
+                        </div>
+
+                        <div class="member-trophies">
+                            🏆 ${member.trophies ?? "—"}
+                        </div>
+
+                    </button>
+                `;
+            });
+
+            result.innerHTML = html;
+
+        } catch (error) {
+
+            result.innerHTML = `
+                <div class="card">
+                    <h2>❌ Ошибка подключения</h2>
+                    <p>Не удалось получить список участников.</p>
+                </div>
+            `;
+
+        }
+    }
+
+
+    // =========================
+    // ПРОФИЛЬ КЕНТА ИЗ СПИСКА
+    // =========================
+
+    async function openMemberProfile(tag) {
+
+        showScreen('memberProfile');
+
+        const result = document.getElementById("memberProfileResult");
+
+        result.innerHTML = `
+            <div class="card">
+                <p>⏳ Загружаю профиль...</p>
+            </div>
+        `;
+
+        try {
+
+            const response = await fetch(
+                `/api/player?tag=${encodeURIComponent(tag)}`
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+
+                result.innerHTML = `
+                    <div class="card">
+                        <h2>❌ Ошибка</h2>
+                        <p>Не удалось загрузить профиль игрока.</p>
                     </div>
                 `;
 
@@ -388,7 +532,12 @@
             result.innerHTML = `
                 <div class="card">
 
-                    <h2>👤 ${data.name || "Без имени"}</h2>
+                    <h2>👤 ${escapeHtml(data.name || "Без имени")}</h2>
+
+                    <p>
+                        🏷 Тег:
+                        <b>#${escapeHtml(data.tag || tag)}</b>
+                    </p>
 
                     <p>
                         🏆 Кубки:
@@ -417,7 +566,7 @@
 
                     <p>
                         🏰 Клан:
-                        <b>${data.clan?.name || "Без клана"}</b>
+                        <b>${escapeHtml(data.clan?.name || "Без клана")}</b>
                     </p>
 
                 </div>
@@ -433,6 +582,130 @@
             `;
 
         }
+    }
+
+
+    // =========================
+    // ПОИСК ИГРОКА
+    // =========================
+
+    async function searchPlayer() {
+
+        const tag = document
+            .getElementById('playerTag')
+            .value
+            .trim();
+
+        const result = document.getElementById('profileResult');
+
+        if (!tag) {
+
+            result.innerHTML = `
+                <div class="card">
+                    ❌ Введи тег игрока.
+                </div>
+            `;
+
+            return;
+        }
+
+        const cleanTag = tag.replace("#", "");
+
+        result.innerHTML = `
+            <div class="card">
+                <h2>🔎 Поиск</h2>
+                <p>Ищу игрока <b>#${escapeHtml(cleanTag)}</b>...</p>
+            </div>
+        `;
+
+        try {
+
+            const response = await fetch(
+                `/api/player?tag=${encodeURIComponent(cleanTag)}`
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+
+                result.innerHTML = `
+                    <div class="card">
+                        <h2>❌ Игрок не найден</h2>
+                        <p>Проверь правильность тега.</p>
+                    </div>
+                `;
+
+                return;
+            }
+
+            result.innerHTML = `
+                <div class="card">
+
+                    <h2>👤 ${escapeHtml(data.name || "Без имени")}</h2>
+
+                    <p>
+                        🏷 Тег:
+                        <b>#${escapeHtml(data.tag || cleanTag)}</b>
+                    </p>
+
+                    <p>
+                        🏆 Кубки:
+                        <b>${data.trophies ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        🏅 Лучшие кубки:
+                        <b>${data.bestTrophies ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        ⚔️ Победы:
+                        <b>${data.wins ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        💀 Поражения:
+                        <b>${data.losses ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        ⭐ Уровень:
+                        <b>${data.expLevel ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        🏰 Клан:
+                        <b>${escapeHtml(data.clan?.name || "Без клана")}</b>
+                    </p>
+
+                </div>
+            `;
+
+        } catch (error) {
+
+            result.innerHTML = `
+                <div class="card">
+                    <h2>❌ Ошибка</h2>
+                    <p>Не удалось подключиться к серверу.</p>
+                </div>
+            `;
+
+        }
+    }
+
+
+    // =========================
+    // ЗАЩИТА ТЕКСТА
+    // =========================
+
+    function escapeHtml(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
 </script>
