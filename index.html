@@ -116,7 +116,7 @@
             👤 Профиль кента
         </button>
 
-        <button class="button secondary" onclick="showScreen('clan')">
+        <button class="button secondary" onclick="showScreen('clan'); loadClan()">
             🏰 Клан
         </button>
 
@@ -164,13 +164,15 @@
 
         <div class="header">
             <h1>🏰 Клан</h1>
+            <p>⚜️ Движуха ⚜️</p>
         </div>
 
-        <div class="card">
-            <h2>⚜️ Движуха</h2>
-            <p>🏷 Тег: #GCGJ9VJV</p>
-            <p>👥 Участники: —</p>
-            <p>🏆 Кубки: —</p>
+        <div id="clanResult">
+
+            <div class="card">
+                <p>⏳ Загружаю информацию о клане...</p>
+            </div>
+
         </div>
 
         <button class="button secondary back" onclick="showScreen('menu')">
@@ -255,7 +257,85 @@
     }
 
 
-    // Поиск игрока через Clash Royale API
+    // =========================
+    // ЗАГРУЗКА КЛАНА
+    // =========================
+
+    async function loadClan() {
+
+        const result = document.getElementById("clanResult");
+
+        result.innerHTML = `
+            <div class="card">
+                <p>⏳ Загружаю информацию о клане...</p>
+            </div>
+        `;
+
+        try {
+
+            const response = await fetch(
+                "/api/clan?tag=GCGJ9VJV"
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+
+                result.innerHTML = `
+                    <div class="card">
+                        <h2>❌ Ошибка</h2>
+                        <p>${data.reason || data.error || "Не удалось загрузить клан"}</p>
+                    </div>
+                `;
+
+                return;
+            }
+
+            result.innerHTML = `
+                <div class="card">
+
+                    <h2>⚜️ ${data.name || "Движуха"}</h2>
+
+                    <p>
+                        🏷 Тег:
+                        <b>#${data.tag || "GCGJ9VJV"}</b>
+                    </p>
+
+                    <p>
+                        👥 Участники:
+                        <b>${data.members ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        🏆 Очки клана:
+                        <b>${data.clanScore ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        📊 Требования:
+                        <b>${data.requiredTrophies ?? "—"}</b>
+                    </p>
+
+                </div>
+            `;
+
+        } catch (error) {
+
+            result.innerHTML = `
+                <div class="card">
+                    <h2>❌ Ошибка подключения</h2>
+                    <p>Не удалось получить данные клана.</p>
+                </div>
+            `;
+
+        }
+    }
+
+
+    // =========================
+    // ПОИСК ИГРОКА
+    // =========================
+
     async function searchPlayer() {
 
         const tag = document
@@ -310,25 +390,33 @@
 
                     <h2>👤 ${data.name || "Без имени"}</h2>
 
-                    <p>🏆 Кубки: <b>${data.trophies ?? "—"}</b></p>
+                    <p>
+                        🏆 Кубки:
+                        <b>${data.trophies ?? "—"}</b>
+                    </p>
 
-                    <p>🏅 Лучшие кубки:
+                    <p>
+                        🏅 Лучшие кубки:
                         <b>${data.bestTrophies ?? "—"}</b>
                     </p>
 
-                    <p>⚔️ Победы:
+                    <p>
+                        ⚔️ Победы:
                         <b>${data.wins ?? "—"}</b>
                     </p>
 
-                    <p>💀 Поражения:
+                    <p>
+                        💀 Поражения:
                         <b>${data.losses ?? "—"}</b>
                     </p>
 
-                    <p>⭐ Уровень:
+                    <p>
+                        ⭐ Уровень:
                         <b>${data.expLevel ?? "—"}</b>
                     </p>
 
-                    <p>🏰 Клан:
+                    <p>
+                        🏰 Клан:
                         <b>${data.clan?.name || "Без клана"}</b>
                     </p>
 
