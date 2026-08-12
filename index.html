@@ -98,17 +98,28 @@
             margin-top: 0;
         }
 
-        /* =========================
-           КОМПАКТНЫЕ КЕНТЫ
-           ========================= */
+        /* Заголовок списка кентов */
+        .members-title {
+            text-align: center;
+            padding: 12px;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
 
+        .members-title h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* Карточка кента */
         .member {
             width: 100%;
             border: none;
             text-align: left;
-            padding: 11px 14px;
-            margin-top: 7px;
-            border-radius: 13px;
+            padding: 16px;
+            margin-top: 10px;
+            border-radius: 16px;
             background: var(--tg-theme-secondary-bg-color, #222222);
             color: var(--tg-theme-text-color, #ffffff);
             cursor: pointer;
@@ -119,21 +130,21 @@
         }
 
         .member-name {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 2px;
+            margin-bottom: 6px;
         }
 
         .member-info {
-            font-size: 12px;
-            opacity: 0.65;
-            line-height: 1.2;
+            font-size: 14px;
+            opacity: 0.75;
+            line-height: 1.5;
         }
 
         .member-trophies {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
-            margin-top: 3px;
+            margin-top: 8px;
         }
     </style>
 </head>
@@ -289,20 +300,14 @@
 
 <script>
 
-    // =========================
-    // TELEGRAM MINI APP
-    // =========================
-
+    // Telegram Mini App
     const tg = window.Telegram.WebApp;
 
     tg.ready();
     tg.expand();
 
 
-    // =========================
-    // ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ
-    // =========================
-
+    // Переключение экранов
     function showScreen(screenId) {
 
         document.querySelectorAll('.screen').forEach(screen => {
@@ -315,10 +320,7 @@
     }
 
 
-    // =========================
-    // ОТКРЫТИЕ ПРОФИЛЯ
-    // =========================
-
+    // Открытие профиля
     function openProfile() {
 
         showScreen('profile');
@@ -329,10 +331,7 @@
     }
 
 
-    // =========================
-    // ЗАПУСК MINI APP ЧЕРЕЗ startapp
-    // =========================
-
+    // Запуск Mini App через startapp
     function openStartAppScreen() {
 
         const startParam =
@@ -364,10 +363,7 @@
     }
 
 
-    // =========================
-    // ЗАГРУЗКА КЛАНА
-    // =========================
-
+    // Загрузка клана
     async function loadClan() {
 
         const result = document.getElementById("clanResult");
@@ -439,10 +435,7 @@
     }
 
 
-    // =========================
-    // ЗАГРУЗКА КЕНТОВ
-    // =========================
-
+    // Загрузка кентов
     async function loadMembers() {
 
         const result = document.getElementById("membersResult");
@@ -487,8 +480,8 @@
             }
 
             let html = `
-                <div class="card">
-                    <h2>👥 Участники: ${members.length}</h2>
+                <div class="card members-title">
+                    <h2>👥 Кенты: ${members.length}</h2>
                 </div>
             `;
 
@@ -534,10 +527,7 @@
     }
 
 
-    // =========================
-    // ПРОФИЛЬ КЕНТА ИЗ СПИСКА
-    // =========================
-
+    // Профиль кента из списка
     async function openMemberProfile(tag) {
 
         showScreen('memberProfile');
@@ -626,10 +616,7 @@
     }
 
 
-    // =========================
-    // ПОИСК ИГРОКА
-    // =========================
-
+    // Поиск игрока
     async function searchPlayer() {
 
         const tag = document
@@ -735,10 +722,7 @@
     }
 
 
-    // =========================
-    // ЗАЩИТА ТЕКСТА
-    // =========================
-
+    // Защита текста
     function escapeHtml(value) {
 
         return String(value)
@@ -750,10 +734,7 @@
     }
 
 
-    // =========================
-    // ЗАПУСК startapp
-    // =========================
-
+    // Запуск startapp
     openStartAppScreen();
 
 </script>
