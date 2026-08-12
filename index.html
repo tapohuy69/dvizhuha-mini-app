@@ -255,8 +255,8 @@
     }
 
 
-    // Пока просто тестируем интерфейс
-    function searchPlayer() {
+    // Поиск игрока через Clash Royale API
+    async function searchPlayer() {
 
         const tag = document
             .getElementById('playerTag')
@@ -276,13 +276,75 @@
             return;
         }
 
+        const cleanTag = tag.replace("#", "");
+
         result.innerHTML = `
             <div class="card">
                 <h2>🔎 Поиск</h2>
-                <p>Тег: <b>${tag}</b></p>
-                <p>⏳ Подключаем Clash Royale API...</p>
+                <p>Ищу игрока <b>#${cleanTag}</b>...</p>
             </div>
         `;
+
+        try {
+
+            const response = await fetch(
+                `/api/player?tag=${encodeURIComponent(cleanTag)}`
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+
+                result.innerHTML = `
+                    <div class="card">
+                        <h2>❌ Игрок не найден</h2>
+                        <p>Проверь правильность тега.</p>
+                    </div>
+                `;
+
+                return;
+            }
+
+            result.innerHTML = `
+                <div class="card">
+
+                    <h2>👤 ${data.name || "Без имени"}</h2>
+
+                    <p>🏆 Кубки: <b>${data.trophies ?? "—"}</b></p>
+
+                    <p>🏅 Лучшие кубки:
+                        <b>${data.bestTrophies ?? "—"}</b>
+                    </p>
+
+                    <p>⚔️ Победы:
+                        <b>${data.wins ?? "—"}</b>
+                    </p>
+
+                    <p>💀 Поражения:
+                        <b>${data.losses ?? "—"}</b>
+                    </p>
+
+                    <p>⭐ Уровень:
+                        <b>${data.expLevel ?? "—"}</b>
+                    </p>
+
+                    <p>🏰 Клан:
+                        <b>${data.clan?.name || "Без клана"}</b>
+                    </p>
+
+                </div>
+            `;
+
+        } catch (error) {
+
+            result.innerHTML = `
+                <div class="card">
+                    <h2>❌ Ошибка</h2>
+                    <p>Не удалось подключиться к серверу.</p>
+                </div>
+            `;
+
+        }
     }
 
 </script>
