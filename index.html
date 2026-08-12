@@ -2,7 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Движуха</title>
 
@@ -28,7 +29,7 @@
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
 
         .header h1 {
@@ -81,7 +82,7 @@
             border-radius: 14px;
             border: none;
             outline: none;
-            margin: 15px 0 12px;
+            margin: 10px 0 12px;
             font-size: 17px;
             background: var(--tg-theme-secondary-bg-color, #222222);
             color: var(--tg-theme-text-color, #ffffff);
@@ -98,13 +99,29 @@
             margin-top: 0;
         }
 
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .stat-value {
+            font-weight: 700;
+        }
+
+        /* =========================
+           КЕНТ
+           ========================= */
+
         .member {
             width: 100%;
             border: none;
             text-align: left;
-            padding: 11px 14px;
-            margin-top: 7px;
-            border-radius: 13px;
+            padding: 12px 14px;
+            margin-top: 8px;
+            border-radius: 14px;
             background: var(--tg-theme-secondary-bg-color, #222222);
             color: var(--tg-theme-text-color, #ffffff);
             cursor: pointer;
@@ -117,19 +134,100 @@
         .member-name {
             font-size: 16px;
             font-weight: 700;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
         .member-info {
-            font-size: 12px;
-            opacity: 0.7;
-            line-height: 1.3;
+            font-size: 13px;
+            opacity: 0.65;
+            line-height: 1.4;
         }
 
         .member-trophies {
             font-size: 14px;
             font-weight: 600;
-            margin-top: 5px;
+            margin-top: 6px;
+        }
+
+        /* =========================
+           ЗАГОЛОВОК КЕНТОВ
+           ========================= */
+
+        .members-title {
+            text-align: center;
+            font-size: 19px;
+            font-weight: 700;
+            margin: 15px 0 10px;
+        }
+
+        /* =========================
+           ПОИСК / СОРТИРОВКА
+           ========================= */
+
+        .controls {
+            margin-bottom: 10px;
+        }
+
+        .sort-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .sort-button {
+            flex: 1;
+            border: none;
+            border-radius: 12px;
+            padding: 11px 8px;
+            font-size: 14px;
+            font-weight: 600;
+            background: var(--tg-theme-secondary-bg-color, #222222);
+            color: var(--tg-theme-text-color, #ffffff);
+        }
+
+        .sort-button.active {
+            background: var(--tg-theme-button-color, #2481cc);
+            color: var(--tg-theme-button-text-color, #ffffff);
+        }
+
+        /* =========================
+           РЕЙТИНГ
+           ========================= */
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin-top: 8px;
+            border-radius: 14px;
+            background: var(--tg-theme-secondary-bg-color, #222222);
+        }
+
+        .ranking-number {
+            width: 28px;
+            text-align: center;
+            font-weight: 700;
+            opacity: 0.8;
+        }
+
+        .ranking-name {
+            flex: 1;
+            font-weight: 600;
+        }
+
+        .ranking-score {
+            font-weight: 700;
+        }
+
+        /* =========================
+           ЗАГРУЗКА
+           ========================= */
+
+        .loading {
+            text-align: center;
+            opacity: 0.7;
+            padding: 10px;
         }
     </style>
 </head>
@@ -138,7 +236,10 @@
 
 <div class="container">
 
-    <!-- ГЛАВНОЕ МЕНЮ -->
+    <!-- =========================
+         ГЛАВНОЕ МЕНЮ
+         ========================= -->
+
     <div id="menu" class="screen active">
 
         <div class="header">
@@ -150,22 +251,33 @@
             👤 Профиль кента
         </button>
 
-        <button class="button secondary" onclick="showScreen('clan'); loadClan()">
+        <button class="button secondary"
+                onclick="showScreen('clan'); loadClan()">
             🏰 Клан
         </button>
 
-        <button class="button secondary" onclick="showScreen('players'); loadMembers()">
+        <button class="button secondary"
+                onclick="showScreen('players'); loadMembers()">
             👥 Кенты
         </button>
 
-        <button class="button secondary" onclick="showScreen('help')">
+        <button class="button secondary"
+                onclick="showScreen('ranking'); loadRanking()">
+            🏆 Рейтинг
+        </button>
+
+        <button class="button secondary"
+                onclick="showScreen('help')">
             🆘 Помощь
         </button>
 
     </div>
 
 
-    <!-- ПРОФИЛЬ -->
+    <!-- =========================
+         ПРОФИЛЬ
+         ========================= -->
+
     <div id="profile" class="screen">
 
         <div class="header">
@@ -186,14 +298,18 @@
 
         <div id="profileResult"></div>
 
-        <button class="button secondary back" onclick="showScreen('menu')">
+        <button class="button secondary back"
+                onclick="showScreen('menu')">
             ⬅️ Назад
         </button>
 
     </div>
 
 
-    <!-- КЛАН -->
+    <!-- =========================
+         КЛАН
+         ========================= -->
+
     <div id="clan" class="screen">
 
         <div class="header">
@@ -204,37 +320,93 @@
         <div id="clanResult">
 
             <div class="card">
-                <p>⏳ Загружаю информацию о клане...</p>
+                <p class="loading">
+                    ⏳ Загружаю информацию о клане...
+                </p>
             </div>
 
         </div>
 
-        <button class="button secondary back" onclick="showScreen('menu')">
+        <button class="button"
+                onclick="loadClan()">
+            🔄 Обновить
+        </button>
+
+        <button class="button secondary back"
+                onclick="showScreen('menu')">
             ⬅️ Назад
         </button>
 
     </div>
 
 
-    <!-- КЕНТЫ -->
+    <!-- =========================
+         КЕНТЫ
+         ========================= -->
+
     <div id="players" class="screen">
+
+        <div class="header">
+            <h1>👥 Кенты</h1>
+        </div>
+
+        <div class="controls">
+
+            <input
+                id="memberSearch"
+                type="text"
+                placeholder="🔎 Найти кента по имени..."
+                autocomplete="off"
+                oninput="filterMembers()"
+            >
+
+            <div class="sort-buttons">
+
+                <button
+                    id="sortTrophies"
+                    class="sort-button active"
+                    onclick="sortMembers('trophies')">
+                    🏆 Кубки
+                </button>
+
+                <button
+                    id="sortName"
+                    class="sort-button"
+                    onclick="sortMembers('name')">
+                    🔤 Имя
+                </button>
+
+            </div>
+
+        </div>
 
         <div id="membersResult">
 
             <div class="card">
-                <p>⏳ Загружаю участников...</p>
+                <p class="loading">
+                    ⏳ Загружаю участников...
+                </p>
             </div>
 
         </div>
 
-        <button class="button secondary back" onclick="showScreen('menu')">
+        <button class="button"
+                onclick="loadMembers()">
+            🔄 Обновить
+        </button>
+
+        <button class="button secondary back"
+                onclick="showScreen('menu')">
             ⬅️ Назад
         </button>
 
     </div>
 
 
-    <!-- ПРОФИЛЬ УЧАСТНИКА -->
+    <!-- =========================
+         ПРОФИЛЬ УЧАСТНИКА
+         ========================= -->
+
     <div id="memberProfile" class="screen">
 
         <div class="header">
@@ -244,19 +416,59 @@
         <div id="memberProfileResult">
 
             <div class="card">
-                <p>⏳ Загружаю профиль...</p>
+                <p class="loading">
+                    ⏳ Загружаю профиль...
+                </p>
             </div>
 
         </div>
 
-        <button class="button secondary back" onclick="showScreen('players')">
+        <button class="button secondary back"
+                onclick="showScreen('players')">
             ⬅️ К кентам
         </button>
 
     </div>
 
 
-    <!-- ПОМОЩЬ -->
+    <!-- =========================
+         РЕЙТИНГ
+         ========================= -->
+
+    <div id="ranking" class="screen">
+
+        <div class="header">
+            <h1>🏆 Рейтинг</h1>
+            <p>Кенты по кубкам</p>
+        </div>
+
+        <div id="rankingResult">
+
+            <div class="card">
+                <p class="loading">
+                    ⏳ Загружаю рейтинг...
+                </p>
+            </div>
+
+        </div>
+
+        <button class="button"
+                onclick="loadRanking()">
+            🔄 Обновить
+        </button>
+
+        <button class="button secondary back"
+                onclick="showScreen('menu')">
+            ⬅️ Назад
+        </button>
+
+    </div>
+
+
+    <!-- =========================
+         ПОМОЩЬ
+         ========================= -->
+
     <div id="help" class="screen">
 
         <div class="header">
@@ -264,12 +476,31 @@
         </div>
 
         <div class="card">
-            <p>👤 <b>Профиль кента</b> — найти игрока по тегу.</p>
-            <p>🏰 <b>Клан</b> — информация о клане.</p>
-            <p>👥 <b>Кенты</b> — список участников.</p>
+
+            <p>
+                👤 <b>Профиль кента</b> —
+                найти игрока по тегу.
+            </p>
+
+            <p>
+                🏰 <b>Клан</b> —
+                информация о клане.
+            </p>
+
+            <p>
+                👥 <b>Кенты</b> —
+                список участников клана.
+            </p>
+
+            <p>
+                🏆 <b>Рейтинг</b> —
+                кенты с наибольшим количеством кубков.
+            </p>
+
         </div>
 
-        <button class="button secondary back" onclick="showScreen('menu')">
+        <button class="button secondary back"
+                onclick="showScreen('menu')">
             ⬅️ Назад
         </button>
 
@@ -280,7 +511,9 @@
 
 <script>
 
+    // =========================
     // TELEGRAM MINI APP
+    // =========================
 
     const tg = window.Telegram.WebApp;
 
@@ -288,7 +521,17 @@
     tg.expand();
 
 
+    // =========================
+    // ГЛОБАЛЬНЫЕ ДАННЫЕ
+    // =========================
+
+    let allMembers = [];
+    let currentSort = "trophies";
+
+
+    // =========================
     // ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ
+    // =========================
 
     function showScreen(screenId) {
 
@@ -296,25 +539,40 @@
             screen.classList.remove('active');
         });
 
-        document.getElementById(screenId).classList.add('active');
+        const screen = document.getElementById(screenId);
+
+        if (screen) {
+            screen.classList.add('active');
+        }
 
         window.scrollTo(0, 0);
     }
 
 
+    // =========================
     // ОТКРЫТИЕ ПРОФИЛЯ
+    // =========================
 
     function openProfile() {
 
         showScreen('profile');
 
         setTimeout(() => {
-            document.getElementById('playerTag').focus();
+
+            const input =
+                document.getElementById('playerTag');
+
+            if (input) {
+                input.focus();
+            }
+
         }, 100);
     }
 
 
+    // =========================
     // STARTAPP
+    // =========================
 
     function openStartAppScreen() {
 
@@ -339,6 +597,11 @@
             showScreen("players");
             loadMembers();
 
+        } else if (startParam === "ranking") {
+
+            showScreen("ranking");
+            loadRanking();
+
         } else if (startParam === "help") {
 
             showScreen("help");
@@ -347,15 +610,20 @@
     }
 
 
+    // =========================
     // ЗАГРУЗКА КЛАНА
+    // =========================
 
     async function loadClan() {
 
-        const result = document.getElementById("clanResult");
+        const result =
+            document.getElementById("clanResult");
 
         result.innerHTML = `
             <div class="card">
-                <p>⏳ Загружаю информацию о клане...</p>
+                <p class="loading">
+                    ⏳ Загружаю информацию о клане...
+                </p>
             </div>
         `;
 
@@ -372,7 +640,13 @@
                 result.innerHTML = `
                     <div class="card">
                         <h2>❌ Ошибка</h2>
-                        <p>${data.reason || data.error || "Не удалось загрузить клан"}</p>
+                        <p>
+                            ${escapeHtml(
+                                data.reason ||
+                                data.error ||
+                                "Не удалось загрузить клан"
+                            )}
+                        </p>
                     </div>
                 `;
 
@@ -382,27 +656,41 @@
             result.innerHTML = `
                 <div class="card">
 
-                    <h2>⚜️ ${escapeHtml(data.name || "Движуха")}</h2>
+                    <h2>
+                        ⚜️ ${escapeHtml(
+                            data.name || "Движуха"
+                        )}
+                    </h2>
 
-                    <p>
-                        🏷 Тег:
-                        <b>#${escapeHtml(data.tag || "GCGJ9VJV")}</b>
-                    </p>
+                    <div class="stat">
+                        <span>🏷 Тег</span>
+                        <span class="stat-value">
+                            #${escapeHtml(
+                                data.tag || "GCGJ9VJV"
+                            )}
+                        </span>
+                    </div>
 
-                    <p>
-                        👥 Кенты:
-                        <b>${data.members ?? "—"}</b>
-                    </p>
+                    <div class="stat">
+                        <span>👥 Кенты</span>
+                        <span class="stat-value">
+                            ${data.members ?? "—"}
+                        </span>
+                    </div>
 
-                    <p>
-                        🏆 Очки клана:
-                        <b>${data.clanScore ?? "—"}</b>
-                    </p>
+                    <div class="stat">
+                        <span>🏆 Очки клана</span>
+                        <span class="stat-value">
+                            ${data.clanScore ?? "—"}
+                        </span>
+                    </div>
 
-                    <p>
-                        📊 Требования:
-                        <b>${data.requiredTrophies ?? "—"}</b>
-                    </p>
+                    <div class="stat">
+                        <span>📊 Требования</span>
+                        <span class="stat-value">
+                            ${data.requiredTrophies ?? "—"}
+                        </span>
+                    </div>
 
                 </div>
             `;
@@ -412,23 +700,29 @@
             result.innerHTML = `
                 <div class="card">
                     <h2>❌ Ошибка подключения</h2>
-                    <p>Не удалось получить данные клана.</p>
+                    <p>
+                        Не удалось получить данные клана.
+                    </p>
                 </div>
             `;
-
         }
     }
 
 
+    // =========================
     // ЗАГРУЗКА КЕНТОВ
+    // =========================
 
     async function loadMembers() {
 
-        const result = document.getElementById("membersResult");
+        const result =
+            document.getElementById("membersResult");
 
         result.innerHTML = `
             <div class="card">
-                <p>⏳ Загружаю участников клана...</p>
+                <p class="loading">
+                    ⏳ Загружаю участников клана...
+                </p>
             </div>
         `;
 
@@ -445,85 +739,212 @@
                 result.innerHTML = `
                     <div class="card">
                         <h2>❌ Ошибка</h2>
-                        <p>${data.reason || data.error || "Не удалось загрузить участников"}</p>
+                        <p>
+                            ${escapeHtml(
+                                data.reason ||
+                                data.error ||
+                                "Не удалось загрузить участников"
+                            )}
+                        </p>
                     </div>
                 `;
 
                 return;
             }
 
-            const members = data.items || [];
+            allMembers = data.items || [];
 
-            if (members.length === 0) {
-
-                result.innerHTML = `
-                    <div class="card">
-                        <p>😕 Участники не найдены.</p>
-                    </div>
-                `;
-
-                return;
-            }
-
-            let html = `
-                <div class="card">
-                    <h2 style="text-align: center;">👥 Кенты: ${members.length}</h2>
-                </div>
-            `;
-
-            members.forEach((member, index) => {
-
-                const safeName = escapeHtml(member.name || "Без имени");
-                const safeTag = escapeHtml(member.tag || "");
-
-                html += `
-                    <button
-                        class="member"
-                        onclick="openMemberProfile('${safeTag}')"
-                    >
-
-                        <div class="member-name">
-                            ${index + 1}. ${safeName}
-                        </div>
-
-                        <div class="member-info">
-                            ${member.tag ? "#" + safeTag : ""}
-                        </div>
-
-                        <div class="member-trophies">
-                            🏆 ${member.trophies ?? "—"}
-                        </div>
-
-                    </button>
-                `;
-            });
-
-            result.innerHTML = html;
+            renderMembers();
 
         } catch (error) {
 
             result.innerHTML = `
                 <div class="card">
                     <h2>❌ Ошибка подключения</h2>
-                    <p>Не удалось получить список участников.</p>
+                    <p>
+                        Не удалось получить список участников.
+                    </p>
                 </div>
             `;
-
         }
     }
 
 
+    // =========================
+    // ОТОБРАЖЕНИЕ КЕНТОВ
+    // =========================
+
+    function renderMembers() {
+
+        const result =
+            document.getElementById("membersResult");
+
+        const searchInput =
+            document.getElementById("memberSearch");
+
+        const search =
+            searchInput
+                ? searchInput.value.trim().toLowerCase()
+                : "";
+
+        let members = [...allMembers];
+
+        if (search) {
+
+            members = members.filter(member => {
+
+                const name =
+                    String(member.name || "")
+                        .toLowerCase();
+
+                return name.includes(search);
+            });
+        }
+
+        if (currentSort === "trophies") {
+
+            members.sort((a, b) => {
+
+                return (
+                    Number(b.trophies || 0) -
+                    Number(a.trophies || 0)
+                );
+
+            });
+
+        } else {
+
+            members.sort((a, b) => {
+
+                return String(a.name || "")
+                    .localeCompare(
+                        String(b.name || ""),
+                        "ru"
+                    );
+
+            });
+        }
+
+        if (members.length === 0) {
+
+            result.innerHTML = `
+                <div class="card">
+                    <p>😕 Кенты не найдены.</p>
+                </div>
+            `;
+
+            return;
+        }
+
+        let html = `
+            <div class="members-title">
+                👥 Кенты: ${allMembers.length}
+            </div>
+        `;
+
+        members.forEach((member, index) => {
+
+            const safeName =
+                escapeHtml(
+                    member.name || "Без имени"
+                );
+
+            const safeTag =
+                escapeHtml(
+                    member.tag || ""
+                );
+
+            html += `
+                <button
+                    class="member"
+                    onclick="openMemberProfile('${safeTag}')"
+                >
+
+                    <div class="member-name">
+                        ${index + 1}. ${safeName}
+                    </div>
+
+                    <div class="member-info">
+                        ${
+                            member.tag
+                                ? "#" + safeTag
+                                : ""
+                        }
+                    </div>
+
+                    <div class="member-trophies">
+                        🏆 ${member.trophies ?? "—"}
+                    </div>
+
+                </button>
+            `;
+        });
+
+        result.innerHTML = html;
+    }
+
+
+    // =========================
+    // ПОИСК КЕНТА
+    // =========================
+
+    function filterMembers() {
+
+        renderMembers();
+    }
+
+
+    // =========================
+    // СОРТИРОВКА КЕНТОВ
+    // =========================
+
+    function sortMembers(type) {
+
+        currentSort = type;
+
+        document
+            .getElementById("sortTrophies")
+            .classList.remove("active");
+
+        document
+            .getElementById("sortName")
+            .classList.remove("active");
+
+        if (type === "trophies") {
+
+            document
+                .getElementById("sortTrophies")
+                .classList.add("active");
+
+        } else {
+
+            document
+                .getElementById("sortName")
+                .classList.add("active");
+        }
+
+        renderMembers();
+    }
+
+
+    // =========================
     // ПРОФИЛЬ КЕНТА
+    // =========================
 
     async function openMemberProfile(tag) {
 
-        showScreen('memberProfile');
+        showScreen("memberProfile");
 
-        const result = document.getElementById("memberProfileResult");
+        const result =
+            document.getElementById(
+                "memberProfileResult"
+            );
 
         result.innerHTML = `
             <div class="card">
-                <p>⏳ Загружаю профиль...</p>
+                <p class="loading">
+                    ⏳ Загружаю профиль...
+                </p>
             </div>
         `;
 
@@ -540,7 +961,9 @@
                 result.innerHTML = `
                     <div class="card">
                         <h2>❌ Ошибка</h2>
-                        <p>Не удалось загрузить профиль игрока.</p>
+                        <p>
+                            Не удалось загрузить профиль игрока.
+                        </p>
                     </div>
                 `;
 
@@ -550,42 +973,65 @@
             result.innerHTML = `
                 <div class="card">
 
-                    <h2>👤 ${escapeHtml(data.name || "Без имени")}</h2>
+                    <h2>
+                        👤 ${escapeHtml(
+                            data.name || "Без имени"
+                        )}
+                    </h2>
 
-                    <p>
-                        🏷 Тег:
-                        <b>#${escapeHtml(data.tag || tag)}</b>
-                    </p>
+                    <div class="stat">
+                        <span>🏷 Тег</span>
+                        <span class="stat-value">
+                            #${escapeHtml(
+                                data.tag || tag
+                            )}
+                        </span>
+                    </div>
 
-                    <p>
-                        🏆 Кубки:
-                        <b>${data.trophies ?? "—"}</b>
-                    </p>
+                    <div class="stat">
+                        <span>🏆 Кубки</span>
+                        <span class="stat-value">
+                            ${data.trophies ?? "—"}
+                        </span>
+                    </div>
 
-                    <p>
-                        🏅 Лучшие кубки:
-                        <b>${data.bestTrophies ?? "—"}</b>
-                    </p>
+                    <div class="stat">
+                        <span>🏅 Лучшие кубки</span>
+                        <span class="stat-value">
+                            ${data.bestTrophies ?? "—"}
+                        </span>
+                    </div>
 
-                    <p>
-                        ⚔️ Победы:
-                        <b>${data.wins ?? "—"}</b>
-                    </p>
+                    <div class="stat">
+                        <span>⚔️ Победы</span>
+                        <span class="stat-value">
+                            ${data.wins ?? "—"}
+                        </span>
+                    </div>
 
-                    <p>
-                        💀 Поражения:
-                        <b>${data.losses ?? "—"}</b>
-                    </p>
+                    <div class="stat">
+                        <span>💀 Поражения</span>
+                        <span class="stat-value">
+                            ${data.losses ?? "—"}
+                        </span>
+                    </div>
 
-                    <p>
-                        ⭐ Уровень:
-                        <b>${data.expLevel ?? "—"}</b>
-                    </p>
+                    <div class="stat">
+                        <span>⭐ Уровень</span>
+                        <span class="stat-value">
+                            ${data.expLevel ?? "—"}
+                        </span>
+                    </div>
 
-                    <p>
-                        🏰 Клан:
-                        <b>${escapeHtml(data.clan?.name || "Без клана")}</b>
-                    </p>
+                    <div class="stat">
+                        <span>🏰 Клан</span>
+                        <span class="stat-value">
+                            ${escapeHtml(
+                                data.clan?.name ||
+                                "Без клана"
+                            )}
+                        </span>
+                    </div>
 
                 </div>
             `;
@@ -595,24 +1041,31 @@
             result.innerHTML = `
                 <div class="card">
                     <h2>❌ Ошибка</h2>
-                    <p>Не удалось подключиться к серверу.</p>
+                    <p>
+                        Не удалось подключиться к серверу.
+                    </p>
                 </div>
             `;
-
         }
     }
 
 
-    // ПОИСК ИГРОКА
+    // =========================
+    // ПОИСК ИГРОКА ПО ТЕГУ
+    // =========================
 
     async function searchPlayer() {
 
-        const tag = document
-            .getElementById('playerTag')
-            .value
-            .trim();
+        const input =
+            document.getElementById("playerTag");
 
-        const result = document.getElementById('profileResult');
+        const tag =
+            input.value.trim();
+
+        const result =
+            document.getElementById(
+                "profileResult"
+            );
 
         if (!tag) {
 
@@ -625,12 +1078,16 @@
             return;
         }
 
-        const cleanTag = tag.replace("#", "");
+        const cleanTag =
+            tag.replace(/^#/, "");
 
         result.innerHTML = `
             <div class="card">
                 <h2>🔎 Поиск</h2>
-                <p>Ищу игрока <b>#${escapeHtml(cleanTag)}</b>...</p>
+                <p>
+                    Ищу игрока
+                    <b>#${escapeHtml(cleanTag)}</b>...
+                </p>
             </div>
         `;
 
@@ -647,7 +1104,9 @@
                 result.innerHTML = `
                     <div class="card">
                         <h2>❌ Игрок не найден</h2>
-                        <p>Проверь правильность тега.</p>
+                        <p>
+                            Проверь правильность тега.
+                        </p>
                     </div>
                 `;
 
@@ -657,42 +1116,65 @@
             result.innerHTML = `
                 <div class="card">
 
-                    <h2>👤 ${escapeHtml(data.name || "Без имени")}</h2>
+                    <h2>
+                        👤 ${escapeHtml(
+                            data.name || "Без имени"
+                        )}
+                    </h2>
 
-                    <p>
-                        🏷 Тег:
-                        <b>#${escapeHtml(data.tag || cleanTag)}</b>
-                    </p>
+                    <div class="stat">
+                        <span>🏷 Тег</span>
+                        <span class="stat-value">
+                            #${escapeHtml(
+                                data.tag || cleanTag
+                            )}
+                        </span>
+                    </div>
 
-                    <p>
-                        🏆 Кубки:
-                        <b>${data.trophies ?? "—"}</b>
-                    </p>
+                    <div class="stat">
+                        <span>🏆 Кубки</span>
+                        <span class="stat-value">
+                            ${data.trophies ?? "—"}
+                        </span>
+                    </div>
 
-                    <p>
-                        🏅 Лучшие кубки:
-                        <b>${data.bestTrophies ?? "—"}</b>
-                    </p>
+                    <div class="stat">
+                        <span>🏅 Лучшие кубки</span>
+                        <span class="stat-value">
+                            ${data.bestTrophies ?? "—"}
+                        </span>
+                    </div>
 
-                    <p>
-                        ⚔️ Победы:
-                        <b>${data.wins ?? "—"}</b>
-                    </p>
+                    <div class="stat">
+                        <span>⚔️ Победы</span>
+                        <span class="stat-value">
+                            ${data.wins ?? "—"}
+                        </span>
+                    </div>
 
-                    <p>
-                        💀 Поражения:
-                        <b>${data.losses ?? "—"}</b>
-                    </p>
+                    <div class="stat">
+                        <span>💀 Поражения</span>
+                        <span class="stat-value">
+                            ${data.losses ?? "—"}
+                        </span>
+                    </div>
 
-                    <p>
-                        ⭐ Уровень:
-                        <b>${data.expLevel ?? "—"}</b>
-                    </p>
+                    <div class="stat">
+                        <span>⭐ Уровень</span>
+                        <span class="stat-value">
+                            ${data.expLevel ?? "—"}
+                        </span>
+                    </div>
 
-                    <p>
-                        🏰 Клан:
-                        <b>${escapeHtml(data.clan?.name || "Без клана")}</b>
-                    </p>
+                    <div class="stat">
+                        <span>🏰 Клан</span>
+                        <span class="stat-value">
+                            ${escapeHtml(
+                                data.clan?.name ||
+                                "Без клана"
+                            )}
+                        </span>
+                    </div>
 
                 </div>
             `;
@@ -702,15 +1184,135 @@
             result.innerHTML = `
                 <div class="card">
                     <h2>❌ Ошибка</h2>
-                    <p>Не удалось подключиться к серверу.</p>
+                    <p>
+                        Не удалось подключиться к серверу.
+                    </p>
                 </div>
             `;
-
         }
     }
 
 
-    // ЗАЩИТА ТЕКСТА
+    // =========================
+    // РЕЙТИНГ
+    // =========================
+
+    async function loadRanking() {
+
+        const result =
+            document.getElementById(
+                "rankingResult"
+            );
+
+        result.innerHTML = `
+            <div class="card">
+                <p class="loading">
+                    ⏳ Загружаю рейтинг...
+                </p>
+            </div>
+        `;
+
+        try {
+
+            if (!allMembers.length) {
+
+                const response = await fetch(
+                    "/api/members?tag=GCGJ9VJV"
+                );
+
+                const data =
+                    await response.json();
+
+                if (!response.ok) {
+                    throw new Error(
+                        "Не удалось загрузить участников"
+                    );
+                }
+
+                allMembers =
+                    data.items || [];
+            }
+
+            const ranking =
+                [...allMembers]
+                    .sort((a, b) =>
+                        Number(b.trophies || 0) -
+                        Number(a.trophies || 0)
+                    );
+
+            if (!ranking.length) {
+
+                result.innerHTML = `
+                    <div class="card">
+                        <p>
+                            😕 Кенты не найдены.
+                        </p>
+                    </div>
+                `;
+
+                return;
+            }
+
+            let html = `
+                <div class="card">
+
+                    <h2>
+                        🏆 Топ кентов
+                    </h2>
+            `;
+
+            ranking.forEach((member, index) => {
+
+                html += `
+                    <div
+                        class="ranking-item"
+                        onclick="openMemberProfile('${escapeHtml(
+                            member.tag || ""
+                        )}')"
+                    >
+
+                        <div class="ranking-number">
+                            ${index + 1}
+                        </div>
+
+                        <div class="ranking-name">
+                            ${escapeHtml(
+                                member.name ||
+                                "Без имени"
+                            )}
+                        </div>
+
+                        <div class="ranking-score">
+                            🏆 ${member.trophies ?? "—"}
+                        </div>
+
+                    </div>
+                `;
+            });
+
+            html += `
+                </div>
+            `;
+
+            result.innerHTML = html;
+
+        } catch (error) {
+
+            result.innerHTML = `
+                <div class="card">
+                    <h2>❌ Ошибка</h2>
+                    <p>
+                        Не удалось загрузить рейтинг.
+                    </p>
+                </div>
+            `;
+        }
+    }
+
+
+    // =========================
+    // ЗАЩИТА HTML
+    // =========================
 
     function escapeHtml(value) {
 
@@ -723,7 +1325,9 @@
     }
 
 
+    // =========================
     // ЗАПУСК STARTAPP
+    // =========================
 
     openStartAppScreen();
 
