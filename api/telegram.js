@@ -11,80 +11,69 @@ export default async function handler(req, res) {
     return res.status(200).send("Движуха работает 🤙");
   }
 
-  const update = req.body;
+  try {
+    const update = req.body;
 
-  // =========================
-  // /start
-  // =========================
+    console.log("TELEGRAM UPDATE:", JSON.stringify(update));
 
-  const messageText = update.message?.text || "";
+    const message = update?.message;
+    const text = message?.text || "";
 
-  if (
-    messageText === "/start" ||
-    messageText.startsWith("/start@")
-  ) {
-    const chatId = update.message.chat.id;
-
-    await sendMessage(
-      token,
-      chatId,
-      "⚜️ Движуха ⚜️\n\nВыбирай чё надо:",
-      {
-        inline_keyboard: [
-          [
-            {
-              text: "🚀 Открыть Движуху",
-              web_app: {
-                url: "https://dvizhuha-mini-app.vercel.app/"
-              }
-            }
-          ]
-        ]
-      }
-    );
+    if (
+      text === "/start" ||
+      text.startsWith("/start@")
+    ) {
+      await sendMessage(
+        token,
+        message.chat.id,
+        "⚜️ Движуха ⚜️\n\nВыбирай чё надо:"
+      );
+    }
 
     return res.status(200).json({
       ok: true
     });
-  }
 
-  return res.status(200).json({
-    ok: true
-  });
+  } catch (error) {
+
+    console.error("Telegram error:", error);
+
+    return res.status(500).json({
+      ok: false,
+      error: error.message
+    });
+  }
 }
 
 
-// =========================
-// Отправка сообщения
-// =========================
-
-async function sendMessage(
-  token,
-  chatId,
-  text,
-  buttons = null
-) {
-  const body = {
-    chat_id: chatId,
-    text
-  };
-
-  if (buttons) {
-    body.reply_markup = buttons;
-  }
+async function sendMessage(token, chatId, text) {
 
   const response = await fetch(
     `https://api.telegram.org/bot${token}/sendMessage`,
     {
       method: "POST",
+
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(body)
+
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: text
+      })
     }
   );
 
   const data = await response.json();
 
-  console.log("Telegram sendMessage:", data);
+  console.log(
+    "Telegram response:",
+    JSON.stringify(data)
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      data.description || "Telegram API error"
+    );
+  }
 }
