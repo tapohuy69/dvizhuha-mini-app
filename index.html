@@ -552,7 +552,7 @@
                     <p>
                         🏷 Тег:
                         <b>#${escapeHtml(
-                            clanData.tag || "GCGJ9VJV"
+                            normalizeTag(clanData.tag || "GCGJ9VJV")
                         )}</b>
                     </p>
 
@@ -757,7 +757,10 @@
             members.forEach((member, index) => {
 
                 const safeName = escapeHtml(member.name || "Без имени");
-                const safeTag = escapeHtml(member.tag || "");
+
+                const rawTag = String(member.tag || "");
+                const cleanTag = normalizeTag(rawTag);
+                const safeTag = escapeHtml(cleanTag);
 
                 html += `
                     <button
@@ -814,8 +817,10 @@
 
         try {
 
+            const cleanTag = normalizeTag(tag);
+
             const response = await fetch(
-                `/api/player?tag=${encodeURIComponent(tag)}`
+                `/api/player?tag=${encodeURIComponent(cleanTag)}`
             );
 
             const data = await response.json();
@@ -839,7 +844,9 @@
 
                     <p>
                         🏷 Тег:
-                        <b>#${escapeHtml(data.tag || tag)}</b>
+                        <b>#${escapeHtml(
+                            normalizeTag(data.tag || cleanTag)
+                        )}</b>
                     </p>
 
                     <p>
@@ -912,7 +919,7 @@
             return;
         }
 
-        const cleanTag = tag.replace("#", "");
+        const cleanTag = normalizeTag(tag);
 
         result.innerHTML = `
             <div class="card">
@@ -948,7 +955,9 @@
 
                     <p>
                         🏷 Тег:
-                        <b>#${escapeHtml(data.tag || cleanTag)}</b>
+                        <b>#${escapeHtml(
+                            normalizeTag(data.tag || cleanTag)
+                        )}</b>
                     </p>
 
                     <p>
@@ -994,6 +1003,17 @@
             `;
 
         }
+    }
+
+
+    // =========================
+    // НОРМАЛИЗАЦИЯ ХЕШТЕГА
+    // =========================
+
+    function normalizeTag(value) {
+
+        return String(value || "")
+            .replace(/^#+/, "");
     }
 
 
