@@ -13,13 +13,8 @@ export default async function handler(req, res) {
 
   try {
     const update = req.body;
-
     const message = update?.message;
     const text = message?.text || "";
-
-    // =========================
-    // /start
-    // =========================
 
     if (
       text === "/start" ||
@@ -33,32 +28,8 @@ export default async function handler(req, res) {
           inline_keyboard: [
             [
               {
-                text: "👤 Профиль кента",
-                web_app: {
-                  url: "https://dvizhuha-mini-app.vercel.app/"
-                }
-              }
-            ],
-            [
-              {
-                text: "🏰 Клан",
-                web_app: {
-                  url: "https://dvizhuha-mini-app.vercel.app/"
-                }
-              },
-              {
-                text: "👥 Кенты",
-                web_app: {
-                  url: "https://dvizhuha-mini-app.vercel.app/"
-                }
-              }
-            ],
-            [
-              {
-                text: "❓ Помощь",
-                web_app: {
-                  url: "https://dvizhuha-mini-app.vercel.app/"
-                }
+                text: "🚀 Открыть Движуху",
+                url: "https://dvizhuha-mini-app.vercel.app/"
               }
             ]
           ]
@@ -72,7 +43,7 @@ export default async function handler(req, res) {
 
   } catch (error) {
 
-    console.error("Telegram error:", error);
+    console.error(error);
 
     return res.status(500).json({
       ok: false,
@@ -81,10 +52,6 @@ export default async function handler(req, res) {
   }
 }
 
-
-// =========================
-// ОТПРАВКА СООБЩЕНИЯ
-// =========================
 
 async function sendMessage(
   token,
@@ -112,7 +79,7 @@ async function sendMessage(
 
   const data = await response.json();
 
-  console.log("Telegram response:", data);
+  console.log("Telegram:", data);
 
   if (!response.ok) {
     throw new Error(
