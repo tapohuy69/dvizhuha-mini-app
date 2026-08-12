@@ -1,21 +1,28 @@
 export default async function handler(req, res) {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
+  try {
+    const token = process.env.TELEGRAM_BOT_TOKEN;
 
-  if (!token) {
+    if (!token) {
+      return res.status(500).json({
+        error: "TELEGRAM_BOT_TOKEN не найден в Vercel"
+      });
+    }
+
+    const webhookUrl =
+      "https://dvizhuha-mini-app.vercel.app/api/telegram";
+
+    const response = await fetch(
+      `https://api.telegram.org/bot${token}/setWebhook?url=${encodeURIComponent(webhookUrl)}`
+    );
+
+    const data = await response.json();
+
+    return res.status(200).json(data);
+
+  } catch (error) {
     return res.status(500).json({
-      error: "TELEGRAM_BOT_TOKEN не найден"
+      error: "Ошибка установки webhook",
+      message: error.message
     });
   }
-
-  const webhookUrl =
-    const webhookUrl =
-  "https://dvizhuha-mini-app.vercel.app/api/telegram";
-
-  const response = await fetch(
-    `https://api.telegram.org/bot${token}/setWebhook?url=${encodeURIComponent(webhookUrl)}`
-  );
-
-  const data = await response.json();
-
-  return res.status(response.status).json(data);
 }
