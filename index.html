@@ -99,6 +99,29 @@
         }
 
         /* =========================
+           ФИКСИРОВАННАЯ КНОПКА ОБНОВИТЬ
+        ========================= */
+
+        .refresh-button {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            min-width: 125px;
+            padding: 8px 14px;
+            margin: 0;
+            border-radius: 12px;
+            font-size: 14px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .refresh-button:active {
+            transform: translateX(-50%) scale(0.96);
+        }
+
+        /* =========================
            КЕНТЫ
         ========================= */
 
@@ -253,6 +276,13 @@
     <!-- КЛАН -->
     <div id="clan" class="screen">
 
+        <button
+            class="button refresh-button"
+            onclick="loadClan()"
+        >
+            🔄 Обновить
+        </button>
+
         <div class="header">
             <h1>🏰 Клан</h1>
             <p>⚜️ Движуха ⚜️</p>
@@ -266,15 +296,6 @@
 
         </div>
 
-        <!-- ОБНОВИТЬ -->
-        <button
-            class="button"
-            onclick="loadClan()"
-            style="padding: 9px; font-size: 14px; margin-bottom: 12px;"
-        >
-            🔄 Обновить
-        </button>
-
         <button class="button secondary back" onclick="showScreen('menu')">
             ⬅️ Назад
         </button>
@@ -285,6 +306,13 @@
     <!-- КЕНТЫ -->
     <div id="players" class="screen">
 
+        <button
+            class="button refresh-button"
+            onclick="loadMembers()"
+        >
+            🔄 Обновить
+        </button>
+
         <div id="membersResult">
 
             <div class="card">
@@ -292,15 +320,6 @@
             </div>
 
         </div>
-
-        <!-- ОБНОВИТЬ -->
-        <button
-            class="button"
-            onclick="loadMembers()"
-            style="padding: 9px; font-size: 14px; margin-bottom: 12px;"
-        >
-            🔄 Обновить
-        </button>
 
         <button class="button secondary back" onclick="showScreen('menu')">
             ⬅️ Назад
