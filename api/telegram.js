@@ -14,19 +14,34 @@ export default async function handler(req, res) {
   try {
     const update = req.body;
 
-    console.log("TELEGRAM UPDATE:", JSON.stringify(update));
-
     const message = update?.message;
     const text = message?.text || "";
+
+    // =========================
+    // /start
+    // =========================
 
     if (
       text === "/start" ||
       text.startsWith("/start@")
     ) {
+
       await sendMessage(
         token,
         message.chat.id,
-        "⚜️ Движуха ⚜️\n\nВыбирай чё надо:"
+        "⚜️ Движуха ⚜️\n\nВыбирай чё надо:",
+        {
+          inline_keyboard: [
+            [
+              {
+                text: "🚀 Открыть Движуху",
+                web_app: {
+                  url: "https://dvizhuha-mini-app.vercel.app/"
+                }
+              }
+            ]
+          ]
+        }
       );
     }
 
@@ -46,7 +61,25 @@ export default async function handler(req, res) {
 }
 
 
-async function sendMessage(token, chatId, text) {
+// =========================
+// Отправка сообщения
+// =========================
+
+async function sendMessage(
+  token,
+  chatId,
+  text,
+  replyMarkup = null
+) {
+
+  const body = {
+    chat_id: chatId,
+    text: text
+  };
+
+  if (replyMarkup) {
+    body.reply_markup = replyMarkup;
+  }
 
   const response = await fetch(
     `https://api.telegram.org/bot${token}/sendMessage`,
@@ -57,10 +90,7 @@ async function sendMessage(token, chatId, text) {
         "Content-Type": "application/json"
       },
 
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: text
-      })
+      body: JSON.stringify(body)
     }
   );
 
