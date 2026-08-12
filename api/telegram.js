@@ -15,37 +15,49 @@ export default async function handler(req, res) {
 
   // =========================
   // /start
+  // Работает и как /start,
+  // и как /start@DvizhuhaCR_bot
   // =========================
 
-  if (update.message?.text === "/start") {
+  const messageText = update.message?.text || "";
+
+  if (
+    messageText === "/start" ||
+    messageText.startsWith("/start@")
+  ) {
     const chatId = update.message.chat.id;
 
-    await sendMessage(token, chatId, "⚜️ Движуха ⚜️\n\nВыбирай чё надо:", {
-      inline_keyboard: [
-        [
-          {
-            text: "👤 Профиль кента",
-            callback_data: "profile"
-          }
-        ],
-        [
-          {
-            text: "🏰 Клан",
-            callback_data: "clan"
-          },
-          {
-            text: "👥 Кенты",
-            callback_data: "friends"
-          }
-        ],
-        [
-          {
-            text: "❓ Помощь",
-            callback_data: "help"
-          }
+    await sendMessage(
+      token,
+      chatId,
+      "⚜️ Движуха ⚜️\n\nВыбирай чё надо:",
+      {
+        inline_keyboard: [
+          [
+            {
+              text: "👤 Профиль кента",
+              callback_data: "profile"
+            }
+          ],
+          [
+            {
+              text: "🏰 Клан",
+              callback_data: "clan"
+            },
+            {
+              text: "👥 Кенты",
+              callback_data: "friends"
+            }
+          ],
+          [
+            {
+              text: "❓ Помощь",
+              callback_data: "help"
+            }
+          ]
         ]
-      ]
-    });
+      }
+    );
   }
 
   // =========================
@@ -89,7 +101,7 @@ export default async function handler(req, res) {
       await sendMessage(
         token,
         chatId,
-        "👥 Кенты\n\nСкоро здесь будет список кентов."
+        "👥 Кенты\n\nСкоро здесь будет список участников клана."
       );
     }
 
@@ -97,7 +109,10 @@ export default async function handler(req, res) {
       await sendMessage(
         token,
         chatId,
-        "❓ Помощь\n\n👤 Профиль кента — посмотреть игрока по тегу.\n🏰 Клан — информация о клане.\n👥 Кенты — список кентов."
+        "❓ Помощь\n\n" +
+        "👤 Профиль кента — посмотреть игрока по тегу.\n" +
+        "🏰 Клан — информация о клане.\n" +
+        "👥 Кенты — список участников."
       );
     }
   }
@@ -106,11 +121,15 @@ export default async function handler(req, res) {
   // Игрок прислал тег
   // =========================
 
-  if (update.message?.text && !update.message.text.startsWith("/")) {
+  if (
+    update.message?.text &&
+    !update.message.text.startsWith("/")
+  ) {
     const chatId = update.message.chat.id;
     const text = update.message.text.trim();
 
     if (text.startsWith("#")) {
+
       await sendMessage(
         token,
         chatId,
@@ -118,6 +137,7 @@ export default async function handler(req, res) {
       );
 
       try {
+
         const apiUrl =
           `https://dvizhuha-mini-app.vercel.app/api/player?tag=${encodeURIComponent(text)}`;
 
@@ -125,12 +145,15 @@ export default async function handler(req, res) {
         const data = await response.json();
 
         if (!response.ok) {
+
           await sendMessage(
             token,
             chatId,
             "❌ Игрок не найден.\nПроверь тег и попробуй ещё раз."
           );
+
         } else {
+
           const message =
             `👤 ${data.name || "Без имени"}\n\n` +
             `🏆 Кубки: ${data.trophies ?? "—"}\n` +
@@ -140,10 +163,15 @@ export default async function handler(req, res) {
             `⭐ Уровень: ${data.expLevel ?? "—"}\n` +
             `🏰 Клан: ${data.clan?.name || "Без клана"}`;
 
-          await sendMessage(token, chatId, message);
+          await sendMessage(
+            token,
+            chatId,
+            message
+          );
         }
 
       } catch (error) {
+
         await sendMessage(
           token,
           chatId,
@@ -163,7 +191,12 @@ export default async function handler(req, res) {
 // Отправка сообщения
 // =========================
 
-async function sendMessage(token, chatId, text, buttons = null) {
+async function sendMessage(
+  token,
+  chatId,
+  text,
+  buttons = null
+) {
   const body = {
     chat_id: chatId,
     text
