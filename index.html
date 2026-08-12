@@ -98,14 +98,15 @@
             margin-top: 0;
         }
 
-        /* КАРТОЧКА КЕНТА */
+        /* КАРТОЧКА КЕНТА — СДЕЛАЛИ КОМПАКТНЕЕ */
+
         .member {
             width: 100%;
             border: none;
             text-align: left;
             padding: 11px 14px;
             margin-top: 7px;
-            border-radius: 14px;
+            border-radius: 13px;
             background: var(--tg-theme-secondary-bg-color, #222222);
             color: var(--tg-theme-text-color, #ffffff);
             cursor: pointer;
@@ -130,15 +131,7 @@
         .member-trophies {
             font-size: 14px;
             font-weight: 600;
-            margin-top: 4px;
-        }
-
-        /* ЗАГОЛОВОК КЕНТОВ */
-        .members-title {
-            text-align: center;
-            font-size: 20px;
-            font-weight: 700;
-            margin: 0 0 10px;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -228,14 +221,12 @@
     <!-- КЕНТЫ -->
     <div id="players" class="screen">
 
-        <div class="header">
-            <h1>👥 Кенты</h1>
-        </div>
+        <!-- Верхний заголовок специально убран -->
 
         <div id="membersResult">
 
             <div class="card">
-                <p>⏳ Загружаю кентов...</p>
+                <p>⏳ Загружаю участников...</p>
             </div>
 
         </div>
@@ -294,6 +285,7 @@
 <script>
 
     // TELEGRAM MINI APP
+
     const tg = window.Telegram.WebApp;
 
     tg.ready();
@@ -301,6 +293,7 @@
 
 
     // ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ
+
     function showScreen(screenId) {
 
         document.querySelectorAll('.screen').forEach(screen => {
@@ -314,6 +307,7 @@
 
 
     // ОТКРЫТИЕ ПРОФИЛЯ
+
     function openProfile() {
 
         showScreen('profile');
@@ -324,7 +318,8 @@
     }
 
 
-    // ЗАПУСК MINI APP ЧЕРЕЗ startapp
+    // STARTAPP
+
     function openStartAppScreen() {
 
         const startParam =
@@ -357,6 +352,7 @@
 
 
     // ЗАГРУЗКА КЛАНА
+
     async function loadClan() {
 
         const result = document.getElementById("clanResult");
@@ -429,13 +425,14 @@
 
 
     // ЗАГРУЗКА КЕНТОВ
+
     async function loadMembers() {
 
         const result = document.getElementById("membersResult");
 
         result.innerHTML = `
             <div class="card">
-                <p>⏳ Загружаю кентов...</p>
+                <p>⏳ Загружаю участников клана...</p>
             </div>
         `;
 
@@ -452,7 +449,7 @@
                 result.innerHTML = `
                     <div class="card">
                         <h2>❌ Ошибка</h2>
-                        <p>${data.reason || data.error || "Не удалось загрузить кентов"}</p>
+                        <p>${data.reason || data.error || "Не удалось загрузить участников"}</p>
                     </div>
                 `;
 
@@ -465,7 +462,7 @@
 
                 result.innerHTML = `
                     <div class="card">
-                        <p>😕 Кенты не найдены.</p>
+                        <p>😕 Участники не найдены.</p>
                     </div>
                 `;
 
@@ -473,8 +470,8 @@
             }
 
             let html = `
-                <div class="members-title">
-                    👥 Кенты: ${members.length}
+                <div class="card">
+                    <h2>👥 Кенты: ${members.length}</h2>
                 </div>
             `;
 
@@ -512,7 +509,7 @@
             result.innerHTML = `
                 <div class="card">
                     <h2>❌ Ошибка подключения</h2>
-                    <p>Не удалось получить список кентов.</p>
+                    <p>Не удалось получить список участников.</p>
                 </div>
             `;
 
@@ -520,7 +517,8 @@
     }
 
 
-    // ПРОФИЛЬ КЕНТА ИЗ СПИСКА
+    // ПРОФИЛЬ КЕНТА
+
     async function openMemberProfile(tag) {
 
         showScreen('memberProfile');
@@ -610,6 +608,7 @@
 
 
     // ПОИСК ИГРОКА
+
     async function searchPlayer() {
 
         const tag = document
@@ -716,6 +715,7 @@
 
 
     // ЗАЩИТА ТЕКСТА
+
     function escapeHtml(value) {
 
         return String(value)
@@ -727,7 +727,8 @@
     }
 
 
-    // ЗАПУСК startapp
+    // ЗАПУСК STARTAPP
+
     openStartAppScreen();
 
 </script>
