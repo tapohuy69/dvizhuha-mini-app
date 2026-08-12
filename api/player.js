@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(
-      `https://api.clashroyale.com/v1/players/%23${encodeURIComponent(tag)}`,
+      `https://proxy.royaleapi.dev/v1/players/%23${encodeURIComponent(tag)}`,
       {
         headers: {
           Authorization: `Bearer ${token}`
