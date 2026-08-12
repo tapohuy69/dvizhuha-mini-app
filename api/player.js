@@ -1,9 +1,10 @@
 export default async function handler(req, res) {
   const tag = (req.query.tag || "").replace("#", "").trim();
+
   const token = process.env.CR_API_TOKEN;
 
   if (!tag) {
-    return res.status(400).json({ error: "Тег не получен" });
+    return res.status(400).json({ error: "Тег не указан" });
   }
 
   if (!token) {
@@ -11,21 +12,18 @@ export default async function handler(req, res) {
   }
 
   try {
-    const url =
-      `https://api.clashroyale.com/v1/players/%23${encodeURIComponent(tag)}`;
-
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const response = await fetch(
+      `https://proxy.royaleapi.dev/v1/players/%23${encodeURIComponent(tag)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
 
-    const body = await response.text();
+    const data = await response.json();
 
-    return res.status(200).json({
-      clashRoyaleStatus: response.status,
-      clashRoyaleResponse: body
-    });
+    return res.status(response.status).json(data);
 
   } catch (error) {
     return res.status(500).json({
