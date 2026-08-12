@@ -98,7 +98,6 @@
             margin-top: 0;
         }
 
-        /* Карточка кента */
         .member {
             width: 100%;
             border: none;
@@ -286,7 +285,10 @@
 
 <script>
 
-    // Telegram Mini App
+    // =========================
+    // TELEGRAM MINI APP
+    // =========================
+
     const tg = window.Telegram.WebApp;
 
     tg.ready();
@@ -320,6 +322,41 @@
         setTimeout(() => {
             document.getElementById('playerTag').focus();
         }, 100);
+    }
+
+
+    // =========================
+    // ЗАПУСК MINI APP ЧЕРЕЗ startapp
+    // =========================
+
+    function openStartAppScreen() {
+
+        const startParam =
+            tg.initDataUnsafe?.start_param || "";
+
+        if (!startParam) {
+            return;
+        }
+
+        if (startParam === "profile") {
+
+            openProfile();
+
+        } else if (startParam === "clan") {
+
+            showScreen("clan");
+            loadClan();
+
+        } else if (startParam === "players") {
+
+            showScreen("players");
+            loadMembers();
+
+        } else if (startParam === "help") {
+
+            showScreen("help");
+
+        }
     }
 
 
@@ -360,11 +397,11 @@
             result.innerHTML = `
                 <div class="card">
 
-                    <h2>⚜️ ${data.name || "Движуха"}</h2>
+                    <h2>⚜️ ${escapeHtml(data.name || "Движуха")}</h2>
 
                     <p>
                         🏷 Тег:
-                        <b>#${data.tag || "GCGJ9VJV"}</b>
+                        <b>#${escapeHtml(data.tag || "GCGJ9VJV")}</b>
                     </p>
 
                     <p>
@@ -707,6 +744,13 @@
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
     }
+
+
+    // =========================
+    // ЗАПУСК startapp
+    // =========================
+
+    openStartAppScreen();
 
 </script>
 
