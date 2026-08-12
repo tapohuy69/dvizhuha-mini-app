@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Движуха</title>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--tg-theme-bg-color, #111111);
+            color: var(--tg-theme-text-color, #ffffff);
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin-top: 10px;
+            opacity: 0.7;
+        }
+
+        .button {
+            width: 100%;
+            border: none;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--tg-theme-button-text-color, #ffffff);
+            background: var(--tg-theme-button-color, #2481cc);
+            cursor: pointer;
+        }
+
+        .button:active {
+            transform: scale(0.98);
+        }
+
+        .secondary {
+            background: var(--tg-theme-secondary-bg-color, #222222);
+            color: var(--tg-theme-text-color, #ffffff);
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .back {
+            margin-top: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            border: none;
+            outline: none;
+            margin: 15px 0 12px;
+            font-size: 17px;
+            background: var(--tg-theme-secondary-bg-color, #222222);
+            color: var(--tg-theme-text-color, #ffffff);
+        }
+
+        .card {
+            padding: 20px;
+            border-radius: 18px;
+            margin-top: 15px;
+            background: var(--tg-theme-secondary-bg-color, #222222);
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ГЛАВНОЕ МЕНЮ -->
+    <div id="menu" class="screen active">
+
+        <div class="header">
+            <h1>⚜️ Движуха ⚜️</h1>
+            <p>Выбирай чё надо:</p>
+        </div>
+
+        <button class="button" onclick="openProfile()">
+            👤 Профиль кента
+        </button>
+
+        <button class="button secondary" onclick="showScreen('clan')">
+            🏰 Клан
+        </button>
+
+        <button class="button secondary" onclick="showScreen('players')">
+            👥 Кенты
+        </button>
+
+        <button class="button secondary" onclick="showScreen('help')">
+            🆘 Помощь
+        </button>
+
+    </div>
+
+
+    <!-- ПРОФИЛЬ -->
+    <div id="profile" class="screen">
+
+        <div class="header">
+            <h1>👤 Профиль кента</h1>
+            <p>Введи тег игрока</p>
+        </div>
+
+        <input
+            id="playerTag"
+            type="text"
+            placeholder="#ABC123"
+            autocomplete="off"
+        >
+
+        <button class="button" onclick="searchPlayer()">
+            🔎 Найти
+        </button>
+
+        <div id="profileResult"></div>
+
+        <button class="button secondary back" onclick="showScreen('menu')">
+            ⬅️ Назад
+        </button>
+
+    </div>
+
+
+    <!-- КЛАН -->
+    <div id="clan" class="screen">
+
+        <div class="header">
+            <h1>🏰 Клан</h1>
+        </div>
+
+        <div class="card">
+            <h2>⚜️ Движуха</h2>
+            <p>🏷 Тег: #GCGJ9VJV</p>
+            <p>👥 Участники: —</p>
+            <p>🏆 Кубки: —</p>
+        </div>
+
+        <button class="button secondary back" onclick="showScreen('menu')">
+            ⬅️ Назад
+        </button>
+
+    </div>
+
+
+    <!-- КЕНТЫ -->
+    <div id="players" class="screen">
+
+        <div class="header">
+            <h1>👥 Кенты</h1>
+            <p>Участники клана</p>
+        </div>
+
+        <div class="card">
+            <p>⏳ Данные пока не подключены.</p>
+            <p>Скоро здесь будет список участников клана.</p>
+        </div>
+
+        <button class="button secondary back" onclick="showScreen('menu')">
+            ⬅️ Назад
+        </button>
+
+    </div>
+
+
+    <!-- ПОМОЩЬ -->
+    <div id="help" class="screen">
+
+        <div class="header">
+            <h1>🆘 Помощь</h1>
+        </div>
+
+        <div class="card">
+            <p>👤 <b>Профиль кента</b> — найти игрока по тегу.</p>
+            <p>🏰 <b>Клан</b> — информация о клане.</p>
+            <p>👥 <b>Кенты</b> — список участников.</p>
+        </div>
+
+        <button class="button secondary back" onclick="showScreen('menu')">
+            ⬅️ Назад
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // Telegram Mini App
+    const tg = window.Telegram.WebApp;
+
+    tg.ready();
+    tg.expand();
+
+
+    // Переключение экранов
+    function showScreen(screenId) {
+
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.classList.remove('active');
+        });
+
+        document.getElementById(screenId).classList.add('active');
+
+        window.scrollTo(0, 0);
+    }
+
+
+    // Открытие профиля
+    function openProfile() {
+
+        showScreen('profile');
+
+        setTimeout(() => {
+            document.getElementById('playerTag').focus();
+        }, 100);
+    }
+
+
+    // Пока просто тестируем интерфейс
+    function searchPlayer() {
+
+        const tag = document
+            .getElementById('playerTag')
+            .value
+            .trim();
+
+        const result = document.getElementById('profileResult');
+
+        if (!tag) {
+
+            result.innerHTML = `
+                <div class="card">
+                    ❌ Введи тег игрока.
+                </div>
+            `;
+
+            return;
+        }
+
+        result.innerHTML = `
+            <div class="card">
+                <h2>🔎 Поиск</h2>
+                <p>Тег: <b>${tag}</b></p>
+                <p>⏳ Подключаем Clash Royale API...</p>
+            </div>
+        `;
+    }
+
+</script>
+
+</body>
+</html>
