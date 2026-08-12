@@ -106,9 +106,9 @@
             width: 100%;
             border: none;
             text-align: left;
-            padding: 16px;
-            margin-top: 10px;
-            border-radius: 16px;
+            padding: 12px;
+            margin-top: 8px;
+            border-radius: 14px;
             background: var(--tg-theme-secondary-bg-color, #222222);
             color: var(--tg-theme-text-color, #ffffff);
             cursor: pointer;
@@ -119,21 +119,21 @@
         }
 
         .member-name {
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .member-info {
-            font-size: 14px;
+            font-size: 12px;
             opacity: 0.75;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         .member-trophies {
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 600;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         /* =========================
@@ -275,11 +275,6 @@
 
     <!-- КЕНТЫ -->
     <div id="players" class="screen">
-
-        <div class="header">
-            <h1>👥 Кенты</h1>
-            <p>Участники клана</p>
-        </div>
 
         <div id="membersResult">
 
@@ -433,7 +428,6 @@
 
         try {
 
-            // Загружаем информацию о клане
             const clanResponse = await fetch(
                 "/api/clan?tag=GCGJ9VJV"
             );
@@ -456,9 +450,6 @@
                 return;
             }
 
-
-            // Отдельно загружаем свежий список участников
-            // для актуальных кубков и донатов
             const membersResponse = await fetch(
                 "/api/members?tag=GCGJ9VJV"
             );
@@ -476,7 +467,6 @@
 
                 return;
             }
-
 
             const members = membersData.items || [];
 
@@ -680,7 +670,7 @@
 
         result.innerHTML = `
             <div class="card">
-                <p>⏳ Загружаю участников клана...</p>
+                <p>⏳ Загружаю участников...</p>
             </div>
         `;
 
@@ -719,7 +709,9 @@
 
             let html = `
                 <div class="card">
-                    <h2>👥 Участники: ${members.length}</h2>
+                    <h2 style="text-align:center; font-size:17px; margin:0;">
+                        👥 Кенты: ${members.length}
+                    </h2>
                 </div>
             `;
 
