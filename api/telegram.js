@@ -1,8 +1,4 @@
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(200).send("Движуха работает 🤙");
-  }
-
   const token = process.env.TELEGRAM_BOT_TOKEN;
 
   if (!token) {
@@ -11,64 +7,14 @@ export default async function handler(req, res) {
     });
   }
 
-  const update = req.body;
+  const webhookUrl =
+    "https://dvizhuha-mini-lo4yssmjs-danya5.vercel.app/api/telegram";
 
-  if (update.message) {
-    const chatId = update.message.chat.id;
+  const response = await fetch(
+    `https://api.telegram.org/bot${token}/setWebhook?url=${encodeURIComponent(webhookUrl)}`
+  );
 
-    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: "⚜️ Движуха ⚜️\n\nВыбирай чё надо:",
-        reply_markup: {
-          inline_keyboard: [
-            [
-              {
-                text: "👤 Профиль кента",
-                callback_data: "profile"
-              }
-            ],
-            [
-              {
-                text: "🏰 Клан",
-                callback_data: "clan"
-              },
-              {
-                text: "👥 Кенты",
-                callback_data: "friends"
-              }
-            ],
-            [
-              {
-                text: "❓ Помощь",
-                callback_data: "help"
-              }
-            ]
-          ]
-        }
-      })
-    });
-  }
+  const data = await response.json();
 
-  if (update.callback_query) {
-    const callback = update.callback_query;
-
-    await fetch(`https://api.telegram.org/bot${token}/answerCallbackQuery`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        callback_query_id: callback.id
-      })
-    });
-  }
-
-  return res.status(200).json({
-    ok: true
-  });
+  return res.status(response.status).json(data);
 }
