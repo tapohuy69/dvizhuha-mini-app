@@ -13,11 +13,17 @@ export default async function handler(req, res) {
 
   const update = req.body;
 
-  // =========================
+  // ==========================================
+  // MINI APP
+  // ==========================================
+
+  const miniAppUrl =
+    "https://dvizhuha-mini-app.vercel.app/";
+
+
+  // ==========================================
   // /start
-  // Работает и как /start,
-  // и как /start@DvizhuhaCR_bot
-  // =========================
+  // ==========================================
 
   const messageText = update.message?.text || "";
 
@@ -27,99 +33,18 @@ export default async function handler(req, res) {
   ) {
     const chatId = update.message.chat.id;
 
-    await sendMessage(
+    await sendMainMenu(
       token,
       chatId,
-      "⚜️ Движуха ⚜️\n\nВыбирай чё надо:",
-      {
-        inline_keyboard: [
-          [
-            {
-              text: "👤 Профиль кента",
-              callback_data: "profile"
-            }
-          ],
-          [
-            {
-              text: "🏰 Клан",
-              callback_data: "clan"
-            },
-            {
-              text: "👥 Кенты",
-              callback_data: "friends"
-            }
-          ],
-          [
-            {
-              text: "❓ Помощь",
-              callback_data: "help"
-            }
-          ]
-        ]
-      }
+      miniAppUrl
     );
   }
 
-  // =========================
-  // Нажатие кнопки
-  // =========================
 
-  if (update.callback_query) {
-    const callback = update.callback_query;
-    const chatId = callback.message.chat.id;
-
-    await fetch(
-      `https://api.telegram.org/bot${token}/answerCallbackQuery`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          callback_query_id: callback.id
-        })
-      }
-    );
-
-    if (callback.data === "profile") {
-      await sendMessage(
-        token,
-        chatId,
-        "👤 Профиль кента\n\nНапиши тег игрока.\n\nПример:\n#ABC123"
-      );
-    }
-
-    if (callback.data === "clan") {
-      await sendMessage(
-        token,
-        chatId,
-        "🏰 Клан\n\nСкоро здесь будет информация о клане."
-      );
-    }
-
-    if (callback.data === "friends") {
-      await sendMessage(
-        token,
-        chatId,
-        "👥 Кенты\n\nСкоро здесь будет список участников клана."
-      );
-    }
-
-    if (callback.data === "help") {
-      await sendMessage(
-        token,
-        chatId,
-        "❓ Помощь\n\n" +
-        "👤 Профиль кента — посмотреть игрока по тегу.\n" +
-        "🏰 Клан — информация о клане.\n" +
-        "👥 Кенты — список участников."
-      );
-    }
-  }
-
-  // =========================
-  // Игрок прислал тег
-  // =========================
+  // ==========================================
+  // ОБРАБОТКА ТЕГА ИГРОКА
+  // Оставляем старую возможность
+  // ==========================================
 
   if (
     update.message?.text &&
@@ -181,41 +106,110 @@ export default async function handler(req, res) {
     }
   }
 
+
   return res.status(200).json({
     ok: true
   });
 }
 
 
-// =========================
-// Отправка сообщения
-// =========================
+// ==========================================
+// ГЛАВНОЕ МЕНЮ
+// ==========================================
 
-async function sendMessage(
+async function sendMainMenu(
   token,
   chatId,
-  text,
-  buttons = null
+  miniAppUrl
 ) {
+
   const body = {
     chat_id: chatId,
-    text
+
+    text:
+      "⚜️ Движуха ⚜️\n\n" +
+      "Выбирай чё надо:",
+
+    reply_markup: {
+
+      inline_keyboard: [
+
+        [
+          {
+            text: "👤 Профиль кента",
+            web_app: {
+              url: miniAppUrl
+            }
+          }
+        ],
+
+        [
+          {
+            text: "🏰 Клан",
+            web_app: {
+              url: miniAppUrl
+            }
+          },
+          {
+            text: "👥 Кенты",
+            web_app: {
+              url: miniAppUrl
+            }
+          }
+        ],
+
+        [
+          {
+            text: "❓ Помощь",
+            web_app: {
+              url: miniAppUrl
+            }
+          }
+        ]
+
+      ]
+    }
   };
 
-  if (buttons) {
-    body.reply_markup = {
-      inline_keyboard: buttons.inline_keyboard
-    };
-  }
 
   await fetch(
     `https://api.telegram.org/bot${token}/sendMessage`,
     {
       method: "POST",
+
       headers: {
         "Content-Type": "application/json"
       },
+
       body: JSON.stringify(body)
+    }
+  );
+}
+
+
+// ==========================================
+// ОТПРАВКА СООБЩЕНИЯ
+// ==========================================
+
+async function sendMessage(
+  token,
+  chatId,
+  text
+) {
+
+  await fetch(
+    `https://api.telegram.org/bot${token}/sendMessage`,
+    {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        chat_id: chatId,
+        text
+      })
     }
   );
 }
