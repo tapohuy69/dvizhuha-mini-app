@@ -15,7 +15,7 @@
 
         body {
             margin: 0;
-            padding: 18px;
+            padding: 20px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             background: var(--tg-theme-bg-color, #111111);
             color: var(--tg-theme-text-color, #ffffff);
@@ -28,31 +28,30 @@
 
         .header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 30px;
         }
 
         .header h1 {
             margin: 0;
-            font-size: 27px;
+            font-size: 28px;
         }
 
         .header p {
-            margin: 8px 0 0;
-            opacity: 0.65;
+            margin-top: 10px;
+            opacity: 0.7;
         }
 
         .button {
             width: 100%;
             border: none;
-            border-radius: 15px;
-            padding: 17px;
-            margin-bottom: 11px;
-            font-size: 16px;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 12px;
+            font-size: 17px;
             font-weight: 600;
             color: var(--tg-theme-button-text-color, #ffffff);
             background: var(--tg-theme-button-color, #2481cc);
             cursor: pointer;
-            transition: transform 0.12s;
         }
 
         .button:active {
@@ -73,94 +72,46 @@
         }
 
         .back {
-            margin-top: 18px;
+            margin-top: 20px;
         }
 
         input {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             border-radius: 14px;
             border: none;
             outline: none;
-            margin: 12px 0 10px;
-            font-size: 16px;
+            margin: 15px 0 12px;
+            font-size: 17px;
             background: var(--tg-theme-secondary-bg-color, #222222);
             color: var(--tg-theme-text-color, #ffffff);
         }
 
         .card {
-            padding: 18px;
-            border-radius: 17px;
-            margin-top: 13px;
+            padding: 20px;
+            border-radius: 18px;
+            margin-top: 15px;
             background: var(--tg-theme-secondary-bg-color, #222222);
         }
 
         .card h2 {
-            margin: 0 0 14px;
-            font-size: 20px;
+            margin-top: 0;
         }
 
-        .stat {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 9px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-        }
-
-        .stat:last-child {
-            border-bottom: none;
-        }
-
-        .stat-value {
-            font-weight: 700;
-            text-align: right;
-        }
-
-        .section-title {
-            margin-top: 20px;
-            margin-bottom: 9px;
-            font-size: 17px;
-            font-weight: 700;
-        }
-
-        .top-player {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-        }
-
-        .top-player:last-child {
-            border-bottom: none;
-        }
-
-        .top-name {
-            font-size: 15px;
-            font-weight: 600;
-            max-width: 65%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .top-value {
-            font-size: 14px;
-            font-weight: 700;
-        }
+        /* =========================
+           КЕНТЫ
+        ========================= */
 
         .member {
             width: 100%;
             border: none;
             text-align: left;
-            padding: 11px 13px;
-            margin-top: 7px;
-            border-radius: 14px;
+            padding: 16px;
+            margin-top: 10px;
+            border-radius: 16px;
             background: var(--tg-theme-secondary-bg-color, #222222);
             color: var(--tg-theme-text-color, #ffffff);
             cursor: pointer;
-            transition: transform 0.12s;
         }
 
         .member:active {
@@ -168,48 +119,74 @@
         }
 
         .member-name {
-            font-size: 15px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 3px;
+            margin-bottom: 6px;
         }
 
         .member-info {
-            font-size: 11px;
-            opacity: 0.6;
+            font-size: 14px;
+            opacity: 0.75;
+            line-height: 1.5;
         }
 
         .member-trophies {
-            font-size: 13px;
+            font-size: 16px;
             font-weight: 600;
-            margin-top: 5px;
-        }
-
-        .small-button {
-            width: 100%;
-            border: none;
-            border-radius: 13px;
-            padding: 12px;
             margin-top: 8px;
-            font-size: 14px;
-            font-weight: 600;
+        }
+
+        /* =========================
+           ТОПЫ В КЛАНЕ
+        ========================= */
+
+        .ranking-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 24px 0 10px;
+        }
+
+        .ranking {
+            margin-top: 10px;
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            margin-top: 8px;
+            border-radius: 14px;
             background: var(--tg-theme-secondary-bg-color, #222222);
-            color: var(--tg-theme-text-color, #ffffff);
         }
 
-        .loading {
-            text-align: center;
-            opacity: 0.7;
-            padding: 8px;
+        .ranking-left {
+            display: flex;
+            align-items: center;
+            min-width: 0;
         }
 
-        .empty {
-            text-align: center;
-            opacity: 0.7;
-            padding: 12px;
+        .ranking-number {
+            width: 28px;
+            font-size: 15px;
+            font-weight: 700;
+            flex-shrink: 0;
         }
 
-        .error {
-            color: #ff6b6b;
+        .ranking-name {
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ranking-value {
+            font-size: 14px;
+            font-weight: 700;
+            margin-left: 10px;
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -219,7 +196,6 @@
 <div class="container">
 
     <!-- ГЛАВНОЕ МЕНЮ -->
-
     <div id="menu" class="screen active">
 
         <div class="header">
@@ -247,18 +223,17 @@
 
 
     <!-- ПРОФИЛЬ -->
-
     <div id="profile" class="screen">
 
         <div class="header">
             <h1>👤 Профиль кента</h1>
-            <p>Введи имя или тег игрока</p>
+            <p>Введи тег игрока</p>
         </div>
 
         <input
             id="playerTag"
             type="text"
-            placeholder="#ABC123 или имя"
+            placeholder="#ABC123"
             autocomplete="off"
         >
 
@@ -276,7 +251,6 @@
 
 
     <!-- КЛАН -->
-
     <div id="clan" class="screen">
 
         <div class="header">
@@ -284,16 +258,10 @@
             <p>⚜️ Движуха ⚜️</p>
         </div>
 
-        <button class="small-button" onclick="loadClan()">
-            🔄 Обновить
-        </button>
-
         <div id="clanResult">
 
             <div class="card">
-                <div class="loading">
-                    ⏳ Загружаю информацию о клане...
-                </div>
+                <p>⏳ Загружаю информацию о клане...</p>
             </div>
 
         </div>
@@ -306,29 +274,17 @@
 
 
     <!-- КЕНТЫ -->
-
     <div id="players" class="screen">
 
-        <!-- Здесь специально НЕТ заголовка "Кенты" -->
-
-        <input
-            id="memberSearch"
-            type="text"
-            placeholder="🔎 Найти кента..."
-            autocomplete="off"
-            oninput="filterMembers()"
-        >
-
-        <button class="small-button" onclick="loadMembers()">
-            🔄 Обновить
-        </button>
+        <div class="header">
+            <h1>👥 Кенты</h1>
+            <p>Участники клана</p>
+        </div>
 
         <div id="membersResult">
 
             <div class="card">
-                <div class="loading">
-                    ⏳ Загружаю участников...
-                </div>
+                <p>⏳ Загружаю участников...</p>
             </div>
 
         </div>
@@ -341,7 +297,6 @@
 
 
     <!-- ПРОФИЛЬ УЧАСТНИКА -->
-
     <div id="memberProfile" class="screen">
 
         <div class="header">
@@ -351,9 +306,7 @@
         <div id="memberProfileResult">
 
             <div class="card">
-                <div class="loading">
-                    ⏳ Загружаю профиль...
-                </div>
+                <p>⏳ Загружаю профиль...</p>
             </div>
 
         </div>
@@ -366,7 +319,6 @@
 
 
     <!-- ПОМОЩЬ -->
-
     <div id="help" class="screen">
 
         <div class="header">
@@ -374,32 +326,9 @@
         </div>
 
         <div class="card">
-
-            <p>
-                👤 <b>Профиль кента</b>
-                — поиск игрока по тегу.
-            </p>
-
-            <p>
-                🏰 <b>Клан</b>
-                — общая статистика и рейтинг.
-            </p>
-
-            <p>
-                👥 <b>Кенты</b>
-                — все участники клана.
-            </p>
-
-            <p>
-                🔎 В разделе «Кенты»
-                можно искать игрока по имени или тегу.
-            </p>
-
-            <p>
-                🏆 В статистике клана есть
-                общий рейтинг и топ игроков.
-            </p>
-
+            <p>👤 <b>Профиль кента</b> — найти игрока по тегу.</p>
+            <p>🏰 <b>Клан</b> — информация о клане.</p>
+            <p>👥 <b>Кенты</b> — список участников.</p>
         </div>
 
         <button class="button secondary back" onclick="showScreen('menu')">
@@ -413,7 +342,9 @@
 
 <script>
 
+    // =========================
     // TELEGRAM MINI APP
+    // =========================
 
     const tg = window.Telegram.WebApp;
 
@@ -421,50 +352,39 @@
     tg.expand();
 
 
-    // ДАННЫЕ
-
-    const CLAN_TAG = "GCGJ9VJV";
-
-    let allMembers = [];
-
-
+    // =========================
     // ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ
+    // =========================
 
     function showScreen(screenId) {
 
-        document.querySelectorAll(".screen").forEach(screen => {
-            screen.classList.remove("active");
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.classList.remove('active');
         });
 
-        const screen = document.getElementById(screenId);
-
-        if (screen) {
-            screen.classList.add("active");
-        }
+        document.getElementById(screenId).classList.add('active');
 
         window.scrollTo(0, 0);
     }
 
 
-    // ПРОФИЛЬ
+    // =========================
+    // ОТКРЫТИЕ ПРОФИЛЯ
+    // =========================
 
     function openProfile() {
 
-        showScreen("profile");
+        showScreen('profile');
 
         setTimeout(() => {
-
-            const input = document.getElementById("playerTag");
-
-            if (input) {
-                input.focus();
-            }
-
+            document.getElementById('playerTag').focus();
         }, 100);
     }
 
 
-    // STARTAPP
+    // =========================
+    // ЗАПУСК MINI APP ЧЕРЕЗ startapp
+    // =========================
 
     function openStartAppScreen() {
 
@@ -492,870 +412,563 @@
         } else if (startParam === "help") {
 
             showScreen("help");
+
         }
     }
 
 
+    // =========================
     // ЗАГРУЗКА КЛАНА
+    // =========================
 
     async function loadClan() {
 
-        const result =
-            document.getElementById("clanResult");
+        const result = document.getElementById("clanResult");
 
         result.innerHTML = `
             <div class="card">
-                <div class="loading">
-                    ⏳ Загружаю информацию о клане...
-                </div>
+                <p>⏳ Загружаю информацию о клане...</p>
             </div>
         `;
 
         try {
 
-            const clanResponse =
-                await fetch(
-                    "/api/clan?tag=" + CLAN_TAG
-                );
+            // Загружаем информацию о клане
+            const clanResponse = await fetch(
+                "/api/clan?tag=GCGJ9VJV"
+            );
 
-            const clanData =
-                await clanResponse.json();
+            const clanData = await clanResponse.json();
 
             if (!clanResponse.ok) {
 
-                throw new Error(
-                    clanData.reason ||
-                    clanData.error ||
-                    "Не удалось загрузить клан"
-                );
+                result.innerHTML = `
+                    <div class="card">
+                        <h2>❌ Ошибка</h2>
+                        <p>${escapeHtml(
+                            clanData.reason ||
+                            clanData.error ||
+                            "Не удалось загрузить клан"
+                        )}</p>
+                    </div>
+                `;
+
+                return;
             }
 
 
-            const membersResponse =
-                await fetch(
-                    "/api/members?tag=" + CLAN_TAG
-                );
+            // Отдельно загружаем свежий список участников
+            // для актуальных кубков и донатов
+            const membersResponse = await fetch(
+                "/api/members?tag=GCGJ9VJV"
+            );
 
-            const membersData =
-                await membersResponse.json();
+            const membersData = await membersResponse.json();
 
-            const members =
-                membersData.items || [];
+            if (!membersResponse.ok) {
 
-            allMembers = members;
+                result.innerHTML = `
+                    <div class="card">
+                        <h2>❌ Ошибка</h2>
+                        <p>Не удалось загрузить участников клана.</p>
+                    </div>
+                `;
 
-
-            const prepared =
-                members.map(member => ({
-                    name: member.name || "Без имени",
-                    tag: member.tag || "",
-                    trophies: Number(member.trophies) || 0,
-                    wins: Number(member.wins) || 0,
-                    bestTrophies: Number(member.bestTrophies) || 0
-                }));
+                return;
+            }
 
 
-            const totalTrophies =
-                prepared.reduce(
-                    (sum, player) =>
-                        sum + player.trophies,
-                    0
-                );
+            const members = membersData.items || [];
 
 
-            const totalWins =
-                prepared.reduce(
-                    (sum, player) =>
-                        sum + player.wins,
-                    0
-                );
+            // =========================
+            // ТОП-3 ПО ТЕКУЩИМ КУБКАМ
+            // =========================
+
+            const topTrophies = [...members]
+                .sort((a, b) =>
+                    (Number(b.trophies) || 0) -
+                    (Number(a.trophies) || 0)
+                )
+                .slice(0, 3);
 
 
-            const averageTrophies =
-                prepared.length
-                    ? Math.round(
-                        totalTrophies /
-                        prepared.length
-                    )
-                    : 0;
+            // =========================
+            // ТОП-3 ДОНАТЕРОВ
+            // =========================
+
+            const topDonators = [...members]
+                .sort((a, b) =>
+                    (Number(b.donations) || 0) -
+                    (Number(a.donations) || 0)
+                )
+                .slice(0, 3);
 
 
-            const topTrophies =
-                [...prepared]
-                    .sort(
-                        (a, b) =>
-                            b.trophies -
-                            a.trophies
-                    )
-                    .slice(0, 5);
+            // =========================
+            // ОСНОВНАЯ ИНФОРМАЦИЯ
+            // =========================
 
-
-            const topWins =
-                [...prepared]
-                    .sort(
-                        (a, b) =>
-                            b.wins -
-                            a.wins
-                    )
-                    .slice(0, 5);
-
-
-            const topBest =
-                [...prepared]
-                    .sort(
-                        (a, b) =>
-                            b.bestTrophies -
-                            a.bestTrophies
-                    )
-                    .slice(0, 5);
-
-
-            const makeRanking =
-                (players, valueKey, icon) => {
-
-                    if (!players.length) {
-
-                        return `
-                            <div class="empty">
-                                Нет данных
-                            </div>
-                        `;
-                    }
-
-                    return players.map(
-                        (player, index) => `
-                            <div class="top-player">
-
-                                <div class="top-name">
-                                    ${index + 1}.
-                                    ${escapeHtml(player.name)}
-                                </div>
-
-                                <div class="top-value">
-                                    ${icon}
-                                    ${player[valueKey].toLocaleString("ru-RU")}
-                                </div>
-
-                            </div>
-                        `
-                    ).join("");
-                };
-
-
-            result.innerHTML = `
-
+            let html = `
                 <div class="card">
 
-                    <h2>
-                        ⚜️ ${escapeHtml(
-                            clanData.name ||
-                            "Движуха"
-                        )}
-                    </h2>
+                    <h2>⚜️ ${escapeHtml(
+                        clanData.name || "Движуха"
+                    )}</h2>
 
-                    <div class="stat">
-                        <span>🏷 Тег</span>
-                        <span class="stat-value">
-                            #${escapeHtml(
-                                clanData.tag ||
-                                CLAN_TAG
-                            )}
-                        </span>
-                    </div>
+                    <p>
+                        🏷 Тег:
+                        <b>#${escapeHtml(
+                            clanData.tag || "GCGJ9VJV"
+                        )}</b>
+                    </p>
 
-                    <div class="stat">
-                        <span>👥 Кенты</span>
-                        <span class="stat-value">
-                            ${
-                                clanData.members ??
-                                prepared.length
-                            }
-                        </span>
-                    </div>
+                    <p>
+                        👥 Кенты:
+                        <b>${members.length || clanData.members || "—"}</b>
+                    </p>
 
-                    <div class="stat">
-                        <span>🏆 Очки клана</span>
-                        <span class="stat-value">
-                            ${
-                                clanData.clanScore ??
-                                "—"
-                            }
-                        </span>
-                    </div>
-
-                    <div class="stat">
-                        <span>📊 Требования</span>
-                        <span class="stat-value">
-                            ${
-                                clanData.requiredTrophies ??
-                                "—"
-                            }
-                        </span>
-                    </div>
-
-                    <div class="stat">
-                        <span>🏆 Кубки кентов</span>
-                        <span class="stat-value">
-                            ${totalTrophies.toLocaleString("ru-RU")}
-                        </span>
-                    </div>
-
-                    <div class="stat">
-                        <span>📊 Средние кубки</span>
-                        <span class="stat-value">
-                            ${averageTrophies.toLocaleString("ru-RU")}
-                        </span>
-                    </div>
-
-                    <div class="stat">
-                        <span>⚔️ Победы</span>
-                        <span class="stat-value">
-                            ${totalWins.toLocaleString("ru-RU")}
-                        </span>
-                    </div>
-
-                    <div class="section-title">
-                        🏆 Топ по кубкам
-                    </div>
-
-                    ${makeRanking(
-                        topTrophies,
-                        "trophies",
-                        "🏆"
-                    )}
-
-                    <div class="section-title">
-                        ⚔️ Топ по победам
-                    </div>
-
-                    ${makeRanking(
-                        topWins,
-                        "wins",
-                        "⚔️"
-                    )}
-
-                    <div class="section-title">
-                        🏅 Топ по лучшим кубкам
-                    </div>
-
-                    ${makeRanking(
-                        topBest,
-                        "bestTrophies",
-                        "🏅"
-                    )}
+                    <p>
+                        📊 Требования:
+                        <b>${clanData.requiredTrophies ?? "—"}</b>
+                    </p>
 
                 </div>
             `;
+
+
+            // =========================
+            // ТОП-3 ПО КУБКАМ
+            // =========================
+
+            html += `
+                <div class="ranking-title">
+                    🏆 Топ-3 по кубкам
+                </div>
+
+                <div class="ranking">
+            `;
+
+            if (topTrophies.length === 0) {
+
+                html += `
+                    <div class="card">
+                        <p>Нет данных.</p>
+                    </div>
+                `;
+
+            } else {
+
+                topTrophies.forEach((member, index) => {
+
+                    const name =
+                        escapeHtml(member.name || "Без имени");
+
+                    const trophies =
+                        Number(member.trophies) || 0;
+
+                    html += `
+                        <div class="ranking-item">
+
+                            <div class="ranking-left">
+
+                                <div class="ranking-number">
+                                    ${index + 1}.
+                                </div>
+
+                                <div class="ranking-name">
+                                    ${name}
+                                </div>
+
+                            </div>
+
+                            <div class="ranking-value">
+                                🏆 ${trophies}
+                            </div>
+
+                        </div>
+                    `;
+                });
+            }
+
+            html += `
+                </div>
+            `;
+
+
+            // =========================
+            // ТОП-3 ДОНАТЕРОВ
+            // =========================
+
+            html += `
+                <div class="ranking-title">
+                    🃏 Топ-3 донатеров
+                </div>
+
+                <div class="ranking">
+            `;
+
+            if (topDonators.length === 0) {
+
+                html += `
+                    <div class="card">
+                        <p>Нет данных о донатах.</p>
+                    </div>
+                `;
+
+            } else {
+
+                topDonators.forEach((member, index) => {
+
+                    const name =
+                        escapeHtml(member.name || "Без имени");
+
+                    const donations =
+                        Number(member.donations) || 0;
+
+                    html += `
+                        <div class="ranking-item">
+
+                            <div class="ranking-left">
+
+                                <div class="ranking-number">
+                                    ${index + 1}.
+                                </div>
+
+                                <div class="ranking-name">
+                                    ${name}
+                                </div>
+
+                            </div>
+
+                            <div class="ranking-value">
+                                🃏 ${donations}
+                            </div>
+
+                        </div>
+                    `;
+                });
+            }
+
+            html += `
+                </div>
+            `;
+
+
+            result.innerHTML = html;
 
         } catch (error) {
 
             result.innerHTML = `
                 <div class="card">
-
-                    <h2>❌ Ошибка</h2>
-
-                    <p class="error">
-                        ${escapeHtml(
-                            error.message ||
-                            "Не удалось получить данные"
-                        )}
-                    </p>
-
-                    <button
-                        class="small-button"
-                        onclick="loadClan()"
-                    >
-                        🔄 Попробовать снова
-                    </button>
-
+                    <h2>❌ Ошибка подключения</h2>
+                    <p>Не удалось получить данные клана.</p>
                 </div>
             `;
+
         }
     }
 
 
+    // =========================
     // ЗАГРУЗКА КЕНТОВ
+    // =========================
 
     async function loadMembers() {
 
-        const result =
-            document.getElementById("membersResult");
+        const result = document.getElementById("membersResult");
 
         result.innerHTML = `
             <div class="card">
-                <div class="loading">
-                    ⏳ Загружаю участников...
-                </div>
+                <p>⏳ Загружаю участников клана...</p>
             </div>
         `;
 
         try {
 
-            const response =
-                await fetch(
-                    "/api/members?tag=" + CLAN_TAG
-                );
+            const response = await fetch(
+                "/api/members?tag=GCGJ9VJV"
+            );
 
-            const data =
-                await response.json();
+            const data = await response.json();
 
             if (!response.ok) {
 
-                throw new Error(
-                    data.reason ||
-                    data.error ||
-                    "Не удалось загрузить участников"
-                );
+                result.innerHTML = `
+                    <div class="card">
+                        <h2>❌ Ошибка</h2>
+                        <p>${data.reason || data.error || "Не удалось загрузить участников"}</p>
+                    </div>
+                `;
+
+                return;
             }
 
-            allMembers =
-                data.items || [];
+            const members = data.items || [];
 
-            renderMembers(allMembers);
+            if (members.length === 0) {
+
+                result.innerHTML = `
+                    <div class="card">
+                        <p>😕 Участники не найдены.</p>
+                    </div>
+                `;
+
+                return;
+            }
+
+            let html = `
+                <div class="card">
+                    <h2>👥 Участники: ${members.length}</h2>
+                </div>
+            `;
+
+            members.forEach((member, index) => {
+
+                const safeName = escapeHtml(member.name || "Без имени");
+                const safeTag = escapeHtml(member.tag || "");
+
+                html += `
+                    <button
+                        class="member"
+                        onclick="openMemberProfile('${safeTag}')"
+                    >
+
+                        <div class="member-name">
+                            ${index + 1}. ${safeName}
+                        </div>
+
+                        <div class="member-info">
+                            ${member.tag ? "#" + safeTag : ""}
+                        </div>
+
+                        <div class="member-trophies">
+                            🏆 ${member.trophies ?? "—"}
+                        </div>
+
+                    </button>
+                `;
+            });
+
+            result.innerHTML = html;
 
         } catch (error) {
 
             result.innerHTML = `
                 <div class="card">
-
-                    <h2>❌ Ошибка</h2>
-
-                    <p class="error">
-                        ${escapeHtml(
-                            error.message ||
-                            "Не удалось загрузить участников"
-                        )}
-                    </p>
-
-                    <button
-                        class="small-button"
-                        onclick="loadMembers()"
-                    >
-                        🔄 Попробовать снова
-                    </button>
-
-                </div>
-            `;
-        }
-    }
-
-
-    // ОТРИСОВКА КЕНТОВ
-
-    function renderMembers(members) {
-
-        const result =
-            document.getElementById("membersResult");
-
-
-        if (!members.length) {
-
-            result.innerHTML = `
-                <div class="card">
-                    <div class="empty">
-                        😕 Кенты не найдены.
-                    </div>
+                    <h2>❌ Ошибка подключения</h2>
+                    <p>Не удалось получить список участников.</p>
                 </div>
             `;
 
-            return;
         }
-
-
-        /*
-            ВАЖНО:
-
-            Здесь теперь только ОДНА надпись:
-            👥 Кенты: количество
-
-            Никакого второго "Кенты"
-            и никакого "Участники клана".
-        */
-
-        let html = `
-
-            <div
-                class="card"
-                style="
-                    text-align:center;
-                    padding:14px;
-                    margin-top:13px;
-                "
-            >
-                <h2
-                    style="
-                        margin:0;
-                        font-size:18px;
-                    "
-                >
-                    👥 Кенты: ${allMembers.length}
-                </h2>
-            </div>
-
-        `;
-
-
-        members.forEach(
-            (member, index) => {
-
-                const name =
-                    escapeHtml(
-                        member.name ||
-                        "Без имени"
-                    );
-
-                const tag =
-                    escapeHtml(
-                        member.tag ||
-                        ""
-                    );
-
-
-                html += `
-
-                    <button
-                        class="member"
-                        onclick="openMemberProfile('${tag}')"
-                    >
-
-                        <div class="member-name">
-                            ${index + 1}. ${name}
-                        </div>
-
-                        <div class="member-info">
-                            ${
-                                member.tag
-                                    ? "#" + tag
-                                    : ""
-                            }
-                        </div>
-
-                        <div class="member-trophies">
-                            🏆 ${
-                                member.trophies ??
-                                "—"
-                            }
-                        </div>
-
-                    </button>
-
-                `;
-            }
-        );
-
-
-        result.innerHTML = html;
     }
 
 
-    // ПОИСК КЕНТОВ
-
-    function filterMembers() {
-
-        const input =
-            document.getElementById(
-                "memberSearch"
-            );
-
-        const query =
-            input.value
-                .trim()
-                .toLowerCase();
-
-
-        if (!query) {
-
-            renderMembers(
-                allMembers
-            );
-
-            return;
-        }
-
-
-        const filtered =
-            allMembers.filter(
-                member => {
-
-                    const name =
-                        String(
-                            member.name || ""
-                        ).toLowerCase();
-
-                    const tag =
-                        String(
-                            member.tag || ""
-                        ).toLowerCase();
-
-                    return (
-                        name.includes(query) ||
-                        tag.includes(
-                            query.replace("#", "")
-                        )
-                    );
-                }
-            );
-
-
-        renderMembers(filtered);
-    }
-
-
-    // ПРОФИЛЬ КЕНТА
+    // =========================
+    // ПРОФИЛЬ КЕНТА ИЗ СПИСКА
+    // =========================
 
     async function openMemberProfile(tag) {
 
-        showScreen("memberProfile");
+        showScreen('memberProfile');
 
-        const result =
-            document.getElementById(
-                "memberProfileResult"
-            );
-
+        const result = document.getElementById("memberProfileResult");
 
         result.innerHTML = `
             <div class="card">
-                <div class="loading">
-                    ⏳ Загружаю профиль...
-                </div>
+                <p>⏳ Загружаю профиль...</p>
             </div>
         `;
 
-
         try {
 
-            const response =
-                await fetch(
-                    `/api/player?tag=${encodeURIComponent(tag)}`
-                );
+            const response = await fetch(
+                `/api/player?tag=${encodeURIComponent(tag)}`
+            );
 
-            const data =
-                await response.json();
-
+            const data = await response.json();
 
             if (!response.ok) {
 
-                throw new Error(
-                    data.reason ||
-                    data.error ||
-                    "Не удалось загрузить профиль"
-                );
+                result.innerHTML = `
+                    <div class="card">
+                        <h2>❌ Ошибка</h2>
+                        <p>Не удалось загрузить профиль игрока.</p>
+                    </div>
+                `;
+
+                return;
             }
 
+            result.innerHTML = `
+                <div class="card">
 
-            renderPlayerProfile(
-                result,
-                data,
-                tag
-            );
+                    <h2>👤 ${escapeHtml(data.name || "Без имени")}</h2>
 
+                    <p>
+                        🏷 Тег:
+                        <b>#${escapeHtml(data.tag || tag)}</b>
+                    </p>
+
+                    <p>
+                        🏆 Кубки:
+                        <b>${data.trophies ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        🏅 Лучшие кубки:
+                        <b>${data.bestTrophies ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        ⚔️ Победы:
+                        <b>${data.wins ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        💀 Поражения:
+                        <b>${data.losses ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        ⭐ Уровень:
+                        <b>${data.expLevel ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        🏰 Клан:
+                        <b>${escapeHtml(data.clan?.name || "Без клана")}</b>
+                    </p>
+
+                </div>
+            `;
 
         } catch (error) {
 
             result.innerHTML = `
                 <div class="card">
-
                     <h2>❌ Ошибка</h2>
-
-                    <p class="error">
-                        Не удалось загрузить профиль игрока.
-                    </p>
-
+                    <p>Не удалось подключиться к серверу.</p>
                 </div>
             `;
+
         }
     }
 
 
-    // ПРОФИЛЬ
-
-    function renderPlayerProfile(
-        result,
-        data,
-        fallbackTag
-    ) {
-
-        result.innerHTML = `
-
-            <div class="card">
-
-                <h2>
-                    👤 ${escapeHtml(
-                        data.name ||
-                        "Без имени"
-                    )}
-                </h2>
-
-                <div class="stat">
-                    <span>🏷 Тег</span>
-                    <span class="stat-value">
-                        #${escapeHtml(
-                            data.tag ||
-                            fallbackTag
-                        )}
-                    </span>
-                </div>
-
-                <div class="stat">
-                    <span>🏆 Кубки</span>
-                    <span class="stat-value">
-                        ${data.trophies ?? "—"}
-                    </span>
-                </div>
-
-                <div class="stat">
-                    <span>🏅 Лучшие кубки</span>
-                    <span class="stat-value">
-                        ${data.bestTrophies ?? "—"}
-                    </span>
-                </div>
-
-                <div class="stat">
-                    <span>⚔️ Победы</span>
-                    <span class="stat-value">
-                        ${data.wins ?? "—"}
-                    </span>
-                </div>
-
-                <div class="stat">
-                    <span>💀 Поражения</span>
-                    <span class="stat-value">
-                        ${data.losses ?? "—"}
-                    </span>
-                </div>
-
-                <div class="stat">
-                    <span>⭐ Уровень</span>
-                    <span class="stat-value">
-                        ${data.expLevel ?? "—"}
-                    </span>
-                </div>
-
-                <div class="stat">
-                    <span>🏰 Клан</span>
-                    <span class="stat-value">
-                        ${escapeHtml(
-                            data.clan?.name ||
-                            "Без клана"
-                        )}
-                    </span>
-                </div>
-
-            </div>
-
-        `;
-    }
-
-
+    // =========================
     // ПОИСК ИГРОКА
+    // =========================
 
     async function searchPlayer() {
 
-        const input =
-            document.getElementById(
-                "playerTag"
-            );
+        const tag = document
+            .getElementById('playerTag')
+            .value
+            .trim();
 
-        const result =
-            document.getElementById(
-                "profileResult"
-            );
+        const result = document.getElementById('profileResult');
 
-        const query =
-            input.value.trim();
-
-
-        if (!query) {
+        if (!tag) {
 
             result.innerHTML = `
                 <div class="card">
-                    ❌ Введи имя или тег.
+                    ❌ Введи тег игрока.
                 </div>
             `;
 
             return;
         }
 
+        const cleanTag = tag.replace("#", "");
 
-        const cleanTag =
-            query
-                .replace("#", "")
-                .trim();
+        result.innerHTML = `
+            <div class="card">
+                <h2>🔎 Поиск</h2>
+                <p>Ищу игрока <b>#${escapeHtml(cleanTag)}</b>...</p>
+            </div>
+        `;
 
+        try {
 
-        if (
-            query.startsWith("#") ||
-            /^[A-Za-z0-9]+$/.test(query)
-        ) {
-
-            result.innerHTML = `
-                <div class="card">
-                    <div class="loading">
-                        🔎 Ищу игрока...
-                    </div>
-                </div>
-            `;
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        `/api/player?tag=${encodeURIComponent(
-                            cleanTag
-                        )}`
-                    );
-
-
-                const data =
-                    await response.json();
-
-
-                if (!response.ok) {
-                    throw new Error(
-                        "Игрок не найден"
-                    );
-                }
-
-
-                renderPlayerProfile(
-                    result,
-                    data,
-                    cleanTag
-                );
-
-                return;
-
-            } catch (error) {
-                // Переходим к поиску среди кентов
-            }
-        }
-
-
-        if (!allMembers.length) {
-
-            try {
-
-                const response =
-                    await fetch(
-                        "/api/members?tag=" +
-                        CLAN_TAG
-                    );
-
-                const data =
-                    await response.json();
-
-                allMembers =
-                    data.items || [];
-
-            } catch (error) {
-
-                allMembers = [];
-            }
-        }
-
-
-        const found =
-            allMembers.filter(
-                member =>
-                    String(
-                        member.name || ""
-                    )
-                    .toLowerCase()
-                    .includes(
-                        query.toLowerCase()
-                    )
+            const response = await fetch(
+                `/api/player?tag=${encodeURIComponent(cleanTag)}`
             );
 
+            const data = await response.json();
 
-        if (!found.length) {
+            if (!response.ok) {
+
+                result.innerHTML = `
+                    <div class="card">
+                        <h2>❌ Игрок не найден</h2>
+                        <p>Проверь правильность тега.</p>
+                    </div>
+                `;
+
+                return;
+            }
 
             result.innerHTML = `
                 <div class="card">
 
-                    <h2>❌ Не найден</h2>
+                    <h2>👤 ${escapeHtml(data.name || "Без имени")}</h2>
 
                     <p>
-                        Игрок с таким именем
-                        или тегом не найден.
+                        🏷 Тег:
+                        <b>#${escapeHtml(data.tag || cleanTag)}</b>
+                    </p>
+
+                    <p>
+                        🏆 Кубки:
+                        <b>${data.trophies ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        🏅 Лучшие кубки:
+                        <b>${data.bestTrophies ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        ⚔️ Победы:
+                        <b>${data.wins ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        💀 Поражения:
+                        <b>${data.losses ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        ⭐ Уровень:
+                        <b>${data.expLevel ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        🏰 Клан:
+                        <b>${escapeHtml(data.clan?.name || "Без клана")}</b>
                     </p>
 
                 </div>
             `;
 
-            return;
+        } catch (error) {
+
+            result.innerHTML = `
+                <div class="card">
+                    <h2>❌ Ошибка</h2>
+                    <p>Не удалось подключиться к серверу.</p>
+                </div>
+            `;
+
         }
-
-
-        if (found.length === 1) {
-
-            openMemberProfile(
-                found[0].tag
-            );
-
-            return;
-        }
-
-
-        let html = `
-            <div class="card">
-
-                <h2>
-                    🔎 Найдено: ${found.length}
-                </h2>
-        `;
-
-
-        found.forEach(
-            (member, index) => {
-
-                html += `
-
-                    <button
-                        class="member"
-                        onclick="openMemberProfile('${escapeHtml(
-                            member.tag || ""
-                        )}')"
-                    >
-
-                        <div class="member-name">
-                            ${index + 1}.
-                            ${escapeHtml(
-                                member.name ||
-                                "Без имени"
-                            )}
-                        </div>
-
-                        <div class="member-info">
-                            #${escapeHtml(
-                                member.tag || ""
-                            )}
-                        </div>
-
-                        <div class="member-trophies">
-                            🏆 ${
-                                member.trophies ??
-                                "—"
-                            }
-                        </div>
-
-                    </button>
-
-                `;
-            }
-        );
-
-
-        html += `
-            </div>
-        `;
-
-
-        result.innerHTML = html;
     }
 
 
-    // ЗАЩИТА HTML
+    // =========================
+    // ЗАЩИТА ТЕКСТА
+    // =========================
 
     function escapeHtml(value) {
 
@@ -1368,7 +981,9 @@
     }
 
 
-    // ЗАПУСК STARTAPP
+    // =========================
+    // ЗАПУСК startapp
+    // =========================
 
     openStartAppScreen();
 
