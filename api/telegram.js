@@ -16,6 +16,10 @@ export default async function handler(req, res) {
     const message = update?.message;
     const text = message?.text || "";
 
+    // =========================
+    // /start
+    // =========================
+
     if (
       text === "/start" ||
       text.startsWith("/start@")
@@ -28,8 +32,24 @@ export default async function handler(req, res) {
           inline_keyboard: [
             [
               {
-                text: "🚀 Открыть Движуху",
-                url: "https://dvizhuha-mini-app.vercel.app/"
+                text: "👤 Профиль кента",
+                url: "https://t.me/DvizhuhaCR_bot?startapp=profile"
+              }
+            ],
+            [
+              {
+                text: "🏰 Клан",
+                url: "https://t.me/DvizhuhaCR_bot?startapp=clan"
+              },
+              {
+                text: "👥 Кенты",
+                url: "https://t.me/DvizhuhaCR_bot?startapp=players"
+              }
+            ],
+            [
+              {
+                text: "🆘 Помощь",
+                url: "https://t.me/DvizhuhaCR_bot?startapp=help"
               }
             ]
           ]
@@ -43,7 +63,7 @@ export default async function handler(req, res) {
 
   } catch (error) {
 
-    console.error(error);
+    console.error("Telegram error:", error);
 
     return res.status(500).json({
       ok: false,
@@ -52,6 +72,10 @@ export default async function handler(req, res) {
   }
 }
 
+
+// =========================
+// ОТПРАВКА СООБЩЕНИЯ
+// =========================
 
 async function sendMessage(
   token,
