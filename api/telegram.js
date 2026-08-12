@@ -13,19 +13,13 @@ export default async function handler(req, res) {
 
   try {
     const update = req.body;
-
     const message = update?.message;
     const text = message?.text || "";
-
-    // =========================
-    // /start
-    // =========================
 
     if (
       text === "/start" ||
       text.startsWith("/start@")
     ) {
-
       await sendMessage(
         token,
         message.chat.id,
@@ -35,9 +29,7 @@ export default async function handler(req, res) {
             [
               {
                 text: "🚀 Открыть Движуху",
-                web_app: {
-                  url: "https://dvizhuha-mini-app.vercel.app/"
-                }
+                url: "https://dvizhuha-mini-app.vercel.app/"
               }
             ]
           ]
@@ -51,7 +43,7 @@ export default async function handler(req, res) {
 
   } catch (error) {
 
-    console.error("Telegram error:", error);
+    console.error(error);
 
     return res.status(500).json({
       ok: false,
@@ -61,25 +53,12 @@ export default async function handler(req, res) {
 }
 
 
-// =========================
-// Отправка сообщения
-// =========================
-
 async function sendMessage(
   token,
   chatId,
   text,
-  replyMarkup = null
+  replyMarkup
 ) {
-
-  const body = {
-    chat_id: chatId,
-    text: text
-  };
-
-  if (replyMarkup) {
-    body.reply_markup = replyMarkup;
-  }
 
   const response = await fetch(
     `https://api.telegram.org/bot${token}/sendMessage`,
@@ -90,16 +69,17 @@ async function sendMessage(
         "Content-Type": "application/json"
       },
 
-      body: JSON.stringify(body)
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: text,
+        reply_markup: replyMarkup
+      })
     }
   );
 
   const data = await response.json();
 
-  console.log(
-    "Telegram response:",
-    JSON.stringify(data)
-  );
+  console.log("Telegram:", data);
 
   if (!response.ok) {
     throw new Error(
