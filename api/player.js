@@ -2,36 +2,20 @@ export default async function handler(req, res) {
   const tag = (req.query.tag || "").replace("#", "").trim();
   const token = process.env.CR_API_TOKEN;
 
-  if (!tag) {
-    return res.status(400).json({
-      error: "Тег игрока не указан"
-    });
+  if (!tag || !token) {
+    return res.status(400).json({ error: "Нет тега или токена" });
   }
 
-  if (!token) {
-    return res.status(500).json({
-      error: "CR_API_TOKEN не найден"
-    });
-  }
-
-  try {
-    const response = await fetch(
-      `https://proxy.royaleapi.dev/v1/players/%23${encodeURIComponent(tag)}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+  const response = await fetch(
+    `https://api.clashroyale.com/v1/players/%23${encodeURIComponent(tag)}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    }
+  );
 
-    const data = await response.json();
+  const data = await response.json();
 
-    return res.status(response.status).json(data);
-
-  } catch (error) {
-    return res.status(500).json({
-      error: "Ошибка подключения",
-      details: error.message
-    });
-  }
+  return res.status(response.status).json(data);
 }
