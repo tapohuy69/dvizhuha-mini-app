@@ -63,6 +63,10 @@ export default async function handler(req, res) {
 
     const members = Array.isArray(data.items) ? data.items : [];
 
+    // =========================
+    // СОХРАНЯЕМ АКТУАЛЬНЫЕ ДАННЫЕ
+    // =========================
+
     for (const member of members) {
       await sql`
         INSERT INTO players (
@@ -88,10 +92,73 @@ export default async function handler(req, res) {
       `;
     }
 
+    // =========================
+    // ДАТА ПО КИЕВУ
+    // =========================
+
+    const now = new Date();
+
+    const kyivDate = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Europe/Kyiv",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).format(now);
+
+    // =========================
+    // ВЧЕРАШНЯЯ ДАТА
+    // =========================
+
+    const yesterdayResult = await sql`
+      SELECT TO_CHAR(
+        (${kyivDate}::date - INTERVAL '1 day'),
+        'YYYY-MM-DD'
+      ) AS yesterday
+    `;
+
+    const yesterday = yesterdayResult[0].yesterday;
+
+    // =========================
+    // ДОБАВЛЯЕМ ИЗМЕНЕНИЕ ЗА СУТКИ
+    // =========================
+
+    const resultMembers = [];
+
+    for (const member of members) {
+      const playerTag = member.tag || "";
+      const todayTrophies = Number(member.trophies) || 0;
+
+      const history = await sql`
+        SELECT trophies
+        FROM trophy_daily
+        WHERE player_tag = ${playerTag}
+          AND recorded_date = ${yesterday}
+        LIMIT 1
+      `;
+
+      let dailyChange = null;
+
+      if (history.length > 0) {
+        const yesterdayTrophies = Number(history[0].trophies) || 0;
+        dailyChange = todayTrophies - yesterdayTrophies;
+      }
+
+      resultMembers.push({
+        ...member,
+        dailyChange
+      });
+    }
+
     return res.status(200).json({
       ...data,
+      items: resultMembers,
       neon: {
         saved: members.length
+      },
+      daily: {
+        timezone: "Europe/Kyiv",
+        date: kyivDate,
+        compared_with: yesterday
       }
     });
 
