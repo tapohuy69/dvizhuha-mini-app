@@ -4,212 +4,243 @@ export default async function handler(req, res) {
 
   try {
 
-    const sql = neon(process.env.DATABASE_URL);
+    const DATABASE_URL =
+      process.env.DATABASE_URL;
 
-    const telegramId =
-      String(req.query.telegram_id || "").trim();
-
-    const chatId =
-      String(req.query.chat_id || "").trim();
-
-
-    // ==========================================
-    // TELEGRAM ID ОБЯЗАТЕЛЕН
-    // ==========================================
-
-    if (!telegramId) {
-
-      return res.status(400).json({
-        error: "Telegram ID не найден"
+    if (!DATABASE_URL) {
+      return res.status(500).json({
+        error: "DATABASE_URL не найден"
       });
-
     }
 
+    const sql = neon(DATABASE_URL);
 
-    // ==========================================
-    // ТЕКУЩАЯ НЕДЕЛЯ ПО КИЕВСКОМУ ВРЕМЕНИ
-    // ==========================================
+    // =========================
+    // TELEGRAM ID
+    // =========================
 
-    const weekData = await sql`
+    const telegramId =
+      String(
+        req.query?.telegram_id || ""
+      ).trim();
+
+    // =========================
+    // НАША ГРУППА
+    // =========================
+
+    const MAIN_CHAT_ID =
+      "-1003932829286";
+
+    // =========================
+    // ТЕКУЩАЯ НЕДЕЛЯ
+    // ВРЕМЯ КИЕВА
+    // =========================
+
+    const weekResult = await sql`
       SELECT
         date_trunc(
           'week',
           NOW() AT TIME ZONE 'Europe/Kyiv'
-        ) AS week_start
+        )::date AS week_start
     `;
 
-
     const weekStart =
-      weekData[0].week_start;
+      weekResult[0].week_start;
 
+    // =========================
+    // СТАТИСТИКА КОНКРЕТНОГО
+    // ПОЛЬЗОВАТЕЛЯ
+    // =========================
 
-    // ==========================================
-    // МОЯ СТАТИСТИКА ЗА НЕДЕЛЮ
-    // ==========================================
+    let weeklyMessages = 0;
+    let totalMessages = 0;
 
-    let weeklyQuery;
+    if (telegramId) {
 
+      const userStats = await sql`
+        SELECT
+          COUNT(*) FILTER (
+            WHERE week_start = ${weekStart}
+          ) AS weekly_messages,
 
-    if (chatId) {
+          COUNT(*) AS total_messages
 
-      weeklyQuery = await sql`
-        SELECT COUNT(*) AS count
-        FROM message_stats
-        WHERE telegram_id = ${telegramId}
-          AND chat_id = ${chatId}
-          AND (
-            message_date AT TIME ZONE 'Europe/Kyiv'
-          ) >= ${weekStart}
+        FROM telegram_message_stats
+
+        WHERE
+          chat_id = ${MAIN_CHAT_ID}
+          AND telegram_id = ${telegramId}
       `;
 
-    } else {
+      weeklyMessages =
+        Number(
+          userStats[0]?.weekly_messages || 0
+        );
 
-      weeklyQuery = await sql`
-        SELECT COUNT(*) AS count
-        FROM message_stats
-        WHERE telegram_id = ${telegramId}
-          AND (
-            message_date AT TIME ZONE 'Europe/Kyiv'
-          ) >= ${weekStart}
-      `;
-
+      totalMessages =
+        Number(
+          userStats[0]?.total_messages || 0
+        );
     }
 
+    // =========================
+    // ТОП ТЕКУЩЕЙ НЕДЕЛИ
+    // =========================
 
-    const weeklyMessages =
-      Number(
-        weeklyQuery[0]?.count || 0
-      );
+    const weeklyTop = await sql`
+      SELECT
+        telegram_id,
+        MAX(display_name) AS display_name,
+        MAX(username) AS username,
+        COUNT(*) AS messages
 
+      FROM telegram_message_stats
 
-    // ==========================================
-    // ВСЕ СООБЩЕНИЯ
-    // ==========================================
+      WHERE
+        chat_id = ${MAIN_CHAT_ID}
+        AND week_start = ${weekStart}
 
-    let totalQuery;
+      GROUP BY telegram_id
 
+      ORDER BY messages DESC, telegram_id ASC
 
-    if (chatId) {
+      LIMIT 10
+    `;
 
-      totalQuery = await sql`
-        SELECT COUNT(*) AS count
-        FROM message_stats
-        WHERE telegram_id = ${telegramId}
-          AND chat_id = ${chatId}
-      `;
-
-    } else {
-
-      totalQuery = await sql`
-        SELECT COUNT(*) AS count
-        FROM message_stats
-        WHERE telegram_id = ${telegramId}
-      `;
-
-    }
-
-
-    const totalMessages =
-      Number(
-        totalQuery[0]?.count || 0
-      );
-
-
-    // ==========================================
+    // =========================
     // ПОБЕДИТЕЛЬ НЕДЕЛИ
-    // ==========================================
-
-    let winnerQuery;
-
-
-    if (chatId) {
-
-      winnerQuery = await sql`
-        SELECT
-          telegram_id,
-          COUNT(*) AS message_count
-        FROM message_stats
-        WHERE chat_id = ${chatId}
-          AND (
-            message_date AT TIME ZONE 'Europe/Kyiv'
-          ) >= ${weekStart}
-        GROUP BY telegram_id
-        ORDER BY message_count DESC
-        LIMIT 1
-      `;
-
-    } else {
-
-      winnerQuery = await sql`
-        SELECT
-          telegram_id,
-          COUNT(*) AS message_count
-        FROM message_stats
-        WHERE (
-          message_date AT TIME ZONE 'Europe/Kyiv'
-        ) >= ${weekStart}
-        GROUP BY telegram_id
-        ORDER BY message_count DESC
-        LIMIT 1
-      `;
-
-    }
-
+    // =========================
 
     let winner = null;
 
+    if (weeklyTop.length > 0) {
 
-    if (winnerQuery.length > 0) {
+      const top =
+        weeklyTop[0];
 
       winner = {
+        telegram_id: String(
+          top.telegram_id
+        ),
 
-        telegram_id:
-          String(
-            winnerQuery[0].telegram_id
-          ),
+        display_name:
+          top.display_name ||
+          top.username ||
+          "Игрок",
 
-        message_count:
-          Number(
-            winnerQuery[0].message_count
-          )
+        username:
+          top.username || null,
 
+        messages:
+          Number(top.messages)
       };
-
     }
 
+    // =========================
+    // ТОП ЗА ВСЁ ВРЕМЯ
+    // =========================
 
-    // ==========================================
+    const totalTop = await sql`
+      SELECT
+        telegram_id,
+        MAX(display_name) AS display_name,
+        MAX(username) AS username,
+        COUNT(*) AS messages
+
+      FROM telegram_message_stats
+
+      WHERE
+        chat_id = ${MAIN_CHAT_ID}
+
+      GROUP BY telegram_id
+
+      ORDER BY messages DESC, telegram_id ASC
+
+      LIMIT 10
+    `;
+
+    // =========================
+    // ФОРМАТИРУЕМ ТОП НЕДЕЛИ
+    // =========================
+
+    const weeklyLeaderboard =
+      weeklyTop.map(
+        (player, index) => ({
+          place: index + 1,
+
+          telegram_id:
+            String(player.telegram_id),
+
+          display_name:
+            player.display_name ||
+            player.username ||
+            "Игрок",
+
+          username:
+            player.username || null,
+
+          messages:
+            Number(player.messages)
+        })
+      );
+
+    // =========================
+    // ФОРМАТИРУЕМ ТОП ЗА ВСЁ ВРЕМЯ
+    // =========================
+
+    const totalLeaderboard =
+      totalTop.map(
+        (player, index) => ({
+          place: index + 1,
+
+          telegram_id:
+            String(player.telegram_id),
+
+          display_name:
+            player.display_name ||
+            player.username ||
+            "Игрок",
+
+          username:
+            player.username || null,
+
+          messages:
+            Number(player.messages)
+        })
+      );
+
+    // =========================
     // ОТВЕТ
-    // ==========================================
+    // =========================
 
     return res.status(200).json({
 
       ok: true,
 
-      telegram_id: telegramId,
+      telegram_id:
+        telegramId || null,
 
       week: {
-
         timezone: "Europe/Kyiv",
-
         week_start: weekStart
-
       },
 
       statistics: {
-
         weekly_messages:
           weeklyMessages,
 
         total_messages:
           totalMessages
-
       },
 
-      winner
+      winner,
 
+      weekly_leaderboard:
+        weeklyLeaderboard,
+
+      total_leaderboard:
+        totalLeaderboard
     });
-
 
   } catch (error) {
 
@@ -218,7 +249,6 @@ export default async function handler(req, res) {
       error
     );
 
-
     return res.status(500).json({
 
       error:
@@ -226,9 +256,6 @@ export default async function handler(req, res) {
 
       details:
         error.message
-
     });
-
   }
-
 }
