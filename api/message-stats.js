@@ -75,7 +75,6 @@ export default async function handler(req, res) {
             const previousWeekEnd =
                 weekEndResult[0].week_end;
 
-            // Проверяем, есть ли уже победитель
             const alreadyWinner = await sql`
                 SELECT *
                 FROM weekly_winners
@@ -94,7 +93,6 @@ export default async function handler(req, res) {
                 });
             }
 
-            // Ищем победителя предыдущей недели
             const winnerResult = await sql`
                 SELECT
                     telegram_id,
@@ -124,7 +122,6 @@ export default async function handler(req, res) {
 
             const winner = winnerResult[0];
 
-            // Сохраняем победителя
             const savedWinner = await sql`
                 INSERT INTO weekly_winners (
                     telegram_id,
@@ -161,6 +158,56 @@ export default async function handler(req, res) {
         }
 
         // ==================================================
+        // REWARD EMOJIS
+        //
+        // Связываем:
+        //
+        // player_rewards
+        //      ↓
+        // telegram_players
+        //      ↓
+        // player_tag
+        //
+        // Это позволяет показывать смайлик возле
+        // Clash Royale ника игрока.
+        // ==================================================
+
+        if (
+            req.method === "GET" &&
+            action === "reward-emojis"
+        ) {
+
+            const rewardsResult = await sql`
+                SELECT
+                    tp.player_tag,
+                    pr.telegram_id,
+                    pr.reward_emoji,
+                    pr.reward_claimed
+                FROM player_rewards pr
+                INNER JOIN telegram_players tp
+                    ON String(tp.telegram_id) =
+                       String(pr.telegram_id)
+                WHERE
+                    pr.reward_claimed = TRUE
+                    AND pr.reward_emoji IS NOT NULL
+                    AND TRIM(pr.reward_emoji) <> ''
+                    AND tp.player_tag IS NOT NULL
+                    AND TRIM(tp.player_tag) <> ''
+            `;
+
+            const rewards = rewardsResult.map(row => ({
+                player_tag: row.player_tag,
+                telegram_id: String(row.telegram_id),
+                reward_emoji: row.reward_emoji
+            }));
+
+            return res.status(200).json({
+                ok: true,
+                rewards
+            });
+        }
+
+        // ==================================================
         // REWARD GET
         // ==================================================
 
@@ -176,7 +223,6 @@ export default async function handler(req, res) {
                 });
             }
 
-            // Последняя победа пользователя
             const winnerResult = await sql`
                 SELECT
                     id,
@@ -200,7 +246,6 @@ export default async function handler(req, res) {
             const winner =
                 winnerResult[0] || null;
 
-            // Награда из player_rewards
             const rewardResult = await sql`
                 SELECT
                     telegram_id,
@@ -228,10 +273,6 @@ export default async function handler(req, res) {
                 });
             }
 
-            /*
-             * Если в weekly_winners уже указано,
-             * что награда получена — считаем её использованной.
-             */
             if (winner.reward_claimed === true) {
 
                 return res.status(200).json({
@@ -242,11 +283,6 @@ export default async function handler(req, res) {
                 });
             }
 
-            /*
-             * Если player_rewards существует и награда
-             * уже была выбрана после этой победы,
-             * повторный выбор запрещаем.
-             */
             if (
                 reward &&
                 reward.reward_claimed === true &&
@@ -309,7 +345,6 @@ export default async function handler(req, res) {
                 });
             }
 
-            // Ищем последнюю победу
             const winnerResult = await sql`
                 SELECT
                     *
@@ -332,10 +367,6 @@ export default async function handler(req, res) {
             const winner =
                 winnerResult[0];
 
-            /*
-             * Если эта конкретная победа уже отмечена
-             * как полученная — запрещаем повторный выбор.
-             */
             if (
                 winner.reward_claimed === true
             ) {
@@ -348,7 +379,6 @@ export default async function handler(req, res) {
                 });
             }
 
-            // Сохраняем / обновляем player_rewards
             const savedReward = await sql`
                 INSERT INTO player_rewards (
                     telegram_id,
@@ -373,7 +403,6 @@ export default async function handler(req, res) {
                 RETURNING *
             `;
 
-            // Отмечаем награду в weekly_winners
             const updatedWinner = await sql`
                 UPDATE weekly_winners
                 SET
