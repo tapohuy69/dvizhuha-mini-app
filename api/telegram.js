@@ -38,6 +38,12 @@ export default async function handler(req, res) {
             ],
             [
               {
+                text: "🙋‍♂️ Мой профиль",
+                url: "https://t.me/DvizhuhaCR_bot?startapp=myprofile"
+              }
+            ],
+            [
+              {
                 text: "🏰 Клан",
                 url: "https://t.me/DvizhuhaCR_bot?startapp=clan"
               },
