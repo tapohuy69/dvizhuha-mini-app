@@ -236,12 +236,6 @@
         .screen.active {
             display: block;
 
-            /*
-             * ВАЖНО:
-             * Не используем transform.
-             * Иначе fixed-кнопки ⬅️ и 🔄
-             * визуально дёргаются при смене вкладки.
-             */
             animation:
                 premiumFade 0.22s ease;
         }
@@ -494,7 +488,7 @@
 
             text-align: left;
 
-            padding: 13px;
+            padding: 10px 12px;
 
             margin-top: 8px;
 
@@ -528,42 +522,105 @@
         }
 
 
-        .member-name {
-            font-size: 15px;
-            font-weight: 700;
+        .member-row {
+            display: flex;
 
-            margin-bottom: 4px;
+            align-items: center;
 
-            color: var(--white);
+            width: 100%;
+
+            min-width: 0;
         }
 
 
-        .member-info {
-            font-size: 12px;
+        .member-icon {
+            width: 22px;
+            height: 22px;
 
-            color: #777;
+            min-width: 22px;
 
-            line-height: 1.4;
+            margin-right: 7px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 13px;
+        }
+
+
+        .member-main {
+            display: flex;
+
+            align-items: center;
+
+            min-width: 0;
+
+            flex: 1;
+        }
+
+
+        .member-name {
+            font-size: 14px;
+
+            font-weight: 700;
+
+            color: var(--white);
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            min-width: 0;
         }
 
 
         .member-trophies {
-            font-size: 13px;
+            display: flex;
 
-            font-weight: 700;
+            align-items: center;
 
-            margin-top: 6px;
+            flex-shrink: 0;
 
-            color: var(--gold-light);
-        }
+            margin-left: 10px;
 
-
-        .member-daily {
             font-size: 12px;
 
             font-weight: 700;
 
-            margin-top: 3px;
+            color: var(--gold-light);
+
+            white-space: nowrap;
+        }
+
+
+        .member-daily {
+            display: flex;
+
+            align-items: center;
+
+            flex-shrink: 0;
+
+            margin-left: 8px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+
+        .member-tag {
+            font-size: 10px;
+
+            color: #666;
+
+            margin-left: 29px;
+
+            margin-top: 2px;
         }
 
 
@@ -2694,9 +2751,6 @@
                             dailyHtml = `
                                 <div class="member-daily">
                                     🟢 +${change}
-                                    <span style="font-weight:500; opacity:0.7;">
-                                        (за последние сутки)
-                                    </span>
                                 </div>
                             `;
 
@@ -2707,9 +2761,6 @@
                             dailyHtml = `
                                 <div class="member-daily">
                                     🔴 ${change}
-                                    <span style="font-weight:500; opacity:0.7;">
-                                        (за последние сутки)
-                                    </span>
                                 </div>
                             `;
 
@@ -2718,9 +2769,6 @@
                             dailyHtml = `
                                 <div class="member-daily">
                                     ⚪ 0
-                                    <span style="font-weight:500; opacity:0.7;">
-                                        (за последние сутки)
-                                    </span>
                                 </div>
                             `;
 
@@ -2741,35 +2789,46 @@
                             onclick="openMemberProfile('${safeTag}')"
                         >
 
-                            <div class="member-name">
+                            <div class="member-row">
 
-                                ${index + 1}.
-                                ${safeName}
+                                <div class="member-icon">
+                                    👤
+                                </div>
 
-                                ${rewardEmojiHtml(
-                                    memberEmoji
-                                )}
+                                <div class="member-main">
+
+                                    <div class="member-name">
+
+                                        ${index + 1}.
+                                        ${safeName}
+
+                                        ${rewardEmojiHtml(
+                                            memberEmoji
+                                        )}
+
+                                    </div>
+
+                                    <div class="member-trophies">
+
+                                        🏆 ${trophies}
+
+                                    </div>
+
+                                    ${dailyHtml}
+
+                                </div>
 
                             </div>
 
-                            <div class="member-info">
-
-                                ${
-                                    member.tag
-                                        ? "#" + safeTag
-                                        : ""
-                                }
-
-                            </div>
-
-                            <div class="member-trophies">
-
-                                🏆
-                                ${trophies}
-
-                            </div>
-
-                            ${dailyHtml}
+                            ${
+                                member.tag
+                                    ? `
+                                        <div class="member-tag">
+                                            #${safeTag}
+                                        </div>
+                                    `
+                                    : ""
+                            }
 
                         </button>
 
