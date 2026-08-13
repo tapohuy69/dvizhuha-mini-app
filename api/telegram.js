@@ -19,9 +19,9 @@ export default async function handler(req, res) {
 
   const sql = neon(DATABASE_URL);
 
-  // ==========================================
+  // =========================
   // GET
-  // ==========================================
+  // =========================
 
   if (req.method !== "POST") {
     return res.status(200).send("Движуха работает 🤙");
@@ -31,28 +31,36 @@ export default async function handler(req, res) {
 
     const update = req.body;
 
-    console.log("TELEGRAM UPDATE:", update);
+    console.log(
+      "========== TELEGRAM UPDATE =========="
+    );
+
+    console.log(
+      JSON.stringify(update)
+    );
 
     const message = update?.message;
 
-    // ==========================================
-    // ЕСЛИ ЭТО НЕ СООБЩЕНИЕ
-    // ==========================================
-
     if (!message) {
+
+      console.log(
+        "NO MESSAGE OBJECT"
+      );
+
       return res.status(200).json({
-        ok: true,
-        ignored: true
+        ok: true
       });
     }
 
-    const chatId = message?.chat?.id
-      ? String(message.chat.id)
-      : "";
+    const chatId =
+      message?.chat?.id
+        ? String(message.chat.id)
+        : "";
 
-    const telegramId = message?.from?.id
-      ? String(message.from.id)
-      : "";
+    const telegramId =
+      message?.from?.id
+        ? String(message.from.id)
+        : "";
 
     const username =
       message?.from?.username || null;
@@ -66,24 +74,61 @@ export default async function handler(req, res) {
     const text =
       message?.text || "";
 
-    console.log("MESSAGE RECEIVED:", {
-      chat_id: chatId,
-      telegram_id: telegramId,
-      username,
-      first_name: firstName,
-      last_name: lastName,
+    console.log(
+      "CHAT ID:",
+      chatId
+    );
+
+    console.log(
+      "TELEGRAM ID:",
+      telegramId
+    );
+
+    console.log(
+      "USERNAME:",
+      username
+    );
+
+    console.log(
+      "FIRST NAME:",
+      firstName
+    );
+
+    console.log(
+      "TEXT:",
       text
-    });
+    );
 
-    // ==========================================
+    // =========================
     // НАША ГРУППА
-    // ==========================================
+    // =========================
 
-    const MAIN_CHAT_ID = "-1003932829286";
+    const MAIN_CHAT_ID =
+      "-1003932829286";
 
-    // ==========================================
-    // СОХРАНЕНИЕ СООБЩЕНИЙ
-    // ==========================================
+    console.log(
+      "EXPECTED CHAT ID:",
+      MAIN_CHAT_ID
+    );
+
+    console.log(
+      "CHAT MATCH:",
+      chatId === MAIN_CHAT_ID
+    );
+
+    console.log(
+      "HAS TELEGRAM ID:",
+      Boolean(telegramId)
+    );
+
+    console.log(
+      "HAS TEXT:",
+      Boolean(text.trim())
+    );
+
+    // =========================
+    // СОХРАНЕНИЕ
+    // =========================
 
     if (
       chatId === MAIN_CHAT_ID &&
@@ -91,37 +136,49 @@ export default async function handler(req, res) {
       text.trim()
     ) {
 
-      await sql`
-        INSERT INTO telegram_message_stats (
-          chat_id,
-          telegram_id,
-          username,
-          first_name,
-          last_name,
-          message_text,
-          created_at
-        )
-        VALUES (
-          ${chatId},
-          ${telegramId},
-          ${username},
-          ${firstName},
-          ${lastName},
-          ${text},
-          NOW()
-        )
-      `;
+      console.log(
+        "TRYING TO SAVE MESSAGE TO NEON..."
+      );
+
+      const saved =
+        await sql`
+          INSERT INTO telegram_message_stats (
+            chat_id,
+            telegram_id,
+            username,
+            first_name,
+            last_name,
+            message_text,
+            created_at
+          )
+          VALUES (
+            ${chatId},
+            ${telegramId},
+            ${username},
+            ${firstName},
+            ${lastName},
+            ${text},
+            NOW()
+          )
+          RETURNING *;
+        `;
 
       console.log(
-        "MESSAGE SAVED TO NEON:",
-        telegramId,
-        text
+        "MESSAGE SUCCESSFULLY SAVED:",
+        JSON.stringify(saved)
       );
+
+    } else {
+
+      console.log(
+        "MESSAGE WAS NOT SAVED"
+      );
+
     }
 
-    // ==========================================
+    // =========================
     // /start
-    // ==========================================
+    // =========================
 
     if (
       text === "/start" ||
@@ -173,10 +230,6 @@ export default async function handler(req, res) {
       );
     }
 
-    // ==========================================
-    // УСПЕШНЫЙ ОТВЕТ TELEGRAM
-    // ==========================================
-
     return res.status(200).json({
       ok: true
     });
@@ -184,21 +237,25 @@ export default async function handler(req, res) {
   } catch (error) {
 
     console.error(
-      "Telegram webhook error:",
+      "========== TELEGRAM ERROR =========="
+    );
+
+    console.error(
       error
     );
 
-    return res.status(500).json({
-      ok: false,
-      error: error.message
+    return res.status(200).json({
+      ok: true,
+      debug_error: error.message
     });
+
   }
 }
 
 
-// ==========================================
+// =========================
 // ОТПРАВКА СООБЩЕНИЯ
-// ==========================================
+// =========================
 
 async function sendMessage(
   token,
@@ -207,22 +264,23 @@ async function sendMessage(
   replyMarkup
 ) {
 
-  const response = await fetch(
-    `https://api.telegram.org/bot${token}/sendMessage`,
-    {
-      method: "POST",
+  const response =
+    await fetch(
+      `https://api.telegram.org/bot${token}/sendMessage`,
+      {
+        method: "POST",
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+        headers: {
+          "Content-Type": "application/json"
+        },
 
-      body: JSON.stringify({
-        chat_id: chatId,
-        text,
-        reply_markup: replyMarkup
-      })
-    }
-  );
+        body: JSON.stringify({
+          chat_id: chatId,
+          text,
+          reply_markup: replyMarkup
+        })
+      }
+    );
 
   const data =
     await response.json();
@@ -238,5 +296,6 @@ async function sendMessage(
       data.description ||
       "Telegram API error"
     );
+
   }
 }
