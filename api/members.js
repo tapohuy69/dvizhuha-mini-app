@@ -45,6 +45,10 @@ export default async function handler(req, res) {
 
     const sql = neon(process.env.DATABASE_URL);
 
+    // =========================
+    // НАХОДИМ КЛАН
+    // =========================
+
     const clanResult = await sql`
       SELECT id
       FROM clan
@@ -61,7 +65,9 @@ export default async function handler(req, res) {
 
     const clanId = clanResult[0].id;
 
-    const members = Array.isArray(data.items) ? data.items : [];
+    const members = Array.isArray(data.items)
+      ? data.items
+      : [];
 
     // =========================
     // СОХРАНЯЕМ АКТУАЛЬНЫЕ ДАННЫЕ
@@ -116,17 +122,24 @@ export default async function handler(req, res) {
       ) AS yesterday
     `;
 
-    const yesterday = yesterdayResult[0].yesterday;
+    const yesterday =
+      yesterdayResult[0].yesterday;
 
     // =========================
-    // ДОБАВЛЯЕМ ИЗМЕНЕНИЕ ЗА СУТКИ
+    // ФОРМИРУЕМ УЧАСТНИКОВ
+    // + СМАЙЛИК НАГРАДЫ
     // =========================
 
     const resultMembers = [];
 
     for (const member of members) {
       const playerTag = member.tag || "";
-      const todayTrophies = Number(member.trophies) || 0;
+      const todayTrophies =
+        Number(member.trophies) || 0;
+
+      // -------------------------
+      // ИЗМЕНЕНИЕ КУБКОВ
+      // -------------------------
 
       const history = await sql`
         SELECT trophies
@@ -139,22 +152,72 @@ export default async function handler(req, res) {
       let dailyChange = null;
 
       if (history.length > 0) {
-        const yesterdayTrophies = Number(history[0].trophies) || 0;
-        dailyChange = todayTrophies - yesterdayTrophies;
+        const yesterdayTrophies =
+          Number(history[0].trophies) || 0;
+
+        dailyChange =
+          todayTrophies - yesterdayTrophies;
+      }
+
+      // -------------------------
+      // ИЩЕМ TELEGRAM ПОЛЬЗОВАТЕЛЯ
+      // ПО CLASH ROYALE TAG
+      // -------------------------
+
+      const telegramPlayer = await sql`
+        SELECT telegram_id
+        FROM telegram_players
+        WHERE player_tag = ${playerTag}
+        LIMIT 1
+      `;
+
+      let rewardEmoji = null;
+
+      if (telegramPlayer.length > 0) {
+        const telegramId =
+          String(telegramPlayer[0].telegram_id);
+
+        // -------------------------
+        // ИЩЕМ ЕГО НАГРАДУ
+        // -------------------------
+
+        const reward = await sql`
+          SELECT reward_emoji
+          FROM player_rewards
+          WHERE telegram_id = ${telegramId}
+            AND reward_claimed = TRUE
+            AND reward_emoji IS NOT NULL
+          LIMIT 1
+        `;
+
+        if (reward.length > 0) {
+          rewardEmoji =
+            reward[0].reward_emoji;
+        }
       }
 
       resultMembers.push({
         ...member,
-        dailyChange
+
+        dailyChange,
+
+        reward_emoji: rewardEmoji
       });
     }
 
+    // =========================
+    // ОТВЕТ
+    // =========================
+
     return res.status(200).json({
       ...data,
+
       items: resultMembers,
+
       neon: {
         saved: members.length
       },
+
       daily: {
         timezone: "Europe/Kyiv",
         date: kyivDate,
@@ -163,6 +226,11 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
+    console.error(
+      "Members API error:",
+      error
+    );
+
     return res.status(500).json({
       error: "Ошибка подключения",
       details: error.message
