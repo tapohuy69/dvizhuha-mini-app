@@ -3,7 +3,7 @@
   "crons": [
     {
       "path": "/api/daily-trophies",
-      "schedule": "0 21 * * *"
+      "schedule": "0 * * * *"
     }
   ]
 }
