@@ -313,10 +313,6 @@
             👥 Кенты
         </button>
 
-        <!-- =========================
-             НАГРАДА НЕДЕЛИ
-        ========================= -->
-
         <button
             class="button secondary"
             onclick="openReward()"
@@ -1764,9 +1760,15 @@
 
         try {
 
+            /*
+             * ВАЖНО:
+             * Reward.js больше не существует отдельным API.
+             * Награда теперь находится внутри message-stats.js.
+             */
+
             const response =
                 await fetch(
-                    `/api/reward?telegram_id=${encodeURIComponent(telegramId)}`
+                    `/api/message-stats?action=reward&telegram_id=${encodeURIComponent(telegramId)}`
                 );
 
 
@@ -2049,6 +2051,11 @@
 
         } catch (error) {
 
+            console.error(
+                "Reward GET error:",
+                error
+            );
+
             result.innerHTML = `
                 <div class="card">
 
@@ -2112,9 +2119,15 @@
 
         try {
 
+            /*
+             * ВАЖНО:
+             * POST тоже идёт в message-stats.js,
+             * потому что Reward.js мы объединили с ним.
+             */
+
             const response =
                 await fetch(
-                    "/api/reward",
+                    "/api/message-stats?action=reward",
                     {
                         method: "POST",
 
@@ -2199,6 +2212,11 @@
             `;
 
         } catch (error) {
+
+            console.error(
+                "Reward POST error:",
+                error
+            );
 
             result.innerHTML = `
 
