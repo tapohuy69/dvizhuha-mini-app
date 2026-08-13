@@ -47,9 +47,11 @@
                 0 8px 30px rgba(214,177,92,0.10);
         }
 
+
         html {
             background: var(--black);
         }
+
 
         body {
             margin: 0;
@@ -86,6 +88,7 @@
             overflow-x: hidden;
         }
 
+
         body::before {
             content: "";
 
@@ -110,11 +113,13 @@
             z-index: 10000;
         }
 
+
         .container {
             max-width: 500px;
             margin: 0 auto;
             position: relative;
         }
+
 
         /* ==================================================
            HEADER
@@ -124,6 +129,7 @@
             text-align: center;
             margin-bottom: 30px;
         }
+
 
         .header h1 {
             margin: 0;
@@ -139,6 +145,7 @@
                 0 0 22px rgba(214,177,92,0.13);
         }
 
+
         .header p {
             margin-top: 10px;
 
@@ -146,6 +153,7 @@
 
             font-size: 14px;
         }
+
 
         /* ==================================================
            PREMIUM BUTTONS
@@ -185,10 +193,12 @@
                 filter 0.15s ease;
         }
 
+
         .button:active {
             transform: scale(0.975);
             filter: brightness(0.92);
         }
+
 
         .button.secondary {
             background:
@@ -207,10 +217,12 @@
                 0 8px 28px rgba(0,0,0,0.35);
         }
 
+
         .button.secondary:hover {
             border-color:
                 rgba(214,177,92,0.30);
         }
+
 
         /* ==================================================
            SCREENS
@@ -220,12 +232,14 @@
             display: none;
         }
 
+
         .screen.active {
             display: block;
 
             animation:
                 premiumFade 0.22s ease;
         }
+
 
         @keyframes premiumFade {
 
@@ -238,6 +252,7 @@
             }
 
         }
+
 
         /* ==================================================
            НАЗАД
@@ -283,9 +298,11 @@
                 0 6px 20px rgba(0,0,0,0.5);
         }
 
+
         .back:active {
             transform: scale(0.92);
         }
+
 
         /* ==================================================
            ОБНОВИТЬ
@@ -331,9 +348,11 @@
                 0 6px 20px rgba(0,0,0,0.5);
         }
 
+
         .refresh-button:active {
             transform: scale(0.92);
         }
+
 
         /* ==================================================
            INPUT
@@ -373,9 +392,11 @@
                 box-shadow 0.2s ease;
         }
 
+
         input::placeholder {
             color: #666;
         }
+
 
         input:focus {
             border-color:
@@ -385,6 +406,7 @@
                 0 0 0 3px rgba(214,177,92,0.06),
                 0 10px 28px rgba(0,0,0,0.35);
         }
+
 
         /* ==================================================
            CARDS
@@ -415,6 +437,7 @@
             overflow: hidden;
         }
 
+
         .card::before {
             content: "";
 
@@ -435,19 +458,23 @@
                 );
         }
 
+
         .card h2 {
             margin-top: 0;
 
             color: var(--white);
         }
 
+
         .card p {
             color: #c7c7c7;
         }
 
+
         .card b {
             color: var(--gold-light);
         }
+
 
         /* ==================================================
            КЕНТЫ
@@ -486,12 +513,14 @@
                 border-color 0.15s ease;
         }
 
+
         .member:active {
             transform: scale(0.98);
 
             border-color:
                 rgba(214,177,92,0.25);
         }
+
 
         .member-name {
             font-size: 15px;
@@ -502,6 +531,7 @@
             color: var(--white);
         }
 
+
         .member-info {
             font-size: 12px;
 
@@ -509,6 +539,7 @@
 
             line-height: 1.4;
         }
+
 
         .member-trophies {
             font-size: 13px;
@@ -520,6 +551,7 @@
             color: var(--gold-light);
         }
 
+
         .member-daily {
             font-size: 12px;
 
@@ -527,6 +559,7 @@
 
             margin-top: 3px;
         }
+
 
         /* ==================================================
            ТОП
@@ -546,9 +579,11 @@
             letter-spacing: 0.2px;
         }
 
+
         .ranking {
             margin-top: 10px;
         }
+
 
         .ranking-item {
             display: flex;
@@ -576,6 +611,7 @@
                 0 6px 20px rgba(0,0,0,0.25);
         }
 
+
         .ranking-left {
             display: flex;
 
@@ -583,6 +619,7 @@
 
             min-width: 0;
         }
+
 
         .ranking-number {
             width: 28px;
@@ -596,6 +633,7 @@
             flex-shrink: 0;
         }
 
+
         .ranking-name {
             font-size: 15px;
 
@@ -605,6 +643,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
 
         .ranking-value {
             font-size: 14px;
@@ -617,6 +656,7 @@
 
             color: var(--gold-light);
         }
+
 
         /* ==================================================
            СМАЙЛИК ПОБЕДИТЕЛЯ
@@ -637,6 +677,7 @@
                 );
         }
 
+
         .profile-name-line {
             display: flex;
 
@@ -646,6 +687,7 @@
 
             flex-wrap: wrap;
         }
+
 
         /* ==================================================
            НАГРАДА
@@ -664,6 +706,7 @@
                 );
         }
 
+
         .reward-message {
             text-align: center;
 
@@ -671,6 +714,7 @@
 
             color: #bdbdbd;
         }
+
 
         .emoji-grid {
             display: grid;
@@ -682,6 +726,7 @@
 
             margin-top: 18px;
         }
+
 
         .emoji-button {
             border:
@@ -712,12 +757,14 @@
                 border-color 0.15s ease;
         }
 
+
         .emoji-button:active {
             transform: scale(0.92);
 
             border-color:
                 rgba(214,177,92,0.35);
         }
+
 
         .reward-selected {
             text-align: center;
@@ -729,6 +776,7 @@
             color: var(--gold-light);
         }
 
+
         /* ==================================================
            PREMIUM SCROLLBAR
         ================================================== */
@@ -737,14 +785,17 @@
             width: 4px;
         }
 
+
         ::-webkit-scrollbar-track {
             background: #050505;
         }
+
 
         ::-webkit-scrollbar-thumb {
             background: #292929;
             border-radius: 10px;
         }
+
 
         /* ==================================================
            SELECTION
@@ -1144,12 +1195,8 @@
     const MY_CLAN_TAG =
         "GCGJ9VJV";
 
-    /*
-     * ГЛАВА КЛАНА
-     * Статус определяется ТОЛЬКО по этому тегу.
-     */
     const LEADER_TAG =
-        "VPQRJ8LVG";
+        "VPQRJ8LV";
 
 
     // ==================================================
@@ -1772,8 +1819,8 @@
             );
 
         /*
-         * ВАЖНО:
-         * Глава определяется ТОЛЬКО по тегу.
+         * ГЛАВА ОПРЕДЕЛЯЕТСЯ ТОЛЬКО ПО ТЕГУ.
+         * Никнейм больше никакого значения не имеет.
          */
         const isLeader =
             tag === LEADER_TAG;
@@ -2272,6 +2319,7 @@
 
             `;
 
+
             html += `
 
                 <div class="ranking-title">
@@ -2281,6 +2329,7 @@
                 <div class="ranking">
 
             `;
+
 
             for (
                 let index = 0;
@@ -2363,9 +2412,11 @@
 
             }
 
+
             html += `
                 </div>
             `;
+
 
             html += `
 
@@ -2376,6 +2427,7 @@
                 <div class="ranking">
 
             `;
+
 
             for (
                 let index = 0;
@@ -2458,12 +2510,15 @@
 
             }
 
+
             html += `
                 </div>
             `;
 
+
             result.innerHTML =
                 html;
+
 
         } catch (error) {
 
@@ -2585,6 +2640,7 @@
                 </div>
 
             `;
+
 
             members.forEach(
                 (member, index) => {
@@ -2716,8 +2772,10 @@
                 }
             );
 
+
             result.innerHTML =
                 html;
+
 
         } catch (error) {
 
@@ -2771,6 +2829,7 @@
 
             </div>
         `;
+
 
         try {
 
@@ -2850,6 +2909,7 @@
                     cleanTag,
                     emoji
                 );
+
 
         } catch (error) {
 
