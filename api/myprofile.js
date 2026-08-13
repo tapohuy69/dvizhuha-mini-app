@@ -3,6 +3,13 @@ import { neon } from "@neondatabase/serverless";
 export default async function handler(req, res) {
 
   // ==========================================
+  // НАШ КЛАН
+  // ==========================================
+
+  const OUR_CLAN_TAG = "#GCGJ9VJV";
+
+
+  // ==========================================
   // TELEGRAM ID
   // ==========================================
 
@@ -15,9 +22,11 @@ export default async function handler(req, res) {
     });
   }
 
+
   try {
 
     const sql = neon(process.env.DATABASE_URL);
+
 
     // ==========================================
     // ИЩЕМ ПРИВЯЗКУ TELEGRAM → CLASH ROYALE
@@ -33,6 +42,7 @@ export default async function handler(req, res) {
       LIMIT 1
     `;
 
+
     // ==========================================
     // АККАУНТ НЕ ПРИВЯЗАН
     // ==========================================
@@ -47,6 +57,7 @@ export default async function handler(req, res) {
 
     }
 
+
     // ==========================================
     // ПОЛУЧАЕМ ТЕГ
     // ==========================================
@@ -57,6 +68,7 @@ export default async function handler(req, res) {
         .trim()
         .toUpperCase();
 
+
     if (!playerTag) {
 
       return res.status(404).json({
@@ -66,12 +78,14 @@ export default async function handler(req, res) {
 
     }
 
+
     // ==========================================
     // CLASH ROYALE API
     // ==========================================
 
     const token =
       process.env.CR_API_TOKEN;
+
 
     if (!token) {
 
@@ -81,8 +95,10 @@ export default async function handler(req, res) {
 
     }
 
+
     const url =
       `https://proxy.royaleapi.dev/v1/players/%23${encodeURIComponent(playerTag)}`;
+
 
     const response =
       await fetch(url, {
@@ -94,8 +110,10 @@ export default async function handler(req, res) {
         }
       });
 
+
     const text =
       await response.text();
+
 
     let data;
 
@@ -111,11 +129,35 @@ export default async function handler(req, res) {
 
     }
 
+
     if (!response.ok) {
 
       return res.status(response.status).json(data);
 
     }
+
+
+    // ==========================================
+    // ПРОВЕРКА КЛАНА
+    // ==========================================
+
+    const playerClanTag =
+      String(data.clan?.tag || "")
+        .replace(/^#+/, "")
+        .trim()
+        .toUpperCase();
+
+
+    const ourClanTag =
+      OUR_CLAN_TAG
+        .replace(/^#+/, "")
+        .trim()
+        .toUpperCase();
+
+
+    const isClanMember =
+      playerClanTag === ourClanTag;
+
 
     // ==========================================
     // ОБНОВЛЯЕМ PLAYERS
@@ -124,11 +166,14 @@ export default async function handler(req, res) {
     const cleanTag =
       "#" + playerTag;
 
+
     const trophies =
       Number(data.trophies || 0);
 
+
     const playerName =
       data.name || "";
+
 
     await sql`
       INSERT INTO players (
@@ -157,6 +202,7 @@ export default async function handler(req, res) {
         updated_at = NOW()
     `;
 
+
     // ==========================================
     // ИСТОРИЯ КУБКОВ
     // ==========================================
@@ -169,6 +215,7 @@ export default async function handler(req, res) {
         ORDER BY recorded_at DESC
         LIMIT 1
       `;
+
 
     if (
       lastHistory.length === 0 ||
@@ -188,6 +235,7 @@ export default async function handler(req, res) {
 
     }
 
+
     // ==========================================
     // ОТВЕТ
     // ==========================================
@@ -203,12 +251,20 @@ export default async function handler(req, res) {
         linked: true
       },
 
+      clan_status: {
+        is_member: isClanMember,
+        clan_tag: data.clan?.tag || null,
+        clan_name: data.clan?.name || null,
+        our_clan_tag: OUR_CLAN_TAG
+      },
+
       neon: {
         saved: true,
         trophy_history: true
       }
 
     });
+
 
   } catch (error) {
 
@@ -217,10 +273,12 @@ export default async function handler(req, res) {
       error
     );
 
+
     return res.status(500).json({
       error: "Ошибка подключения",
       details: error.message
     });
 
   }
+
 }
