@@ -47,11 +47,9 @@
                 0 8px 30px rgba(214,177,92,0.10);
         }
 
-
         html {
             background: var(--black);
         }
-
 
         body {
             margin: 0;
@@ -88,7 +86,6 @@
             overflow-x: hidden;
         }
 
-
         body::before {
             content: "";
 
@@ -113,13 +110,11 @@
             z-index: 10000;
         }
 
-
         .container {
             max-width: 500px;
             margin: 0 auto;
             position: relative;
         }
-
 
         /* ==================================================
            HEADER
@@ -129,7 +124,6 @@
             text-align: center;
             margin-bottom: 30px;
         }
-
 
         .header h1 {
             margin: 0;
@@ -145,7 +139,6 @@
                 0 0 22px rgba(214,177,92,0.13);
         }
 
-
         .header p {
             margin-top: 10px;
 
@@ -153,7 +146,6 @@
 
             font-size: 14px;
         }
-
 
         /* ==================================================
            PREMIUM BUTTONS
@@ -193,12 +185,10 @@
                 filter 0.15s ease;
         }
 
-
         .button:active {
             transform: scale(0.975);
             filter: brightness(0.92);
         }
-
 
         .button.secondary {
             background:
@@ -217,12 +207,10 @@
                 0 8px 28px rgba(0,0,0,0.35);
         }
 
-
         .button.secondary:hover {
             border-color:
                 rgba(214,177,92,0.30);
         }
-
 
         /* ==================================================
            SCREENS
@@ -232,14 +220,12 @@
             display: none;
         }
 
-
         .screen.active {
             display: block;
 
             animation:
                 premiumFade 0.22s ease;
         }
-
 
         @keyframes premiumFade {
 
@@ -252,7 +238,6 @@
             }
 
         }
-
 
         /* ==================================================
            НАЗАД
@@ -298,11 +283,9 @@
                 0 6px 20px rgba(0,0,0,0.5);
         }
 
-
         .back:active {
             transform: scale(0.92);
         }
-
 
         /* ==================================================
            ОБНОВИТЬ
@@ -348,11 +331,9 @@
                 0 6px 20px rgba(0,0,0,0.5);
         }
 
-
         .refresh-button:active {
             transform: scale(0.92);
         }
-
 
         /* ==================================================
            INPUT
@@ -392,11 +373,9 @@
                 box-shadow 0.2s ease;
         }
 
-
         input::placeholder {
             color: #666;
         }
-
 
         input:focus {
             border-color:
@@ -406,7 +385,6 @@
                 0 0 0 3px rgba(214,177,92,0.06),
                 0 10px 28px rgba(0,0,0,0.35);
         }
-
 
         /* ==================================================
            CARDS
@@ -437,7 +415,6 @@
             overflow: hidden;
         }
 
-
         .card::before {
             content: "";
 
@@ -458,27 +435,22 @@
                 );
         }
 
-
         .card h2 {
             margin-top: 0;
 
             color: var(--white);
         }
 
-
         .card p {
             color: #c7c7c7;
         }
-
 
         .card b {
             color: var(--gold-light);
         }
 
-
         /* ==================================================
            КЕНТЫ
-           КАРТОЧКА УЧАСТНИКА
         ================================================== */
 
         .member {
@@ -489,7 +461,7 @@
 
             text-align: left;
 
-            padding: 11px 12px;
+            padding: 13px;
 
             margin-top: 8px;
 
@@ -512,14 +484,7 @@
             transition:
                 transform 0.15s ease,
                 border-color 0.15s ease;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            gap: 10px;
         }
-
 
         .member:active {
             transform: scale(0.98);
@@ -528,112 +493,40 @@
                 rgba(214,177,92,0.25);
         }
 
-
-        /* Левая часть: номер + ник */
-
-        .member-left {
-            min-width: 0;
-
-            flex: 1;
-
-            display: flex;
-            align-items: center;
-
-            gap: 7px;
-        }
-
-
-        .member-number {
-            font-size: 13px;
-
-            font-weight: 800;
-
-            color: var(--gold);
-
-            flex-shrink: 0;
-        }
-
-
         .member-name {
             font-size: 15px;
             font-weight: 700;
 
-            margin: 0;
+            margin-bottom: 4px;
 
             color: var(--white);
-
-            min-width: 0;
-
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
+        .member-info {
+            font-size: 12px;
 
-        /* Смайлик победителя */
+            color: #777;
 
-        .member-name .winner-emoji {
-            font-size: 11px;
-
-            margin-left: 3px;
+            line-height: 1.4;
         }
-
-
-        /* Правая часть: кубки + изменение */
-
-        .member-right {
-            flex-shrink: 0;
-
-            min-width: 92px;
-
-            display: flex;
-            flex-direction: column;
-
-            align-items: flex-end;
-
-            justify-content: center;
-        }
-
 
         .member-trophies {
             font-size: 13px;
 
-            font-weight: 800;
+            font-weight: 700;
 
-            margin: 0;
+            margin-top: 6px;
 
             color: var(--gold-light);
-
-            line-height: 1.2;
-
-            white-space: nowrap;
         }
 
-
         .member-daily {
-            font-size: 10px;
+            font-size: 12px;
 
             font-weight: 700;
 
             margin-top: 3px;
-
-            line-height: 1.2;
-
-            text-align: right;
-
-            white-space: nowrap;
         }
-
-
-        .member-daily span {
-            font-size: 9px;
-        }
-
-
-        .member-info {
-            display: none;
-        }
-
 
         /* ==================================================
            ТОП
@@ -653,11 +546,9 @@
             letter-spacing: 0.2px;
         }
 
-
         .ranking {
             margin-top: 10px;
         }
-
 
         .ranking-item {
             display: flex;
@@ -685,7 +576,6 @@
                 0 6px 20px rgba(0,0,0,0.25);
         }
 
-
         .ranking-left {
             display: flex;
 
@@ -693,7 +583,6 @@
 
             min-width: 0;
         }
-
 
         .ranking-number {
             width: 28px;
@@ -707,7 +596,6 @@
             flex-shrink: 0;
         }
 
-
         .ranking-name {
             font-size: 15px;
 
@@ -717,7 +605,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
 
         .ranking-value {
             font-size: 14px;
@@ -730,7 +617,6 @@
 
             color: var(--gold-light);
         }
-
 
         /* ==================================================
            СМАЙЛИК ПОБЕДИТЕЛЯ
@@ -751,7 +637,6 @@
                 );
         }
 
-
         .profile-name-line {
             display: flex;
 
@@ -761,7 +646,6 @@
 
             flex-wrap: wrap;
         }
-
 
         /* ==================================================
            НАГРАДА
@@ -780,7 +664,6 @@
                 );
         }
 
-
         .reward-message {
             text-align: center;
 
@@ -788,7 +671,6 @@
 
             color: #bdbdbd;
         }
-
 
         .emoji-grid {
             display: grid;
@@ -800,7 +682,6 @@
 
             margin-top: 18px;
         }
-
 
         .emoji-button {
             border:
@@ -831,14 +712,12 @@
                 border-color 0.15s ease;
         }
 
-
         .emoji-button:active {
             transform: scale(0.92);
 
             border-color:
                 rgba(214,177,92,0.35);
         }
-
 
         .reward-selected {
             text-align: center;
@@ -850,7 +729,6 @@
             color: var(--gold-light);
         }
 
-
         /* ==================================================
            PREMIUM SCROLLBAR
         ================================================== */
@@ -859,17 +737,14 @@
             width: 4px;
         }
 
-
         ::-webkit-scrollbar-track {
             background: #050505;
         }
-
 
         ::-webkit-scrollbar-thumb {
             background: #292929;
             border-radius: 10px;
         }
-
 
         /* ==================================================
            SELECTION
@@ -1269,8 +1144,12 @@
     const MY_CLAN_TAG =
         "GCGJ9VJV";
 
+    /*
+     * ГЛАВА КЛАНА
+     * Статус определяется ТОЛЬКО по этому тегу.
+     */
     const LEADER_TAG =
-        "VPQRJ8LV";
+        "VPQRJ8LVG";
 
 
     // ==================================================
@@ -1892,12 +1771,12 @@
                 ""
             );
 
+        /*
+         * ВАЖНО:
+         * Глава определяется ТОЛЬКО по тегу.
+         */
         const isLeader =
-            tag === LEADER_TAG ||
-            name
-                .trim()
-                .toLowerCase() ===
-            "pohuy";
+            tag === LEADER_TAG;
 
         const isClanMember =
             clanTag === MY_CLAN_TAG;
@@ -1908,7 +1787,7 @@
 
             clanStatus = `
                 <p>
-                    ⚜️ <b>Лидер</b> ⚜️
+                    ⚜️ <b>Глава</b> ⚜️
                 </p>
             `;
 
@@ -2393,7 +2272,6 @@
 
             `;
 
-
             html += `
 
                 <div class="ranking-title">
@@ -2403,7 +2281,6 @@
                 <div class="ranking">
 
             `;
-
 
             for (
                 let index = 0;
@@ -2486,11 +2363,9 @@
 
             }
 
-
             html += `
                 </div>
             `;
-
 
             html += `
 
@@ -2501,7 +2376,6 @@
                 <div class="ranking">
 
             `;
-
 
             for (
                 let index = 0;
@@ -2584,15 +2458,12 @@
 
             }
 
-
             html += `
                 </div>
             `;
 
-
             result.innerHTML =
                 html;
-
 
         } catch (error) {
 
@@ -2715,7 +2586,6 @@
 
             `;
 
-
             members.forEach(
                 (member, index) => {
 
@@ -2742,11 +2612,6 @@
                         member.trophies ??
                         "—";
 
-
-                    /* ======================================
-                       ИЗМЕНЕНИЕ КУБКОВ ЗА ПОСЛЕДНИЕ СУТКИ
-                       ====================================== */
-
                     let dailyHtml =
                         "";
 
@@ -2765,17 +2630,9 @@
                         ) {
 
                             dailyHtml = `
-                                <div
-                                    class="member-daily"
-                                    style="color:#55d66f;"
-                                >
+                                <div class="member-daily">
                                     🟢 +${change}
-                                    <span
-                                        style="
-                                            font-weight:500;
-                                            opacity:0.7;
-                                        "
-                                    >
+                                    <span style="font-weight:500; opacity:0.7;">
                                         (за последние сутки)
                                     </span>
                                 </div>
@@ -2786,17 +2643,9 @@
                         ) {
 
                             dailyHtml = `
-                                <div
-                                    class="member-daily"
-                                    style="color:#ff5c5c;"
-                                >
+                                <div class="member-daily">
                                     🔴 ${change}
-                                    <span
-                                        style="
-                                            font-weight:500;
-                                            opacity:0.7;
-                                        "
-                                    >
+                                    <span style="font-weight:500; opacity:0.7;">
                                         (за последние сутки)
                                     </span>
                                 </div>
@@ -2805,17 +2654,9 @@
                         } else {
 
                             dailyHtml = `
-                                <div
-                                    class="member-daily"
-                                    style="color:#999;"
-                                >
+                                <div class="member-daily">
                                     ⚪ 0
-                                    <span
-                                        style="
-                                            font-weight:500;
-                                            opacity:0.7;
-                                        "
-                                    >
+                                    <span style="font-weight:500; opacity:0.7;">
                                         (за последние сутки)
                                     </span>
                                 </div>
@@ -2825,13 +2666,11 @@
 
                     }
 
-
                     const memberEmoji =
                         member.reward_emoji ||
                         member.rewardEmoji ||
                         member.emoji ||
                         "";
-
 
                     html += `
 
@@ -2840,41 +2679,35 @@
                             onclick="openMemberProfile('${safeTag}')"
                         >
 
-                            <!-- ЛЕВАЯ ЧАСТЬ -->
+                            <div class="member-name">
 
-                            <div class="member-left">
+                                ${index + 1}.
+                                ${safeName}
 
-                                <div class="member-number">
-                                    ${index + 1}.
-                                </div>
-
-                                <div class="member-name">
-
-                                    ${safeName}
-
-                                    ${rewardEmojiHtml(
-                                        memberEmoji
-                                    )}
-
-                                </div>
+                                ${rewardEmojiHtml(
+                                    memberEmoji
+                                )}
 
                             </div>
 
+                            <div class="member-info">
 
-                            <!-- ПРАВАЯ ЧАСТЬ -->
-
-                            <div class="member-right">
-
-                                <div class="member-trophies">
-
-                                    🏆
-                                    ${trophies}
-
-                                </div>
-
-                                ${dailyHtml}
+                                ${
+                                    member.tag
+                                        ? "#" + safeTag
+                                        : ""
+                                }
 
                             </div>
+
+                            <div class="member-trophies">
+
+                                🏆
+                                ${trophies}
+
+                            </div>
+
+                            ${dailyHtml}
 
                         </button>
 
@@ -2883,10 +2716,8 @@
                 }
             );
 
-
             result.innerHTML =
                 html;
-
 
         } catch (error) {
 
@@ -2940,7 +2771,6 @@
 
             </div>
         `;
-
 
         try {
 
@@ -3020,7 +2850,6 @@
                     cleanTag,
                     emoji
                 );
-
 
         } catch (error) {
 
