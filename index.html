@@ -478,7 +478,7 @@
 
         /* ==================================================
            КЕНТЫ
-           НОВЫЙ ВИД
+           КАРТОЧКА УЧАСТНИКА
         ================================================== */
 
         .member {
@@ -512,6 +512,12 @@
             transition:
                 transform 0.15s ease,
                 border-color 0.15s ease;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 10px;
         }
 
 
@@ -523,33 +529,28 @@
         }
 
 
-        /*
-         * Главная строка кента:
-         * слева номер + имя + маленький смайлик
-         * справа кубки + изменение
-         */
-
-        .member-main {
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            width: 100%;
-
-            gap: 8px;
-        }
-
+        /* Левая часть: номер + ник */
 
         .member-left {
-            display: flex;
-
-            align-items: center;
-
             min-width: 0;
 
             flex: 1;
+
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+        }
+
+
+        .member-number {
+            font-size: 13px;
+
+            font-weight: 800;
+
+            color: var(--gold);
+
+            flex-shrink: 0;
         }
 
 
@@ -563,102 +564,74 @@
 
             min-width: 0;
 
-            overflow: hidden;
-
-            text-overflow: ellipsis;
-
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
 
-        /*
-         * Смайлик уменьшен примерно в 2 раза
-         */
+        /* Смайлик победителя */
 
-        .member .winner-emoji {
-            margin-left: 4px;
+        .member-name .winner-emoji {
+            font-size: 11px;
 
-            font-size: 9px;
-
-            line-height: 1;
-
-            display: inline-block;
-
-            vertical-align: middle;
-
-            filter:
-                drop-shadow(
-                    0 0 3px rgba(214,177,92,0.12)
-                );
+            margin-left: 3px;
         }
 
 
-        /*
-         * Правая часть:
-         * 🏆 кубки
-         * + / - за последнюю неделю
-         */
+        /* Правая часть: кубки + изменение */
 
-        .member-stats {
-            display: flex;
-
-            align-items: center;
-
-            justify-content: flex-end;
-
-            gap: 8px;
-
+        .member-right {
             flex-shrink: 0;
 
-            white-space: nowrap;
+            min-width: 92px;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: flex-end;
+
+            justify-content: center;
         }
 
 
         .member-trophies {
             font-size: 13px;
 
-            font-weight: 700;
+            font-weight: 800;
 
             margin: 0;
 
             color: var(--gold-light);
+
+            line-height: 1.2;
 
             white-space: nowrap;
         }
 
 
         .member-daily {
-            font-size: 11px;
+            font-size: 10px;
 
             font-weight: 700;
 
-            margin: 0;
+            margin-top: 3px;
 
-            white-space: nowrap;
+            line-height: 1.2;
 
             text-align: right;
+
+            white-space: nowrap;
         }
 
 
-        .member-daily-note {
-            font-weight: 500;
-
-            opacity: 0.7;
-
-            margin-left: 2px;
+        .member-daily span {
+            font-size: 9px;
         }
 
 
         .member-info {
-            font-size: 11px;
-
-            color: #777;
-
-            line-height: 1.3;
-
-            margin-top: 4px;
-
-            padding-left: 22px;
+            display: none;
         }
 
 
@@ -2770,9 +2743,9 @@
                         "—";
 
 
-                    /* ==========================================
-                       ИЗМЕНЕНИЕ КУБКОВ ЗА ПОСЛЕДНЮЮ НЕДЕЛЮ
-                       ========================================== */
+                    /* ======================================
+                       ИЗМЕНЕНИЕ КУБКОВ ЗА ПОСЛЕДНИЕ СУТКИ
+                       ====================================== */
 
                     let dailyHtml =
                         "";
@@ -2792,10 +2765,18 @@
                         ) {
 
                             dailyHtml = `
-                                <div class="member-daily">
+                                <div
+                                    class="member-daily"
+                                    style="color:#55d66f;"
+                                >
                                     🟢 +${change}
-                                    <span class="member-daily-note">
-                                        (за последнюю неделю)
+                                    <span
+                                        style="
+                                            font-weight:500;
+                                            opacity:0.7;
+                                        "
+                                    >
+                                        (за последние сутки)
                                     </span>
                                 </div>
                             `;
@@ -2805,10 +2786,18 @@
                         ) {
 
                             dailyHtml = `
-                                <div class="member-daily">
+                                <div
+                                    class="member-daily"
+                                    style="color:#ff5c5c;"
+                                >
                                     🔴 ${change}
-                                    <span class="member-daily-note">
-                                        (за последнюю неделю)
+                                    <span
+                                        style="
+                                            font-weight:500;
+                                            opacity:0.7;
+                                        "
+                                    >
+                                        (за последние сутки)
                                     </span>
                                 </div>
                             `;
@@ -2816,10 +2805,18 @@
                         } else {
 
                             dailyHtml = `
-                                <div class="member-daily">
+                                <div
+                                    class="member-daily"
+                                    style="color:#999;"
+                                >
                                     ⚪ 0
-                                    <span class="member-daily-note">
-                                        (за последнюю неделю)
+                                    <span
+                                        style="
+                                            font-weight:500;
+                                            opacity:0.7;
+                                        "
+                                    >
+                                        (за последние сутки)
                                     </span>
                                 </div>
                             `;
@@ -2843,47 +2840,39 @@
                             onclick="openMemberProfile('${safeTag}')"
                         >
 
-                            <div class="member-main">
+                            <!-- ЛЕВАЯ ЧАСТЬ -->
 
-                                <div class="member-left">
+                            <div class="member-left">
 
-                                    <div class="member-name">
-
-                                        ${index + 1}.
-                                        ${safeName}
-
-                                        ${rewardEmojiHtml(
-                                            memberEmoji
-                                        )}
-
-                                    </div>
-
+                                <div class="member-number">
+                                    ${index + 1}.
                                 </div>
 
+                                <div class="member-name">
 
-                                <div class="member-stats">
+                                    ${safeName}
 
-                                    <div class="member-trophies">
-
-                                        🏆
-                                        ${trophies}
-
-                                    </div>
-
-                                    ${dailyHtml}
+                                    ${rewardEmojiHtml(
+                                        memberEmoji
+                                    )}
 
                                 </div>
 
                             </div>
 
 
-                            <div class="member-info">
+                            <!-- ПРАВАЯ ЧАСТЬ -->
 
-                                ${
-                                    member.tag
-                                        ? "#" + safeTag
-                                        : ""
-                                }
+                            <div class="member-right">
+
+                                <div class="member-trophies">
+
+                                    🏆
+                                    ${trophies}
+
+                                </div>
+
+                                ${dailyHtml}
 
                             </div>
 
