@@ -2,24 +2,29 @@ import { neon } from "@neondatabase/serverless";
 
 export default async function handler(req, res) {
 
-  const token = process.env.CR_API_TOKEN;
+  const token =
+    process.env.CR_API_TOKEN;
 
   if (!token) {
     return res.status(500).json({
-      error: "CR_API_TOKEN не найден в Vercel"
+      error:
+        "CR_API_TOKEN не найден в Vercel"
     });
   }
 
   try {
 
-    const sql = neon(process.env.DATABASE_URL);
+    const sql =
+      neon(process.env.DATABASE_URL);
 
     // ==========================================
     // TELEGRAM ID
     // ==========================================
 
     const telegramId =
-      String(req.query.telegram_id || "").trim();
+      String(
+        req.query.telegram_id || ""
+      ).trim();
 
 
     // ==========================================
@@ -27,7 +32,9 @@ export default async function handler(req, res) {
     // ==========================================
 
     const tag =
-      String(req.query.tag || "")
+      String(
+        req.query.tag || ""
+      )
         .replace(/^#+/, "")
         .trim()
         .toUpperCase();
@@ -40,7 +47,8 @@ export default async function handler(req, res) {
     if (!tag) {
 
       return res.status(400).json({
-        error: "Укажи тег игрока"
+        error:
+          "Укажи тег игрока"
       });
 
     }
@@ -48,22 +56,26 @@ export default async function handler(req, res) {
 
     // ==========================================
     // CLASH ROYALE API
-    // Работает для любого игрока
     // ==========================================
 
     const url =
       `https://proxy.royaleapi.dev/v1/players/%23${encodeURIComponent(tag)}`;
 
-
     const response =
-      await fetch(url, {
-        method: "GET",
+      await fetch(
+        url,
+        {
+          method: "GET",
 
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json"
+          headers: {
+            Authorization:
+              `Bearer ${token}`,
+
+            Accept:
+              "application/json"
+          }
         }
-      });
+      );
 
 
     const text =
@@ -74,13 +86,17 @@ export default async function handler(req, res) {
 
     try {
 
-      data = JSON.parse(text);
+      data =
+        JSON.parse(text);
 
     } catch {
 
       return res.status(502).json({
-        error: "API вернул не JSON",
-        response: text
+        error:
+          "API вернул не JSON",
+
+        response:
+          text
       });
 
     }
@@ -92,7 +108,9 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
 
-      return res.status(response.status).json(data);
+      return res.status(
+        response.status
+      ).json(data);
 
     }
 
@@ -105,7 +123,9 @@ export default async function handler(req, res) {
       "#" + tag;
 
     const trophies =
-      Number(data.trophies || 0);
+      Number(
+        data.trophies || 0
+      );
 
     const playerName =
       data.name || "";
@@ -135,11 +155,20 @@ export default async function handler(req, res) {
 
       ON CONFLICT (player_tag)
       DO UPDATE SET
-        player_name = EXCLUDED.player_name,
-        trophies = EXCLUDED.trophies,
-        wins = EXCLUDED.wins,
-        losses = EXCLUDED.losses,
-        updated_at = NOW()
+        player_name =
+          EXCLUDED.player_name,
+
+        trophies =
+          EXCLUDED.trophies,
+
+        wins =
+          EXCLUDED.wins,
+
+        losses =
+          EXCLUDED.losses,
+
+        updated_at =
+          NOW()
     `;
 
 
@@ -151,7 +180,8 @@ export default async function handler(req, res) {
       await sql`
         SELECT trophies
         FROM trophy_history
-        WHERE player_tag = ${playerTag}
+        WHERE player_tag =
+          ${playerTag}
         ORDER BY recorded_at DESC
         LIMIT 1
       `;
@@ -159,7 +189,9 @@ export default async function handler(req, res) {
 
     if (
       lastHistory.length === 0 ||
-      Number(lastHistory[0].trophies) !== trophies
+      Number(
+        lastHistory[0].trophies
+      ) !== trophies
     ) {
 
       await sql`
@@ -177,8 +209,7 @@ export default async function handler(req, res) {
 
 
     // ==========================================
-    // ЕСЛИ ЭТО ПРИВЯЗКА ПОЛЬЗОВАТЕЛЯ
-    // telegram_id + tag
+    // ПРИВЯЗКА TELEGRAM
     // ==========================================
 
     if (telegramId) {
@@ -199,10 +230,94 @@ export default async function handler(req, res) {
 
         ON CONFLICT (telegram_id)
         DO UPDATE SET
-          player_tag = EXCLUDED.player_tag,
-          player_name = EXCLUDED.player_name,
-          updated_at = NOW()
+          player_tag =
+            EXCLUDED.player_tag,
+
+          player_name =
+            EXCLUDED.player_name,
+
+          updated_at =
+            NOW()
       `;
+
+    }
+
+
+    // ==========================================
+    // ИЩЕМ ВЛАДЕЛЬЦА TELEGRAM
+    // ==========================================
+
+    const linkedUser =
+      await sql`
+        SELECT telegram_id
+        FROM telegram_players
+        WHERE player_tag =
+          ${playerTag}
+        LIMIT 1
+      `;
+
+
+    // ==========================================
+    // ИЩЕМ НАГРАДУ
+    // ==========================================
+
+    let rewardEmoji = null;
+
+    let rewardClaimed = false;
+
+    let rewardTelegramId = null;
+
+
+    if (linkedUser.length > 0) {
+
+      rewardTelegramId =
+        String(
+          linkedUser[0].telegram_id
+        );
+
+    }
+
+
+    // Если telegram_id передан напрямую,
+    // используем его
+
+    if (telegramId) {
+
+      rewardTelegramId =
+        telegramId;
+
+    }
+
+
+    if (rewardTelegramId) {
+
+      const rewardResult =
+        await sql`
+          SELECT
+            reward_emoji,
+            reward_claimed
+          FROM player_rewards
+          WHERE telegram_id =
+            ${rewardTelegramId}
+          LIMIT 1
+        `;
+
+
+      if (rewardResult.length > 0) {
+
+        rewardClaimed =
+          rewardResult[0]
+            .reward_claimed === true;
+
+        if (rewardClaimed) {
+
+          rewardEmoji =
+            rewardResult[0]
+              .reward_emoji || null;
+
+        }
+
+      }
 
     }
 
@@ -215,12 +330,34 @@ export default async function handler(req, res) {
 
       ...data,
 
-      tag: playerTag,
+      tag:
+        playerTag,
+
+      reward_emoji:
+        rewardEmoji,
+
+      reward_claimed:
+        rewardClaimed,
 
       neon: {
-        saved: true,
-        trophy_history: true,
-        telegram_linked: Boolean(telegramId)
+
+        saved:
+          true,
+
+        trophy_history:
+          true,
+
+        telegram_linked:
+          Boolean(
+            linkedUser.length > 0 ||
+            telegramId
+          ),
+
+        reward_loaded:
+          Boolean(
+            rewardEmoji
+          )
+
       }
 
     });
@@ -234,8 +371,13 @@ export default async function handler(req, res) {
     );
 
     return res.status(500).json({
-      error: "Ошибка подключения",
-      details: error.message
+
+      error:
+        "Ошибка подключения",
+
+      details:
+        error.message
+
     });
 
   }
