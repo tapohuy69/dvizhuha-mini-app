@@ -10,148 +10,46 @@ export default async function handler(req, res) {
     });
   }
 
-  const sql = neon(process.env.DATABASE_URL);
+  try {
+
+    const sql = neon(process.env.DATABASE_URL);
+
+    // ==========================================
+    // TELEGRAM ID
+    // ==========================================
+
+    const telegramId =
+      String(req.query.telegram_id || "").trim();
 
 
-  // ==========================================
-  // TELEGRAM ID
-  // ==========================================
+    // ==========================================
+    // TAG
+    // ==========================================
 
-  const telegramId =
-    String(req.query.telegram_id || "").trim();
-
-
-  // ==========================================
-  // TAG
-  // ==========================================
-
-  const tag =
-    String(req.query.tag || "")
-      .replace(/^#+/, "")
-      .trim()
-      .toUpperCase();
+    const tag =
+      String(req.query.tag || "")
+        .replace(/^#+/, "")
+        .trim()
+        .toUpperCase();
 
 
-  // ==========================================
-  // МОЙ ПРОФИЛЬ
-  // telegram_id → player_tag
-  // ==========================================
+    // ==========================================
+    // ПРОВЕРКА ТЕГА
+    // ==========================================
 
-  if (telegramId && !tag) {
+    if (!tag) {
 
-    try {
-
-      const linked = await sql`
-        SELECT
-          player_tag
-        FROM telegram_players
-        WHERE telegram_id = ${telegramId}
-        LIMIT 1
-      `;
-
-
-      if (linked.length === 0) {
-
-        return res.status(404).json({
-          error: "PLAYER_NOT_LINKED"
-        });
-
-      }
-
-
-      const playerTag =
-        String(linked[0].player_tag || "")
-          .replace(/^#+/, "")
-          .toUpperCase();
-
-
-      if (!playerTag) {
-
-        return res.status(404).json({
-          error: "PLAYER_NOT_LINKED"
-        });
-
-      }
-
-
-      const url =
-        `https://proxy.royaleapi.dev/v1/players/%23${encodeURIComponent(playerTag)}`;
-
-
-      const response =
-        await fetch(url, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json"
-          }
-        });
-
-
-      const text =
-        await response.text();
-
-
-      let data;
-
-
-      try {
-
-        data = JSON.parse(text);
-
-      } catch {
-
-        return res.status(502).json({
-          error: "API вернул не JSON",
-          response: text
-        });
-
-      }
-
-
-      if (!response.ok) {
-
-        return res.status(response.status).json(data);
-
-      }
-
-
-      return res.status(200).json(data);
-
-    } catch (error) {
-
-      return res.status(500).json({
-        error: "Ошибка получения профиля",
-        details: error.message
+      return res.status(400).json({
+        error: "Укажи тег игрока"
       });
 
     }
-  }
 
 
-  // ==========================================
-  // ПРИВЯЗКА TAG → TELEGRAM
-  // ==========================================
-
-  if (!tag) {
-
-    return res.status(400).json({
-      error: "Укажи тег игрока"
-    });
-
-  }
-
-
-  if (!telegramId) {
-
-    return res.status(400).json({
-      error: "Telegram ID не найден"
-    });
-
-  }
-
-
-  try {
+    // ==========================================
+    // CLASH ROYALE API
+    // Работает для любого игрока
+    // ==========================================
 
     const url =
       `https://proxy.royaleapi.dev/v1/players/%23${encodeURIComponent(tag)}`;
@@ -160,6 +58,7 @@ export default async function handler(req, res) {
     const response =
       await fetch(url, {
         method: "GET",
+
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json"
@@ -172,7 +71,6 @@ export default async function handler(req, res) {
 
 
     let data;
-
 
     try {
 
@@ -188,6 +86,10 @@ export default async function handler(req, res) {
     }
 
 
+    // ==========================================
+    // ИГРОК НЕ НАЙДЕН
+    // ==========================================
+
     if (!response.ok) {
 
       return res.status(response.status).json(data);
@@ -195,20 +97,22 @@ export default async function handler(req, res) {
     }
 
 
+    // ==========================================
+    // ДАННЫЕ ИГРОКА
+    // ==========================================
+
     const playerTag =
       "#" + tag;
 
-
     const trophies =
       Number(data.trophies || 0);
-
 
     const playerName =
       data.name || "";
 
 
     // ==========================================
-    // PLAYERS
+    // СОХРАНЯЕМ В PLAYERS
     // ==========================================
 
     await sql`
@@ -228,6 +132,7 @@ export default async function handler(req, res) {
         ${data.losses || 0},
         NOW()
       )
+
       ON CONFLICT (player_tag)
       DO UPDATE SET
         player_name = EXCLUDED.player_name,
@@ -272,38 +177,50 @@ export default async function handler(req, res) {
 
 
     // ==========================================
-    // TELEGRAM → CLASH ROYALE
+    // ЕСЛИ ЭТО ПРИВЯЗКА ПОЛЬЗОВАТЕЛЯ
+    // telegram_id + tag
     // ==========================================
 
-    await sql`
-      INSERT INTO telegram_players (
-        telegram_id,
-        player_tag,
-        player_name,
-        updated_at
-      )
-      VALUES (
-        ${telegramId},
-        ${playerTag},
-        ${playerName},
-        NOW()
-      )
-      ON CONFLICT (telegram_id)
-      DO UPDATE SET
-        player_tag = EXCLUDED.player_tag,
-        player_name = EXCLUDED.player_name,
-        updated_at = NOW()
-    `;
+    if (telegramId) {
 
+      await sql`
+        INSERT INTO telegram_players (
+          telegram_id,
+          player_tag,
+          player_name,
+          updated_at
+        )
+        VALUES (
+          ${telegramId},
+          ${playerTag},
+          ${playerName},
+          NOW()
+        )
+
+        ON CONFLICT (telegram_id)
+        DO UPDATE SET
+          player_tag = EXCLUDED.player_tag,
+          player_name = EXCLUDED.player_name,
+          updated_at = NOW()
+      `;
+
+    }
+
+
+    // ==========================================
+    // ОТВЕТ
+    // ==========================================
 
     return res.status(200).json({
 
       ...data,
 
+      tag: playerTag,
+
       neon: {
         saved: true,
         trophy_history: true,
-        telegram_linked: true
+        telegram_linked: Boolean(telegramId)
       }
 
     });
@@ -311,10 +228,16 @@ export default async function handler(req, res) {
 
   } catch (error) {
 
+    console.error(
+      "Player API error:",
+      error
+    );
+
     return res.status(500).json({
       error: "Ошибка подключения",
       details: error.message
     });
 
   }
+
 }
