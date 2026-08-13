@@ -4,6 +4,34 @@ export default async function handler(req, res) {
   try {
     const sql = neon(process.env.DATABASE_URL);
 
+    const now = new Date();
+
+    const kyivTime = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Europe/Kyiv",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    }).format(now);
+
+    const kyivDate = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Europe/Kyiv",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).format(now);
+
+    // Работаем только в 00:00 по Киеву
+    if (kyivTime !== "00:00") {
+      return res.status(200).json({
+        ok: true,
+        skipped: true,
+        reason: "Сейчас не 00:00 по Киеву",
+        timezone: "Europe/Kyiv",
+        time: kyivTime,
+        date: kyivDate
+      });
+    }
+
     const clanTag = "GCGJ9VJV";
     const token = process.env.CR_API_TOKEN;
 
@@ -14,15 +42,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // Получаем текущую дату именно по Киеву
-    const kyivDate = new Intl.DateTimeFormat("en-CA", {
-      timeZone: "Europe/Kyiv",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit"
-    }).format(new Date());
-
-    // Получаем участников клана
     const clanResponse = await fetch(
       `https://proxy.royaleapi.dev/v1/clans/%23${clanTag}`,
       {
@@ -77,6 +96,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       ok: true,
+      skipped: false,
       timezone: "Europe/Kyiv",
       date: kyivDate,
       members: members.length,
