@@ -1,3 +1,5 @@
+import { neon } from "@neondatabase/serverless";
+
 export default async function handler(req, res) {
   const tag = (req.query.tag || "")
     .replace("#", "")
@@ -25,8 +27,8 @@ export default async function handler(req, res) {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${token}`,
-        "Accept": "application/json"
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json"
       }
     });
 
@@ -43,11 +45,48 @@ export default async function handler(req, res) {
       };
     }
 
-    return res.status(response.status).json(data);
+    if (!response.ok) {
+      return res.status(response.status).json(data);
+    }
+
+    const sql = neon(process.env.DATABASE_URL);
+
+    await sql`
+      INSERT INTO players (
+        player_tag,
+        player_name,
+        trophies,
+        wins,
+        losses,
+        updated_at
+      )
+      VALUES (
+        ${"#" + tag},
+        ${data.name || ""},
+        ${data.trophies || 0},
+        ${data.wins || 0},
+        ${data.losses || 0},
+        NOW()
+      )
+      ON CONFLICT (player_tag)
+      DO UPDATE SET
+        player_name = EXCLUDED.player_name,
+        trophies = EXCLUDED.trophies,
+        wins = EXCLUDED.wins,
+        losses = EXCLUDED.losses,
+        updated_at = NOW()
+    `;
+
+    return res.status(200).json({
+      ...data,
+      neon: {
+        saved: true
+      }
+    });
 
   } catch (error) {
     return res.status(500).json({
-      error: "Ошибка подключения к Clash Royale API",
+      error: "Ошибка подключения",
       details: error.message
     });
   }
