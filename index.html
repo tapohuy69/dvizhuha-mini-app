@@ -231,6 +231,48 @@
             margin-left: 10px;
             white-space: nowrap;
         }
+
+        /* =========================
+           НАГРАДА
+        ========================= */
+
+        .reward-winner {
+            text-align: center;
+            font-size: 32px;
+            margin: 10px 0 20px;
+        }
+
+        .reward-message {
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .emoji-button {
+            border: none;
+            border-radius: 14px;
+            padding: 12px 4px;
+            font-size: 28px;
+            background: var(--tg-theme-secondary-bg-color, #222222);
+            color: var(--tg-theme-text-color, #ffffff);
+            cursor: pointer;
+        }
+
+        .emoji-button:active {
+            transform: scale(0.92);
+        }
+
+        .reward-selected {
+            text-align: center;
+            font-size: 22px;
+            margin-top: 15px;
+        }
     </style>
 </head>
 
@@ -269,6 +311,17 @@
             onclick="showScreen('players'); loadMembers()"
         >
             👥 Кенты
+        </button>
+
+        <!-- =========================
+             НАГРАДА НЕДЕЛИ
+        ========================= -->
+
+        <button
+            class="button secondary"
+            onclick="openReward()"
+        >
+            🏆 Награда недели
         </button>
 
         <button
@@ -442,6 +495,37 @@
 
 
     <!-- =========================
+         НАГРАДА НЕДЕЛИ
+    ========================= -->
+
+    <div id="reward" class="screen">
+
+        <div class="header">
+            <h1>🏆 Награда недели</h1>
+            <p id="rewardSubtitle">
+                Проверяю твою награду...
+            </p>
+        </div>
+
+        <div id="rewardResult">
+
+            <div class="card">
+                <p>⏳ Проверяю...</p>
+            </div>
+
+        </div>
+
+        <button
+            class="button secondary back"
+            onclick="showScreen('menu')"
+        >
+            ⬅️ Назад
+        </button>
+
+    </div>
+
+
+    <!-- =========================
          ПОМОЩЬ
     ========================= -->
 
@@ -471,6 +555,11 @@
             <p>
                 👥 <b>Кенты</b> —
                 список участников.
+            </p>
+
+            <p>
+                🏆 <b>Награда недели</b> —
+                награда для победителя по сообщениям.
             </p>
 
         </div>
@@ -515,7 +604,6 @@
 
     const MY_CLAN_TAG = "GCGJ9VJV";
 
-    // Тег POHUY
     const LEADER_TAG = "VPQRJ8LV";
 
 
@@ -829,7 +917,6 @@
             data.name || "Без имени";
 
 
-        // Получаем настоящий тег.
         const tag =
             normalizeTag(
                 data.tag ||
@@ -838,43 +925,20 @@
             );
 
 
-        // Тег клана.
         const clanTag =
             normalizeTag(
                 data.clan?.tag || ""
             );
 
 
-        // ==================================================
-        // ЛИДЕР
-        // ==================================================
-
-        /*
-         * Pohuy:
-         *
-         * #VPQRJ8LV
-         *
-         * Дополнительно проверяем имя Pohuy,
-         * чтобы лидер определялся даже если API
-         * неожиданно не передаст тег.
-         */
-
         const isLeader =
             tag === LEADER_TAG ||
             name.trim().toLowerCase() === "pohuy";
 
 
-        // ==================================================
-        // УЧАСТНИК НАШЕГО КЛАНА
-        // ==================================================
-
         const isClanMember =
             clanTag === MY_CLAN_TAG;
 
-
-        // ==================================================
-        // СТАТУС
-        // ==================================================
 
         let clanStatus;
 
@@ -904,10 +968,6 @@
             `;
         }
 
-
-        // ==================================================
-        // КАРТОЧКА
-        // ==================================================
 
         return `
 
@@ -1649,6 +1709,522 @@
     }
 
 
+    // ==================================================
+    // НАГРАДА НЕДЕЛИ
+    // ==================================================
+
+    function openReward() {
+
+        showScreen("reward");
+
+        loadReward();
+    }
+
+
+    // ==================================================
+    // ЗАГРУЗКА НАГРАДЫ
+    // ==================================================
+
+    async function loadReward() {
+
+        const result =
+            document.getElementById("rewardResult");
+
+        const subtitle =
+            document.getElementById("rewardSubtitle");
+
+
+        if (!telegramId) {
+
+            subtitle.textContent =
+                "Telegram ID не найден";
+
+            result.innerHTML = `
+                <div class="card">
+
+                    <h2>❌ Ошибка</h2>
+
+                    <p>
+                        Не удалось получить Telegram ID.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        result.innerHTML = `
+            <div class="card">
+                <p>⏳ Проверяю твою награду...</p>
+            </div>
+        `;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/reward?telegram_id=${encodeURIComponent(telegramId)}`
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                result.innerHTML = `
+                    <div class="card">
+
+                        <h2>❌ Ошибка</h2>
+
+                        <p>
+                            ${escapeHtml(
+                                data.error ||
+                                "Не удалось проверить награду."
+                            )}
+                        </p>
+
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            const winner =
+                data.winner || null;
+
+            const reward =
+                data.reward || null;
+
+
+            // ==========================================
+            // ПОЛЬЗОВАТЕЛЬ НЕ ПОБЕДИТЕЛЬ
+            // ==========================================
+
+            if (!winner) {
+
+                subtitle.textContent =
+                    "Победы пока нет";
+
+                result.innerHTML = `
+
+                    <div class="card">
+
+                        <div class="reward-winner">
+                            🏆
+                        </div>
+
+                        <h2 style="text-align:center;">
+                            Пока без награды
+                        </h2>
+
+                        <p class="reward-message">
+                            Ты ещё не становился
+                            победителем недели.
+                        </p>
+
+                        <p class="reward-message">
+                            Пиши сообщения в группе,
+                            занимай первое место —
+                            и получишь возможность
+                            выбрать смайлик себе в ник.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+            }
+
+
+            subtitle.textContent =
+                "Ты победитель недели!";
+
+
+            // ==========================================
+            // НАГРАДА УЖЕ ВЫБРАНА
+            // ==========================================
+
+            if (
+                reward &&
+                reward.reward_claimed === true
+            ) {
+
+                result.innerHTML = `
+
+                    <div class="card">
+
+                        <div class="reward-winner">
+                            🏆
+                        </div>
+
+                        <h2 style="text-align:center;">
+                            Поздравляем!
+                        </h2>
+
+                        <p class="reward-message">
+                            Ты победил в своей неделе
+                            по количеству сообщений.
+                        </p>
+
+                        <p class="reward-message">
+                            💬 Сообщений:
+                            <b>${winner.message_count}</b>
+                        </p>
+
+                        <div class="reward-selected">
+                            Твой смайлик:
+                            <b>
+                                ${escapeHtml(
+                                    reward.reward_emoji
+                                )}
+                            </b>
+                        </div>
+
+                        <p
+                            class="reward-message"
+                            style="opacity:0.7;"
+                        >
+                            Награда уже выбрана и
+                            повторно изменить её нельзя.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+            }
+
+
+            // ==========================================
+            // МОЖНО ВЫБРАТЬ НАГРАДУ
+            // ==========================================
+
+            result.innerHTML = `
+
+                <div class="card">
+
+                    <div class="reward-winner">
+                        🏆
+                    </div>
+
+                    <h2 style="text-align:center;">
+                        Ты победитель недели!
+                    </h2>
+
+                    <p class="reward-message">
+                        Поздравляем! 🎉
+                    </p>
+
+                    <p class="reward-message">
+                        💬 Ты написал:
+                        <b>${winner.message_count}</b>
+                        сообщений.
+                    </p>
+
+                    <p class="reward-message">
+                        🎁 Выбери любой смайлик
+                        себе в ник:
+                    </p>
+
+                    <div class="emoji-grid">
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('😀')"
+                        >
+                            😀
+                        </button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('😎')"
+                        >
+                            😎
+                        </button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('🔥')"
+                        >
+                            🔥
+                        </button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('❤️')"
+                        >
+                            ❤️
+                        </button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('💀')"
+                        >
+                            💀
+                        </button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('👑')"
+                        >
+                            👑
+                        </button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('⚡')"
+                        >
+                            ⚡
+                        </button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('💎')"
+                        >
+                            💎
+                        </button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('🚀')"
+                        >
+                            🚀
+                        </button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('🤡')"
+                        >
+                            🤡
+                        </button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('🐐')"
+                        >
+                            🐐
+                        </button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('🗿')"
+                        >
+                            🗿
+                        </button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('👽')"
+                        >
+                            👽
+                        </button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('🤠')"
+                        >
+                            🤠
+                        </button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('😈')"
+                        >
+                            😈
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        } catch (error) {
+
+            result.innerHTML = `
+                <div class="card">
+
+                    <h2>❌ Ошибка подключения</h2>
+
+                    <p>
+                        Не удалось проверить награду.
+                    </p>
+
+                </div>
+            `;
+
+        }
+    }
+
+
+    // ==================================================
+    // ВЫБОР СМАЙЛИКА
+    // ==================================================
+
+    async function chooseReward(emoji) {
+
+        const result =
+            document.getElementById("rewardResult");
+
+
+        if (!telegramId) {
+
+            result.innerHTML = `
+                <div class="card">
+
+                    <h2>❌ Ошибка</h2>
+
+                    <p>
+                        Telegram ID не найден.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        result.innerHTML = `
+
+            <div class="card">
+
+                <div class="reward-winner">
+                    ${escapeHtml(emoji)}
+                </div>
+
+                <p class="reward-message">
+                    ⏳ Сохраняю твою награду...
+                </p>
+
+            </div>
+
+        `;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/reward",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            telegram_id:
+                                telegramId,
+
+                            emoji:
+                                emoji
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                result.innerHTML = `
+                    <div class="card">
+
+                        <h2>❌ Не удалось выбрать</h2>
+
+                        <p>
+                            ${escapeHtml(
+                                data.error ||
+                                "Ошибка сохранения награды."
+                            )}
+                        </p>
+
+                        <button
+                            class="button"
+                            onclick="loadReward()"
+                        >
+                            🔄 Попробовать снова
+                        </button>
+
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            result.innerHTML = `
+
+                <div class="card">
+
+                    <div class="reward-winner">
+                        🏆
+                    </div>
+
+                    <h2 style="text-align:center;">
+                        🎉 Награда получена!
+                    </h2>
+
+                    <p class="reward-message">
+                        Твой выбранный смайлик:
+                    </p>
+
+                    <div class="reward-selected">
+                        ${escapeHtml(emoji)}
+                    </div>
+
+                    <p
+                        class="reward-message"
+                        style="opacity:0.7;"
+                    >
+                        Награда успешно сохранена.
+                        Повторно изменить её нельзя.
+                    </p>
+
+                </div>
+
+            `;
+
+        } catch (error) {
+
+            result.innerHTML = `
+
+                <div class="card">
+
+                    <h2>❌ Ошибка подключения</h2>
+
+                    <p>
+                        Не удалось сохранить награду.
+                    </p>
+
+                    <button
+                        class="button"
+                        onclick="loadReward()"
+                    >
+                        🔄 Попробовать снова
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+    }
+
+
     // =========================
     // STARTAPP
     // =========================
@@ -1678,10 +2254,13 @@
             showScreen("players");
             loadMembers();
 
+        } else if (startParam === "reward") {
+
+            openReward();
+
         } else if (startParam === "help") {
 
             showScreen("help");
-
         }
     }
 
