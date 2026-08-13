@@ -13,15 +13,7 @@ export default async function handler(req, res) {
 
     const sql = neon(DATABASE_URL);
 
-    // ==================================================
-    // ОСНОВНОЙ TELEGRAM ЧАТ
-    // ==================================================
-
     const MAIN_CHAT_ID = "-1003932829286";
-
-    // ==================================================
-    // ПОЛУЧАЕМ ПАРАМЕТРЫ
-    // ==================================================
 
     const telegramId = String(
       req.query?.telegram_id ||
@@ -34,21 +26,6 @@ export default async function handler(req, res) {
       req.body?.action ||
       ""
     ).trim();
-
-    // ==================================================
-    // WEEK START
-    // Понедельник = начало недели
-    // ==================================================
-
-    const weekResult = await sql`
-      SELECT
-        date_trunc(
-          'week',
-          NOW() AT TIME ZONE 'Europe/Kyiv'
-        )::date AS week_start
-    `;
-
-    const currentWeekStart = weekResult[0].week_start;
 
     // ==================================================
     // WEEKLY WINNER
@@ -64,11 +41,7 @@ export default async function handler(req, res) {
         });
       }
 
-      // --------------------------------------------------
-      // Последняя завершённая неделя
-      // --------------------------------------------------
-
-      const previousWeekResult = await sql`
+      const weekResult = await sql`
         SELECT
           (
             date_trunc(
@@ -79,18 +52,15 @@ export default async function handler(req, res) {
           )::date AS week_start
       `;
 
-      const weekStart =
-        previousWeekResult[0].week_start;
+      const weekStart = weekResult[0].week_start;
 
-      // --------------------------------------------------
-      // Проверяем, был ли уже победитель
-      // --------------------------------------------------
-
+      // Проверяем, объявлялся ли уже победитель
       const alreadyAnnounced = await sql`
         SELECT *
         FROM weekly_winners
-        WHERE week_start = ${weekStart}
-        ORDER BY id DESC
+        WHERE
+          chat_id = ${MAIN_CHAT_ID}
+          AND week_start = ${weekStart}
         LIMIT 1
       `;
 
@@ -103,10 +73,7 @@ export default async function handler(req, res) {
         });
       }
 
-      // --------------------------------------------------
       // Ищем победителя
-      // --------------------------------------------------
-
       const winnerResult = await sql`
         SELECT
           telegram_id,
@@ -124,10 +91,6 @@ export default async function handler(req, res) {
         LIMIT 1
       `;
 
-      // --------------------------------------------------
-      // Сообщений не было
-      // --------------------------------------------------
-
       if (winnerResult.length === 0) {
         return res.status(200).json({
           ok: true,
@@ -144,63 +107,38 @@ export default async function handler(req, res) {
         winner.username ||
         "Игрок";
 
-      // --------------------------------------------------
-      // Дата окончания недели
-      // --------------------------------------------------
-
-      const weekEndResult = await sql`
-        SELECT
-          (
-            ${weekStart}::date
-            + INTERVAL '6 days'
-          )::date AS week_end
-      `;
-
-      const weekEnd = weekEndResult[0].week_end;
-
-      // --------------------------------------------------
       // Сохраняем победителя
-      //
-      // Используем РЕАЛЬНУЮ структуру weekly_winners
-      // --------------------------------------------------
-
       const savedWinner = await sql`
         INSERT INTO weekly_winners (
           telegram_id,
+          chat_id,
+          display_name,
           username,
-          first_name,
           week_start,
-          week_end,
           message_count,
-          reward_claimed,
-          emoji,
-          created_at
+          announced_at
         )
         VALUES (
           ${String(winner.telegram_id)},
-          ${winner.username || null},
+          ${MAIN_CHAT_ID},
           ${displayName},
+          ${winner.username || null},
           ${weekStart},
-          ${weekEnd},
           ${winner.message_count},
-          FALSE,
-          NULL,
           NOW()
         )
         RETURNING *
       `;
 
-      // --------------------------------------------------
-      // Сообщение в Telegram
-      // --------------------------------------------------
-
+      // Отправляем сообщение в Telegram
       const telegramText =
         `🏆 <b>Победитель недели!</b>\n\n` +
         `🥇 ${escapeHtml(displayName)}\n` +
         `💬 Сообщений: <b>${winner.message_count}</b>\n\n` +
         `🎁 Победитель получает возможность выбрать ` +
         `любой смайлик себе в ник в Mini App.\n\n` +
-        `⚠️ Награда доступна один раз.`;
+        `⚠️ Награда доступна <b>один раз</b> ` +
+        `до следующей победы.`;
 
       const telegramResponse = await fetch(
         `https://api.telegram.org/bot${token}/sendMessage`,
@@ -254,32 +192,26 @@ export default async function handler(req, res) {
         });
       }
 
-      // --------------------------------------------------
       // Последняя победа пользователя
-      // --------------------------------------------------
-
       const winnerResult = await sql`
         SELECT
           id,
           telegram_id,
+          chat_id,
+          display_name,
           username,
-          first_name,
           week_start,
-          week_end,
           message_count,
-          reward_claimed,
-          emoji,
-          created_at
+          announced_at
         FROM weekly_winners
-        WHERE telegram_id = ${telegramId}
-        ORDER BY week_start DESC, id DESC
+        WHERE
+          telegram_id = ${telegramId}
+        ORDER BY
+          week_start DESC
         LIMIT 1
       `;
 
-      // --------------------------------------------------
-      // Награда пользователя
-      // --------------------------------------------------
-
+      // Существующая награда
       const rewardResult = await sql`
         SELECT
           telegram_id,
@@ -288,7 +220,8 @@ export default async function handler(req, res) {
           reward_claimed_at,
           updated_at
         FROM player_rewards
-        WHERE telegram_id = ${telegramId}
+        WHERE
+          telegram_id = ${telegramId}
         LIMIT 1
       `;
 
@@ -298,10 +231,7 @@ export default async function handler(req, res) {
       const reward =
         rewardResult[0] || null;
 
-      // --------------------------------------------------
       // Победы нет
-      // --------------------------------------------------
-
       if (!winner) {
         return res.status(200).json({
           ok: true,
@@ -313,33 +243,25 @@ export default async function handler(req, res) {
         });
       }
 
-      // --------------------------------------------------
-      // Проверяем, можно ли выбрать награду
-      // --------------------------------------------------
-
+      // Если награда существует,
+      // проверяем, была ли она выбрана
       let canChoose = true;
-
-      if (
-        winner.reward_claimed === true
-      ) {
-        canChoose = false;
-      }
 
       if (
         reward &&
         reward.reward_claimed === true &&
         reward.reward_claimed_at
       ) {
-        const claimedAt =
-          new Date(
-            reward.reward_claimed_at
-          );
+        const claimedAt = new Date(
+          reward.reward_claimed_at
+        );
 
-        const winnerWeek =
-          new Date(
-            winner.week_start
-          );
+        const winnerWeek = new Date(
+          winner.week_start
+        );
 
+        // Награда была выбрана после начала
+        // последней победы
         if (claimedAt >= winnerWeek) {
           canChoose = false;
         }
@@ -379,25 +301,25 @@ export default async function handler(req, res) {
         });
       }
 
-      // --------------------------------------------------
-      // Последняя победа
-      // --------------------------------------------------
+      // ================================================
+      // ПОСЛЕДНЯЯ ПОБЕДА
+      // ================================================
 
       const winnerResult = await sql`
         SELECT
           id,
           telegram_id,
+          chat_id,
+          display_name,
           username,
-          first_name,
           week_start,
-          week_end,
           message_count,
-          reward_claimed,
-          emoji,
-          created_at
+          announced_at
         FROM weekly_winners
-        WHERE telegram_id = ${telegramId}
-        ORDER BY week_start DESC, id DESC
+        WHERE
+          telegram_id = ${telegramId}
+        ORDER BY
+          week_start DESC
         LIMIT 1
       `;
 
@@ -409,26 +331,54 @@ export default async function handler(req, res) {
         });
       }
 
-      const winner =
-        winnerResult[0];
+      const winner = winnerResult[0];
 
-      // --------------------------------------------------
-      // Уже получена награда за эту победу?
-      // --------------------------------------------------
+      // ================================================
+      // ПРОВЕРКА СУЩЕСТВУЮЩЕЙ НАГРАДЫ
+      // ================================================
 
-      if (winner.reward_claimed === true) {
-        return res.status(403).json({
-          ok: false,
-          error:
-            "Награда за эту победу уже выбрана.",
-          reward:
-            winner.emoji || null
-        });
+      const rewardResult = await sql`
+        SELECT *
+        FROM player_rewards
+        WHERE
+          telegram_id = ${telegramId}
+        LIMIT 1
+      `;
+
+      const existingReward =
+        rewardResult[0] || null;
+
+      // ================================================
+      // ОБЫЧНАЯ ЗАЩИТА ОТ ПОВТОРНОГО ВЫБОРА
+      // ================================================
+
+      if (
+        existingReward &&
+        existingReward.reward_claimed === true &&
+        existingReward.reward_claimed_at
+      ) {
+        const claimedAt = new Date(
+          existingReward.reward_claimed_at
+        );
+
+        const winnerWeek = new Date(
+          winner.week_start
+        );
+
+        if (claimedAt >= winnerWeek) {
+          return res.status(403).json({
+            ok: false,
+            error:
+              "Награда за эту победу уже выбрана.",
+            reward:
+              existingReward.reward_emoji
+          });
+        }
       }
 
-      // --------------------------------------------------
-      // Сохраняем награду в player_rewards
-      // --------------------------------------------------
+      // ================================================
+      // СОХРАНЯЕМ СМАЙЛИК
+      // ================================================
 
       const savedReward = await sql`
         INSERT INTO player_rewards (
@@ -454,25 +404,11 @@ export default async function handler(req, res) {
         RETURNING *
       `;
 
-      // --------------------------------------------------
-      // Помечаем конкретную победу как использованную
-      // --------------------------------------------------
-
-      const updatedWinner = await sql`
-        UPDATE weekly_winners
-        SET
-          reward_claimed = TRUE,
-          emoji = ${emoji}
-        WHERE id = ${winner.id}
-        RETURNING *
-      `;
-
       return res.status(200).json({
         ok: true,
         message:
           "Награда успешно получена.",
-        winner:
-          updatedWinner[0],
+        winner,
         reward:
           savedReward[0]
       });
@@ -485,18 +421,26 @@ export default async function handler(req, res) {
     let weeklyMessages = 0;
     let totalMessages = 0;
 
-    // --------------------------------------------------
-    // Статистика пользователя
-    // --------------------------------------------------
+    const weekResult = await sql`
+      SELECT
+        date_trunc(
+          'week',
+          NOW() AT TIME ZONE 'Europe/Kyiv'
+        )::date AS week_start
+    `;
 
+    const weekStart =
+      weekResult[0].week_start;
+
+    // Статистика конкретного пользователя
     if (telegramId) {
       const userStats = await sql`
         SELECT
           COUNT(*) FILTER (
-            WHERE week_start = ${currentWeekStart}
-          )::int AS weekly_messages,
+            WHERE week_start = ${weekStart}
+          ) AS weekly_messages,
 
-          COUNT(*)::int AS total_messages
+          COUNT(*) AS total_messages
 
         FROM telegram_message_stats
 
@@ -505,46 +449,39 @@ export default async function handler(req, res) {
           AND telegram_id = ${telegramId}
       `;
 
-      weeklyMessages =
-        Number(
-          userStats[0]?.weekly_messages || 0
-        );
+      weeklyMessages = Number(
+        userStats[0]?.weekly_messages || 0
+      );
 
-      totalMessages =
-        Number(
-          userStats[0]?.total_messages || 0
-        );
+      totalMessages = Number(
+        userStats[0]?.total_messages || 0
+      );
     }
 
-    // --------------------------------------------------
-    // Топ текущей недели
-    // --------------------------------------------------
+    // ==================================================
+    // ТОП ТЕКУЩЕЙ НЕДЕЛИ
+    // ==================================================
 
     const weeklyTop = await sql`
       SELECT
         telegram_id,
         MAX(display_name) AS display_name,
         MAX(username) AS username,
-        COUNT(*)::int AS messages
-
+        COUNT(*) AS messages
       FROM telegram_message_stats
-
       WHERE
         chat_id = ${MAIN_CHAT_ID}
-        AND week_start = ${currentWeekStart}
-
+        AND week_start = ${weekStart}
       GROUP BY telegram_id
-
       ORDER BY
         messages DESC,
         telegram_id ASC
-
       LIMIT 10
     `;
 
-    // --------------------------------------------------
-    // Текущий лидер недели
-    // --------------------------------------------------
+    // ==================================================
+    // ПОБЕДИТЕЛЬ ТЕКУЩЕЙ НЕДЕЛИ
+    // ==================================================
 
     let winner = null;
 
@@ -568,33 +505,29 @@ export default async function handler(req, res) {
       };
     }
 
-    // --------------------------------------------------
-    // Топ за всё время
-    // --------------------------------------------------
+    // ==================================================
+    // ТОП ЗА ВСЁ ВРЕМЯ
+    // ==================================================
 
     const totalTop = await sql`
       SELECT
         telegram_id,
         MAX(display_name) AS display_name,
         MAX(username) AS username,
-        COUNT(*)::int AS messages
-
+        COUNT(*) AS messages
       FROM telegram_message_stats
-
-      WHERE chat_id = ${MAIN_CHAT_ID}
-
+      WHERE
+        chat_id = ${MAIN_CHAT_ID}
       GROUP BY telegram_id
-
       ORDER BY
         messages DESC,
         telegram_id ASC
-
       LIMIT 10
     `;
 
-    // --------------------------------------------------
-    // Формируем топ недели
-    // --------------------------------------------------
+    // ==================================================
+    // ФОРМАТИРУЕМ ТОП НЕДЕЛИ
+    // ==================================================
 
     const weeklyLeaderboard =
       weeklyTop.map(
@@ -617,9 +550,9 @@ export default async function handler(req, res) {
         })
       );
 
-    // --------------------------------------------------
-    // Формируем топ за всё время
-    // --------------------------------------------------
+    // ==================================================
+    // ФОРМАТИРУЕМ ТОП ЗА ВСЁ ВРЕМЯ
+    // ==================================================
 
     const totalLeaderboard =
       totalTop.map(
@@ -643,7 +576,7 @@ export default async function handler(req, res) {
       );
 
     // ==================================================
-    // ОТВЕТ
+    // ОБЫЧНЫЙ ОТВЕТ
     // ==================================================
 
     return res.status(200).json({
@@ -653,11 +586,8 @@ export default async function handler(req, res) {
         telegramId || null,
 
       week: {
-        timezone:
-          "Europe/Kyiv",
-
-        week_start:
-          currentWeekStart
+        timezone: "Europe/Kyiv",
+        week_start: weekStart
       },
 
       statistics: {
@@ -685,19 +615,16 @@ export default async function handler(req, res) {
 
     return res.status(500).json({
       ok: false,
-
       error:
         "Ошибка работы со статистикой",
-
       details:
-        error?.message ||
-        String(error)
+        error.message
     });
   }
 }
 
 // ==================================================
-// HTML ESCAPE
+// ЗАЩИТА HTML
 // ==================================================
 
 function escapeHtml(value) {
