@@ -234,7 +234,10 @@
 
 <div class="container">
 
-    <!-- ГЛАВНОЕ МЕНЮ -->
+    <!-- =========================
+         ГЛАВНОЕ МЕНЮ
+    ========================= -->
+
     <div id="menu" class="screen active">
 
         <div class="header">
@@ -242,17 +245,31 @@
             <p>Выбирай чё надо:</p>
         </div>
 
+        <!-- ПОИСК ЛЮБОГО ИГРОКА -->
+
         <button class="button" onclick="openProfile()">
             👤 Профиль кента
         </button>
+
+        <!-- МОЙ ПРОФИЛЬ -->
+
+        <button class="button" onclick="openMyProfile()">
+            🙋‍♂️ Мой профиль
+        </button>
+
+        <!-- КЛАН -->
 
         <button class="button secondary" onclick="showScreen('clan'); loadClan()">
             🏰 Клан
         </button>
 
+        <!-- КЕНТЫ -->
+
         <button class="button secondary" onclick="showScreen('players'); loadMembers()">
             👥 Кенты
         </button>
+
+        <!-- ПОМОЩЬ -->
 
         <button class="button secondary" onclick="showScreen('help')">
             🆘 Помощь
@@ -261,7 +278,11 @@
     </div>
 
 
-    <!-- ПРОФИЛЬ -->
+    <!-- =========================
+         ПРОФИЛЬ КЕНТА
+         ПОИСК ЛЮБОГО ИГРОКА
+    ========================= -->
+
     <div id="profile" class="screen">
 
         <div class="header">
@@ -289,7 +310,10 @@
     </div>
 
 
-    <!-- КЛАН -->
+    <!-- =========================
+         КЛАН
+    ========================= -->
+
     <div id="clan" class="screen">
 
         <button
@@ -320,7 +344,10 @@
     </div>
 
 
-    <!-- КЕНТЫ -->
+    <!-- =========================
+         КЕНТЫ
+    ========================= -->
+
     <div id="players" class="screen">
 
         <button
@@ -346,7 +373,10 @@
     </div>
 
 
-    <!-- ПРОФИЛЬ УЧАСТНИКА -->
+    <!-- =========================
+         ПРОФИЛЬ УЧАСТНИКА
+    ========================= -->
+
     <div id="memberProfile" class="screen">
 
         <div class="header">
@@ -368,7 +398,10 @@
     </div>
 
 
-    <!-- ПОМОЩЬ -->
+    <!-- =========================
+         ПОМОЩЬ
+    ========================= -->
+
     <div id="help" class="screen">
 
         <div class="header">
@@ -377,6 +410,7 @@
 
         <div class="card">
             <p>👤 <b>Профиль кента</b> — найти игрока по тегу.</p>
+            <p>🙋‍♂️ <b>Мой профиль</b> — посмотреть свой привязанный аккаунт.</p>
             <p>🏰 <b>Клан</b> — информация о клане.</p>
             <p>👥 <b>Кенты</b> — список участников.</p>
         </div>
@@ -403,17 +437,6 @@
 
 
     // =========================
-    // ПОЛУЧЕНИЕ TELEGRAM ID
-    // =========================
-
-    function getTelegramId() {
-
-        return tg.initDataUnsafe?.user?.id || null;
-
-    }
-
-
-    // =========================
     // ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ
     // =========================
 
@@ -430,7 +453,7 @@
 
 
     // =========================
-    // ОТКРЫТИЕ ПРОФИЛЯ
+    // ОТКРЫТИЕ ПРОФИЛЯ КЕНТА
     // =========================
 
     function openProfile() {
@@ -440,6 +463,136 @@
         setTimeout(() => {
             document.getElementById('playerTag').focus();
         }, 100);
+    }
+
+
+    // =========================
+    // МОЙ ПРОФИЛЬ
+    // =========================
+
+    async function openMyProfile() {
+
+        showScreen("memberProfile");
+
+        const result =
+            document.getElementById("memberProfileResult");
+
+        result.innerHTML = `
+            <div class="card">
+                <p>⏳ Загружаю твой профиль...</p>
+            </div>
+        `;
+
+        try {
+
+            const telegramId =
+                tg.initDataUnsafe?.user?.id;
+
+            if (!telegramId) {
+
+                result.innerHTML = `
+                    <div class="card">
+                        <h2>❌ Ошибка</h2>
+                        <p>
+                            Не удалось определить Telegram аккаунт.
+                        </p>
+                    </div>
+                `;
+
+                return;
+            }
+
+            const response = await fetch(
+                `/api/my-profile?telegram_id=${encodeURIComponent(telegramId)}`
+            );
+
+            const data =
+                await response.json();
+
+            if (!response.ok) {
+
+                result.innerHTML = `
+                    <div class="card">
+                        <h2>❌ Аккаунт не привязан</h2>
+
+                        <p>
+                            Сначала найди свой Clash Royale профиль
+                            через «👤 Профиль кента».
+                        </p>
+                    </div>
+                `;
+
+                return;
+            }
+
+            result.innerHTML = `
+                <div class="card">
+
+                    <h2>
+                        🙋‍♂️ ${escapeHtml(
+                            data.name || "Без имени"
+                        )}
+                    </h2>
+
+                    <p>
+                        🏷 Тег:
+                        <b>#${escapeHtml(
+                            normalizeTag(
+                                data.tag ||
+                                data.linked_telegram?.player_tag ||
+                                ""
+                            )
+                        )}</b>
+                    </p>
+
+                    <p>
+                        🏆 Кубки:
+                        <b>${data.trophies ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        🏅 Лучшие кубки:
+                        <b>${data.bestTrophies ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        ⚔️ Победы:
+                        <b>${data.wins ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        💀 Поражения:
+                        <b>${data.losses ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        ⭐ Уровень:
+                        <b>${data.expLevel ?? "—"}</b>
+                    </p>
+
+                    <p>
+                        🏰 Клан:
+                        <b>${escapeHtml(
+                            data.clan?.name || "Без клана"
+                        )}</b>
+                    </p>
+
+                </div>
+            `;
+
+        } catch (error) {
+
+            console.error(error);
+
+            result.innerHTML = `
+                <div class="card">
+                    <h2>❌ Ошибка</h2>
+                    <p>
+                        Не удалось загрузить твой профиль.
+                    </p>
+                </div>
+            `;
+        }
     }
 
 
@@ -459,6 +612,10 @@
         if (startParam === "profile") {
 
             openProfile();
+
+        } else if (startParam === "myprofile") {
+
+            openMyProfile();
 
         } else if (startParam === "clan") {
 
@@ -889,23 +1046,10 @@
             const cleanTag =
                 normalizeTag(tag);
 
-            const telegramId =
-                getTelegramId();
-
-            if (!telegramId) {
-
-                result.innerHTML = `
-                    <div class="card">
-                        <h2>❌ Telegram ID не найден</h2>
-                        <p>Открой Mini App через Telegram.</p>
-                    </div>
-                `;
-
-                return;
-            }
-
             const response = await fetch(
-                `/api/player?tag=${encodeURIComponent(cleanTag)}&telegram_id=${encodeURIComponent(telegramId)}`
+                `/api/player?tag=${encodeURIComponent(cleanTag)}&telegram_id=${encodeURIComponent(
+                    tg.initDataUnsafe?.user?.id || ""
+                )}`
             );
 
             const data =
@@ -1017,21 +1161,6 @@
         const cleanTag =
             normalizeTag(tag);
 
-        const telegramId =
-            getTelegramId();
-
-        if (!telegramId) {
-
-            result.innerHTML = `
-                <div class="card">
-                    <h2>❌ Telegram ID не найден</h2>
-                    <p>Открой Mini App через Telegram.</p>
-                </div>
-            `;
-
-            return;
-        }
-
         result.innerHTML = `
             <div class="card">
                 <h2>🔎 Поиск</h2>
@@ -1045,7 +1174,9 @@
         try {
 
             const response = await fetch(
-                `/api/player?tag=${encodeURIComponent(cleanTag)}&telegram_id=${encodeURIComponent(telegramId)}`
+                `/api/player?tag=${encodeURIComponent(cleanTag)}&telegram_id=${encodeURIComponent(
+                    tg.initDataUnsafe?.user?.id || ""
+                )}`
             );
 
             const data =
