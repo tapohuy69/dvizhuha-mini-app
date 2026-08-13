@@ -5,7 +5,6 @@ export default async function handler(req, res) {
     const sql = neon(process.env.DATABASE_URL);
 
     const clanTag = "GCGJ9VJV";
-
     const token = process.env.CR_API_TOKEN;
 
     if (!token) {
@@ -14,6 +13,14 @@ export default async function handler(req, res) {
         error: "CR_API_TOKEN не найден"
       });
     }
+
+    // Получаем текущую дату именно по Киеву
+    const kyivDate = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Europe/Kyiv",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).format(new Date());
 
     // Получаем участников клана
     const clanResponse = await fetch(
@@ -38,11 +45,8 @@ export default async function handler(req, res) {
 
     const members = clanData.memberList || [];
 
-    const today = new Date().toISOString().slice(0, 10);
-
     let saved = 0;
 
-    // Сохраняем сегодняшний результат каждого игрока
     for (const member of members) {
 
       const playerTag = member.tag;
@@ -60,7 +64,7 @@ export default async function handler(req, res) {
           ${playerTag},
           ${playerName},
           ${trophies},
-          ${today}
+          ${kyivDate}
         )
         ON CONFLICT (player_tag, recorded_date)
         DO UPDATE SET
@@ -73,7 +77,8 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       ok: true,
-      date: today,
+      timezone: "Europe/Kyiv",
+      date: kyivDate,
       members: members.length,
       saved
     });
