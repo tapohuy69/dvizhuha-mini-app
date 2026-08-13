@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -35,25 +36,30 @@
                 var(--tg-theme-text-color, #ffffff);
         }
 
+
         .container {
             max-width: 500px;
             margin: 0 auto;
         }
+
 
         .header {
             text-align: center;
             margin-bottom: 30px;
         }
 
+
         .header h1 {
             margin: 0;
             font-size: 28px;
         }
 
+
         .header p {
             margin-top: 10px;
             opacity: 0.7;
         }
+
 
         .button {
             width: 100%;
@@ -76,9 +82,11 @@
             cursor: pointer;
         }
 
+
         .button:active {
             transform: scale(0.98);
         }
+
 
         .secondary {
             background:
@@ -88,17 +96,21 @@
                 var(--tg-theme-text-color, #ffffff);
         }
 
+
         .screen {
             display: none;
         }
+
 
         .screen.active {
             display: block;
         }
 
+
         .back {
             margin-top: 20px;
         }
+
 
         input {
             width: 100%;
@@ -120,6 +132,7 @@
                 var(--tg-theme-text-color, #ffffff);
         }
 
+
         .card {
             padding: 20px;
 
@@ -131,6 +144,7 @@
                 var(--tg-theme-secondary-bg-color, #222222);
         }
 
+
         .card h2 {
             margin-top: 0;
         }
@@ -141,6 +155,7 @@
         ========================= */
 
         .refresh-button {
+
             position: fixed;
 
             top: 10px;
@@ -170,6 +185,7 @@
                 0 4px 12px rgba(0, 0, 0, 0.25);
         }
 
+
         .refresh-button:active {
             transform: scale(0.92);
         }
@@ -180,6 +196,7 @@
         ========================= */
 
         .member {
+
             width: 100%;
 
             border: none;
@@ -187,6 +204,7 @@
             text-align: left;
 
             padding: 12px;
+
             margin-top: 8px;
 
             border-radius: 14px;
@@ -200,9 +218,11 @@
             cursor: pointer;
         }
 
+
         .member:active {
             transform: scale(0.98);
         }
+
 
         .member-name {
             font-size: 15px;
@@ -210,6 +230,7 @@
 
             margin-bottom: 4px;
         }
+
 
         .member-info {
             font-size: 12px;
@@ -219,15 +240,19 @@
             line-height: 1.4;
         }
 
+
         .member-trophies {
             font-size: 13px;
+
             font-weight: 600;
 
             margin-top: 6px;
         }
 
+
         .member-daily {
             font-size: 12px;
+
             font-weight: 700;
 
             margin-top: 3px;
@@ -235,29 +260,36 @@
 
 
         /* =========================
-           ТОПЫ
+           ТОПЫ В КЛАНЕ
         ========================= */
 
         .ranking-title {
+
             text-align: center;
 
             font-size: 18px;
+
             font-weight: 700;
 
             margin: 24px 0 10px;
         }
 
+
         .ranking {
             margin-top: 10px;
         }
 
+
         .ranking-item {
+
             display: flex;
 
             align-items: center;
+
             justify-content: space-between;
 
             padding: 12px 14px;
+
             margin-top: 8px;
 
             border-radius: 14px;
@@ -266,7 +298,9 @@
                 var(--tg-theme-secondary-bg-color, #222222);
         }
 
+
         .ranking-left {
+
             display: flex;
 
             align-items: center;
@@ -274,26 +308,37 @@
             min-width: 0;
         }
 
+
         .ranking-number {
+
             width: 28px;
 
             font-size: 15px;
+
             font-weight: 700;
 
             flex-shrink: 0;
         }
 
+
         .ranking-name {
+
             font-size: 15px;
+
             font-weight: 600;
 
             white-space: nowrap;
+
             overflow: hidden;
+
             text-overflow: ellipsis;
         }
 
+
         .ranking-value {
+
             font-size: 14px;
+
             font-weight: 700;
 
             margin-left: 10px;
@@ -302,10 +347,12 @@
         }
 
     </style>
+
 </head>
 
 
 <body>
+
 
 <div class="container">
 
@@ -327,8 +374,6 @@
         </div>
 
 
-        <!-- МОЙ ПРОФИЛЬ -->
-
         <button
             class="button"
             onclick="openMyProfile()"
@@ -336,8 +381,6 @@
             👤 Мой профиль
         </button>
 
-
-        <!-- ПРОФИЛЬ ДРУГОГО ИГРОКА -->
 
         <button
             class="button secondary"
@@ -347,8 +390,6 @@
         </button>
 
 
-        <!-- КЛАН -->
-
         <button
             class="button secondary"
             onclick="showScreen('clan'); loadClan()"
@@ -356,8 +397,6 @@
             🏰 Клан
         </button>
 
-
-        <!-- КЕНТЫ -->
 
         <button
             class="button secondary"
@@ -367,8 +406,6 @@
         </button>
 
 
-        <!-- ПОМОЩЬ -->
-
         <button
             class="button secondary"
             onclick="showScreen('help')"
@@ -377,7 +414,6 @@
         </button>
 
     </div>
-
 
 
     <!-- =========================
@@ -407,7 +443,7 @@
             <div class="card">
 
                 <p>
-                    ⏳ Загружаю твой профиль...
+                    ⏳ Проверяю привязку...
                 </p>
 
             </div>
@@ -423,7 +459,6 @@
         </button>
 
     </div>
-
 
 
     <!-- =========================
@@ -475,7 +510,6 @@
         </button>
 
     </div>
-
 
 
     <!-- =========================
@@ -532,7 +566,6 @@
     </div>
 
 
-
     <!-- =========================
          КЕНТЫ
     ========================= -->
@@ -572,7 +605,6 @@
         </button>
 
     </div>
-
 
 
     <!-- =========================
@@ -616,7 +648,6 @@
     </div>
 
 
-
     <!-- =========================
          ПОМОЩЬ
     ========================= -->
@@ -642,15 +673,18 @@
                 твой привязанный Clash Royale аккаунт.
             </p>
 
+
             <p>
                 🔎 <b>Профиль кента</b> —
                 найти любого игрока по тегу.
             </p>
 
+
             <p>
                 🏰 <b>Клан</b> —
                 информация о клане.
             </p>
+
 
             <p>
                 👥 <b>Кенты</b> —
@@ -672,7 +706,6 @@
 </div>
 
 
-
 <script>
 
 
@@ -683,13 +716,14 @@
     const tg =
         window.Telegram.WebApp;
 
+
     tg.ready();
 
     tg.expand();
 
 
     // =========================
-    // TELEGRAM ID ПОЛЬЗОВАТЕЛЯ
+    // TELEGRAM ID
     // =========================
 
     const telegramId =
@@ -698,7 +732,6 @@
                 tg.initDataUnsafe.user.id
             )
             : "";
-
 
 
     // =========================
@@ -711,9 +744,7 @@
             .querySelectorAll(".screen")
             .forEach(screen => {
 
-                screen.classList.remove(
-                    "active"
-                );
+                screen.classList.remove("active");
 
             });
 
@@ -724,8 +755,8 @@
 
 
         window.scrollTo(0, 0);
-    }
 
+    }
 
 
     // =========================
@@ -737,8 +768,8 @@
         showScreen("myProfile");
 
         loadMyProfile();
-    }
 
+    }
 
 
     // =========================
@@ -751,6 +782,7 @@
             document.getElementById(
                 "myProfileResult"
             );
+
 
         const subtitle =
             document.getElementById(
@@ -773,8 +805,7 @@
                     </h2>
 
                     <p>
-                        Не удалось получить
-                        Telegram ID.
+                        Не удалось получить Telegram ID.
                     </p>
 
                 </div>
@@ -782,6 +813,7 @@
             `;
 
             return;
+
         }
 
 
@@ -790,7 +822,7 @@
             <div class="card">
 
                 <p>
-                    ⏳ Загружаю твой профиль...
+                    ⏳ Проверяю привязку...
                 </p>
 
             </div>
@@ -800,20 +832,9 @@
 
         try {
 
-            /*
-             * ВАЖНО:
-             *
-             * Мой профиль теперь обращается
-             * именно к /api/myprofile
-             *
-             * а не к /api/player
-             */
-
             const response =
                 await fetch(
-                    `/api/myprofile?telegram_id=${encodeURIComponent(
-                        telegramId
-                    )}`
+                    `/api/myprofile?telegram_id=${encodeURIComponent(telegramId)}`
                 );
 
 
@@ -821,13 +842,13 @@
                 await response.json();
 
 
-
-            // =================================
-            // АККАУНТ НЕ ПРИВЯЗАН
-            // =================================
+            // ======================================
+            // НЕ ПРИВЯЗАН
+            // ======================================
 
             if (
-                response.status === 404
+                response.status === 404 ||
+                data.error === "PLAYER_NOT_LINKED"
             ) {
 
                 subtitle.textContent =
@@ -839,33 +860,38 @@
                     <div class="card">
 
                         <h2>
-                            🔗 Аккаунт не привязан
+                            🔗 Привяжи свой аккаунт
                         </h2>
 
                         <p>
-                            Сначала нужно привязать
-                            свой Clash Royale аккаунт.
+                            Введи тег своего
+                            Clash Royale аккаунта.
                         </p>
 
-                        <p>
-                            Используй кнопку
-                            <b>🔎 Профиль кента</b>,
-                            введи свой тег и
-                            привяжи его.
-                        </p>
+
+                        <input
+                            id="myPlayerTag"
+                            type="text"
+                            placeholder="#ABC123"
+                            autocomplete="off"
+                        >
+
+
+                        <button
+                            class="button"
+                            onclick="linkMyProfile()"
+                        >
+                            🔗 Привязать
+                        </button>
 
                     </div>
 
                 `;
 
                 return;
+
             }
 
-
-
-            // =================================
-            // ОШИБКА
-            // =================================
 
             if (!response.ok) {
 
@@ -889,13 +915,13 @@
                 `;
 
                 return;
+
             }
 
 
-
-            // =================================
+            // ======================================
             // ПРОФИЛЬ НАЙДЕН
-            // =================================
+            // ======================================
 
             subtitle.textContent =
                 "Твой Clash Royale аккаунт";
@@ -904,19 +930,11 @@
             result.innerHTML =
                 createPlayerCard(
                     data,
-                    data.tag ||
-                    data.telegram?.player_tag ||
-                    ""
+                    data.tag || ""
                 );
 
 
         } catch (error) {
-
-            console.error(
-                "My profile error:",
-                error
-            );
-
 
             result.innerHTML = `
 
@@ -927,8 +945,7 @@
                     </h2>
 
                     <p>
-                        Не удалось получить
-                        твой профиль.
+                        Не удалось получить твой профиль.
                     </p>
 
                 </div>
@@ -939,6 +956,159 @@
 
     }
 
+
+    // =========================
+    // ПРИВЯЗКА МОЕГО ПРОФИЛЯ
+    // =========================
+
+    async function linkMyProfile() {
+
+        const input =
+            document.getElementById(
+                "myPlayerTag"
+            );
+
+
+        const result =
+            document.getElementById(
+                "myProfileResult"
+            );
+
+
+        if (!telegramId) {
+
+            result.innerHTML = `
+
+                <div class="card">
+
+                    ❌ Telegram ID не найден.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        const value =
+            input.value.trim();
+
+
+        if (!value) {
+
+            result.innerHTML = `
+
+                <div class="card">
+
+                    ❌ Введи тег игрока.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        const cleanTag =
+            normalizeTag(value);
+
+
+        result.innerHTML = `
+
+            <div class="card">
+
+                <h2>
+                    ⏳ Проверяю тег...
+                </h2>
+
+                <p>
+                    Проверяю
+                    <b>#${escapeHtml(cleanTag)}</b>
+                </p>
+
+            </div>
+
+        `;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/player?tag=${encodeURIComponent(cleanTag)}&telegram_id=${encodeURIComponent(telegramId)}`
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                result.innerHTML = `
+
+                    <div class="card">
+
+                        <h2>
+                            ❌ Не удалось привязать
+                        </h2>
+
+                        <p>
+                            ${escapeHtml(
+                                data.reason ||
+                                data.error ||
+                                "Проверь тег игрока."
+                            )}
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            document.getElementById(
+                "myProfileSubtitle"
+            ).textContent =
+                "Аккаунт привязан";
+
+
+            // После привязки сразу загружаем
+            // профиль через myprofile.js,
+            // чтобы показать статус клана.
+
+            await loadMyProfile();
+
+
+        } catch (error) {
+
+            result.innerHTML = `
+
+                <div class="card">
+
+                    <h2>
+                        ❌ Ошибка
+                    </h2>
+
+                    <p>
+                        Не удалось подключиться
+                        к серверу.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+    }
 
 
     // =========================
@@ -951,16 +1121,58 @@
     ) {
 
         const name =
-            data.name ||
-            "Без имени";
+            data.name || "Без имени";
 
 
         const tag =
             normalizeTag(
                 data.tag ||
-                data.telegram?.player_tag ||
                 fallbackTag
             );
+
+
+        // ==========================================
+        // СТАТУС КЛАНА
+        // ==========================================
+
+        let clanStatus = "";
+
+
+        if (data.clan_status) {
+
+            if (
+                data.clan_status.is_member
+            ) {
+
+                clanStatus = `
+
+                    <p>
+
+                        <b>
+                            ✅ Реальный кент клана!
+                        </b>
+
+                    </p>
+
+                `;
+
+            } else {
+
+                clanStatus = `
+
+                    <p>
+
+                        <b>
+                            😤 Не кент клана.
+                        </b>
+
+                    </p>
+
+                `;
+
+            }
+
+        }
 
 
         return `
@@ -1030,11 +1242,14 @@
                     </b>
                 </p>
 
+
+                ${clanStatus}
+
             </div>
 
         `;
-    }
 
+    }
 
 
     // =========================
@@ -1057,9 +1272,8 @@
     }
 
 
-
     // =========================
-    // ПОИСК ЛЮБОГО ИГРОКА
+    // ПОИСК ИГРОКА
     // =========================
 
     async function searchPlayer() {
@@ -1082,12 +1296,15 @@
             result.innerHTML = `
 
                 <div class="card">
+
                     ❌ Введи тег игрока.
+
                 </div>
 
             `;
 
             return;
+
         }
 
 
@@ -1119,9 +1336,7 @@
 
             const response =
                 await fetch(
-                    `/api/player?tag=${encodeURIComponent(
-                        cleanTag
-                    )}`
+                    `/api/player?tag=${encodeURIComponent(cleanTag)}`
                 );
 
 
@@ -1140,8 +1355,7 @@
                         </h2>
 
                         <p>
-                            Проверь правильность
-                            тега.
+                            Проверь правильность тега.
                         </p>
 
                     </div>
@@ -1149,6 +1363,7 @@
                 `;
 
                 return;
+
             }
 
 
@@ -1183,9 +1398,8 @@
     }
 
 
-
     // =========================
-    // КЛАН
+    // ЗАГРУЗКА КЛАНА
     // =========================
 
     async function loadClan() {
@@ -1201,8 +1415,7 @@
             <div class="card">
 
                 <p>
-                    ⏳ Загружаю информацию
-                    о клане...
+                    ⏳ Загружаю информацию о клане...
                 </p>
 
             </div>
@@ -1245,6 +1458,7 @@
                 `;
 
                 return;
+
             }
 
 
@@ -1278,6 +1492,7 @@
                 `;
 
                 return;
+
             }
 
 
@@ -1310,14 +1525,17 @@
                 <div class="card">
 
                     <h2>
+
                         ⚜️ ${escapeHtml(
                             clanData.name ||
                             "Движуха"
                         )}
+
                     </h2>
 
 
                     <p>
+
                         🏷 Тег:
                         <b>
                             #${escapeHtml(
@@ -1327,10 +1545,12 @@
                                 )
                             )}
                         </b>
+
                     </p>
 
 
                     <p>
+
                         👥 Кенты:
                         <b>
                             ${
@@ -1339,10 +1559,12 @@
                                 "—"
                             }
                         </b>
+
                     </p>
 
 
                     <p>
+
                         📊 Требования:
                         <b>
                             ${
@@ -1350,6 +1572,7 @@
                                 "—"
                             }
                         </b>
+
                     </p>
 
                 </div>
@@ -1362,6 +1585,7 @@
                 <div class="ranking-title">
                     🏆 Топ-3 по кубкам
                 </div>
+
 
                 <div class="ranking">
 
@@ -1381,21 +1605,28 @@
                                     ${index + 1}.
                                 </div>
 
+
                                 <div class="ranking-name">
+
                                     ${escapeHtml(
                                         member.name ||
                                         "Без имени"
                                     )}
+
                                 </div>
 
                             </div>
 
+
                             <div class="ranking-value">
-                                🏆 ${
+
+                                🏆
+                                ${
                                     Number(
                                         member.trophies
                                     ) || 0
                                 }
+
                             </div>
 
                         </div>
@@ -1417,6 +1648,7 @@
                     🃏 Топ-3 донатеров
                 </div>
 
+
                 <div class="ranking">
 
             `;
@@ -1435,21 +1667,28 @@
                                     ${index + 1}.
                                 </div>
 
+
                                 <div class="ranking-name">
+
                                     ${escapeHtml(
                                         member.name ||
                                         "Без имени"
                                     )}
+
                                 </div>
 
                             </div>
 
+
                             <div class="ranking-value">
-                                🃏 ${
+
+                                🃏
+                                ${
                                     Number(
                                         member.donations
                                     ) || 0
                                 }
+
                             </div>
 
                         </div>
@@ -1465,7 +1704,8 @@
             `;
 
 
-            result.innerHTML = html;
+            result.innerHTML =
+                html;
 
 
         } catch (error) {
@@ -1492,9 +1732,8 @@
     }
 
 
-
     // =========================
-    // КЕНТЫ
+    // ЗАГРУЗКА КЕНТОВ
     // =========================
 
     async function loadMembers() {
@@ -1553,6 +1792,7 @@
                 `;
 
                 return;
+
             }
 
 
@@ -1575,6 +1815,7 @@
                 `;
 
                 return;
+
             }
 
 
@@ -1626,7 +1867,8 @@
                         "—";
 
 
-                    let dailyHtml = "";
+                    let dailyHtml =
+                        "";
 
 
                     if (
@@ -1650,7 +1892,9 @@
 
                             `;
 
-                        } else if (change < 0) {
+                        } else if (
+                            change < 0
+                        ) {
 
                             dailyHtml = `
 
@@ -1683,8 +1927,10 @@
                         >
 
                             <div class="member-name">
+
                                 ${index + 1}.
                                 ${safeName}
+
                             </div>
 
 
@@ -1716,7 +1962,8 @@
             );
 
 
-            result.innerHTML = html;
+            result.innerHTML =
+                html;
 
 
         } catch (error) {
@@ -1741,7 +1988,6 @@
         }
 
     }
-
 
 
     // =========================
@@ -1782,9 +2028,7 @@
 
             const response =
                 await fetch(
-                    `/api/player?tag=${encodeURIComponent(
-                        cleanTag
-                    )}`
+                    `/api/player?tag=${encodeURIComponent(cleanTag)}`
                 );
 
 
@@ -1812,6 +2056,7 @@
                 `;
 
                 return;
+
             }
 
 
@@ -1829,7 +2074,7 @@
                 <div class="card">
 
                     <h2>
-                        ❌ Ошибка
+                        ❌ Ошибка подключения
                     </h2>
 
                     <p>
@@ -1844,7 +2089,6 @@
         }
 
     }
-
 
 
     // =========================
@@ -1863,15 +2107,11 @@
         }
 
 
-        if (startParam === "profile") {
-
-            /*
-             * profile теперь означает
-             * именно "Мой профиль"
-             */
+        if (
+            startParam === "profile"
+        ) {
 
             openMyProfile();
-
 
         } else if (
             startParam === "clan"
@@ -1881,7 +2121,6 @@
 
             loadClan();
 
-
         } else if (
             startParam === "players"
         ) {
@@ -1889,7 +2128,6 @@
             showScreen("players");
 
             loadMembers();
-
 
         } else if (
             startParam === "help"
@@ -1900,7 +2138,6 @@
         }
 
     }
-
 
 
     // =========================
@@ -1915,7 +2152,6 @@
             .toUpperCase();
 
     }
-
 
 
     // =========================
@@ -1949,7 +2185,6 @@
     }
 
 
-
     // =========================
     // ЗАПУСК
     // =========================
@@ -1957,6 +2192,7 @@
     openStartAppScreen();
 
 </script>
+
 
 </body>
 </html>
