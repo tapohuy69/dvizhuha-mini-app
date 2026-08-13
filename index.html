@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
 
     <meta charset="UTF-8">
@@ -22,142 +23,94 @@
         body {
             margin: 0;
             padding: 20px;
-
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
-
-            background:
-                var(--tg-theme-bg-color, #111111);
-
-            color:
-                var(--tg-theme-text-color, #ffffff);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--tg-theme-bg-color, #111111);
+            color: var(--tg-theme-text-color, #ffffff);
         }
-
 
         .container {
             max-width: 500px;
             margin: 0 auto;
         }
 
-
         .header {
             text-align: center;
             margin-bottom: 30px;
         }
-
 
         .header h1 {
             margin: 0;
             font-size: 28px;
         }
 
-
         .header p {
             margin-top: 10px;
             opacity: 0.7;
         }
 
-
         .button {
             width: 100%;
-
             border: none;
             border-radius: 16px;
-
             padding: 18px;
             margin-bottom: 12px;
-
             font-size: 17px;
             font-weight: 600;
-
-            color:
-                var(--tg-theme-button-text-color, #ffffff);
-
-            background:
-                var(--tg-theme-button-color, #2481cc);
-
+            color: var(--tg-theme-button-text-color, #ffffff);
+            background: var(--tg-theme-button-color, #2481cc);
             cursor: pointer;
         }
-
 
         .button:active {
             transform: scale(0.98);
         }
 
-
         .secondary {
-            background:
-                var(--tg-theme-secondary-bg-color, #222222);
-
-            color:
-                var(--tg-theme-text-color, #ffffff);
+            background: var(--tg-theme-secondary-bg-color, #222222);
+            color: var(--tg-theme-text-color, #ffffff);
         }
-
 
         .screen {
             display: none;
         }
 
-
         .screen.active {
             display: block;
         }
-
 
         .back {
             margin-top: 20px;
         }
 
-
         input {
             width: 100%;
-
             padding: 16px;
-
             border-radius: 14px;
             border: none;
             outline: none;
-
             margin: 15px 0 12px;
-
             font-size: 17px;
-
-            background:
-                var(--tg-theme-secondary-bg-color, #222222);
-
-            color:
-                var(--tg-theme-text-color, #ffffff);
+            background: var(--tg-theme-secondary-bg-color, #222222);
+            color: var(--tg-theme-text-color, #ffffff);
         }
-
 
         .card {
             padding: 20px;
-
             border-radius: 18px;
-
             margin-top: 15px;
-
-            background:
-                var(--tg-theme-secondary-bg-color, #222222);
+            background: var(--tg-theme-secondary-bg-color, #222222);
         }
-
 
         .card h2 {
             margin-top: 0;
         }
-
 
         /* =========================
            КНОПКА ОБНОВИТЬ
         ========================= */
 
         .refresh-button {
-
             position: fixed;
-
             top: 10px;
             right: 10px;
 
@@ -165,184 +118,134 @@
             height: 42px;
 
             min-width: 0;
-
             padding: 0;
             margin: 0;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
             border-radius: 12px;
-
             font-size: 20px;
             line-height: 1;
 
             z-index: 9999;
 
-            box-shadow:
-                0 4px 12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
         }
-
 
         .refresh-button:active {
             transform: scale(0.92);
         }
-
 
         /* =========================
            КЕНТЫ
         ========================= */
 
         .member {
-
             width: 100%;
-
             border: none;
-
             text-align: left;
-
             padding: 12px;
-
             margin-top: 8px;
-
             border-radius: 14px;
-
-            background:
-                var(--tg-theme-secondary-bg-color, #222222);
-
-            color:
-                var(--tg-theme-text-color, #ffffff);
-
+            background: var(--tg-theme-secondary-bg-color, #222222);
+            color: var(--tg-theme-text-color, #ffffff);
             cursor: pointer;
         }
-
 
         .member:active {
             transform: scale(0.98);
         }
 
-
         .member-name {
             font-size: 15px;
             font-weight: 700;
-
             margin-bottom: 4px;
         }
 
-
         .member-info {
             font-size: 12px;
-
             opacity: 0.75;
-
             line-height: 1.4;
         }
 
-
         .member-trophies {
             font-size: 13px;
-
             font-weight: 600;
-
             margin-top: 6px;
         }
 
-
         .member-daily {
             font-size: 12px;
-
             font-weight: 700;
-
             margin-top: 3px;
         }
 
+        /* =========================
+           СТАТУС КЛАНА
+        ========================= */
+
+        .clan-status {
+            margin-top: 15px;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: center;
+            background: var(--tg-theme-bg-color, #111111);
+        }
 
         /* =========================
-           ТОПЫ В КЛАНЕ
+           ТОПЫ
         ========================= */
 
         .ranking-title {
-
             text-align: center;
-
             font-size: 18px;
-
             font-weight: 700;
-
             margin: 24px 0 10px;
         }
-
 
         .ranking {
             margin-top: 10px;
         }
 
-
         .ranking-item {
-
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
-
             padding: 12px 14px;
-
             margin-top: 8px;
-
             border-radius: 14px;
-
-            background:
-                var(--tg-theme-secondary-bg-color, #222222);
+            background: var(--tg-theme-secondary-bg-color, #222222);
         }
 
-
         .ranking-left {
-
             display: flex;
-
             align-items: center;
-
             min-width: 0;
         }
 
-
         .ranking-number {
-
             width: 28px;
-
             font-size: 15px;
-
             font-weight: 700;
-
             flex-shrink: 0;
         }
 
-
         .ranking-name {
-
             font-size: 15px;
-
             font-weight: 600;
-
             white-space: nowrap;
-
             overflow: hidden;
-
             text-overflow: ellipsis;
         }
 
-
         .ranking-value {
-
             font-size: 14px;
-
             font-weight: 700;
-
             margin-left: 10px;
-
             white-space: nowrap;
         }
 
@@ -350,15 +253,13 @@
 
 </head>
 
-
 <body>
-
 
 <div class="container">
 
 
     <!-- =========================
-         ГЛАВНОЕ МЕНЮ
+         МЕНЮ
     ========================= -->
 
     <div id="menu" class="screen active">
@@ -416,14 +317,12 @@
     </div>
 
 
+
     <!-- =========================
          МОЙ ПРОФИЛЬ
     ========================= -->
 
-    <div
-        id="myProfile"
-        class="screen"
-    >
+    <div id="myProfile" class="screen">
 
         <div class="header">
 
@@ -441,11 +340,7 @@
         <div id="myProfileResult">
 
             <div class="card">
-
-                <p>
-                    ⏳ Проверяю привязку...
-                </p>
-
+                <p>⏳ Проверяю привязку...</p>
             </div>
 
         </div>
@@ -461,14 +356,12 @@
     </div>
 
 
+
     <!-- =========================
          ПРОФИЛЬ КЕНТА
     ========================= -->
 
-    <div
-        id="profile"
-        class="screen"
-    >
+    <div id="profile" class="screen">
 
         <div class="header">
 
@@ -512,14 +405,12 @@
     </div>
 
 
+
     <!-- =========================
          КЛАН
     ========================= -->
 
-    <div
-        id="clan"
-        class="screen"
-    >
+    <div id="clan" class="screen">
 
         <button
             class="button refresh-button"
@@ -546,11 +437,9 @@
         <div id="clanResult">
 
             <div class="card">
-
                 <p>
                     ⏳ Загружаю информацию о клане...
                 </p>
-
             </div>
 
         </div>
@@ -566,14 +455,12 @@
     </div>
 
 
+
     <!-- =========================
          КЕНТЫ
     ========================= -->
 
-    <div
-        id="players"
-        class="screen"
-    >
+    <div id="players" class="screen">
 
         <button
             class="button refresh-button"
@@ -587,11 +474,9 @@
         <div id="membersResult">
 
             <div class="card">
-
                 <p>
                     ⏳ Загружаю участников...
                 </p>
-
             </div>
 
         </div>
@@ -607,14 +492,12 @@
     </div>
 
 
+
     <!-- =========================
          ПРОФИЛЬ УЧАСТНИКА
     ========================= -->
 
-    <div
-        id="memberProfile"
-        class="screen"
-    >
+    <div id="memberProfile" class="screen">
 
         <div class="header">
 
@@ -628,11 +511,9 @@
         <div id="memberProfileResult">
 
             <div class="card">
-
                 <p>
                     ⏳ Загружаю профиль...
                 </p>
-
             </div>
 
         </div>
@@ -648,14 +529,12 @@
     </div>
 
 
+
     <!-- =========================
          ПОМОЩЬ
     ========================= -->
 
-    <div
-        id="help"
-        class="screen"
-    >
+    <div id="help" class="screen">
 
         <div class="header">
 
@@ -669,26 +548,19 @@
         <div class="card">
 
             <p>
-                👤 <b>Мой профиль</b> —
-                твой привязанный Clash Royale аккаунт.
+                👤 <b>Мой профиль</b> — твой привязанный Clash Royale аккаунт.
             </p>
 
-
             <p>
-                🔎 <b>Профиль кента</b> —
-                найти любого игрока по тегу.
+                🔎 <b>Профиль кента</b> — найти любого игрока по тегу.
             </p>
 
-
             <p>
-                🏰 <b>Клан</b> —
-                информация о клане.
+                🏰 <b>Клан</b> — информация о клане.
             </p>
 
-
             <p>
-                👥 <b>Кенты</b> —
-                список участников.
+                👥 <b>Кенты</b> — список участников.
             </p>
 
         </div>
@@ -706,37 +578,37 @@
 </div>
 
 
+
 <script>
 
-
-    // =========================
+    // ==========================================
     // TELEGRAM MINI APP
-    // =========================
+    // ==========================================
 
     const tg =
         window.Telegram.WebApp;
 
-
     tg.ready();
-
     tg.expand();
 
 
-    // =========================
-    // TELEGRAM ID
-    // =========================
-
     const telegramId =
         tg.initDataUnsafe?.user?.id
-            ? String(
-                tg.initDataUnsafe.user.id
-            )
+            ? String(tg.initDataUnsafe.user.id)
             : "";
 
 
-    // =========================
-    // ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ
-    // =========================
+    // ==========================================
+    // КЛАН
+    // ==========================================
+
+    const CLAN_TAG =
+        "GCGJ9VJV";
+
+
+    // ==========================================
+    // ЭКРАНЫ
+    // ==========================================
 
     function showScreen(screenId) {
 
@@ -759,9 +631,10 @@
     }
 
 
-    // =========================
+
+    // ==========================================
     // МОЙ ПРОФИЛЬ
-    // =========================
+    // ==========================================
 
     function openMyProfile() {
 
@@ -772,9 +645,6 @@
     }
 
 
-    // =========================
-    // ЗАГРУЗКА МОЕГО ПРОФИЛЯ
-    // =========================
 
     async function loadMyProfile() {
 
@@ -800,9 +670,7 @@
 
                 <div class="card">
 
-                    <h2>
-                        ❌ Ошибка
-                    </h2>
+                    <h2>❌ Ошибка</h2>
 
                     <p>
                         Не удалось получить Telegram ID.
@@ -842,10 +710,6 @@
                 await response.json();
 
 
-            // ======================================
-            // НЕ ПРИВЯЗАН
-            // ======================================
-
             if (
                 response.status === 404 ||
                 data.error === "PLAYER_NOT_LINKED"
@@ -864,8 +728,7 @@
                         </h2>
 
                         <p>
-                            Введи тег своего
-                            Clash Royale аккаунта.
+                            Введи тег своего Clash Royale аккаунта.
                         </p>
 
 
@@ -919,10 +782,6 @@
             }
 
 
-            // ======================================
-            // ПРОФИЛЬ НАЙДЕН
-            // ======================================
-
             subtitle.textContent =
                 "Твой Clash Royale аккаунт";
 
@@ -935,6 +794,9 @@
 
 
         } catch (error) {
+
+            console.error(error);
+
 
             result.innerHTML = `
 
@@ -957,9 +819,10 @@
     }
 
 
-    // =========================
-    // ПРИВЯЗКА МОЕГО ПРОФИЛЯ
-    // =========================
+
+    // ==========================================
+    // ПРИВЯЗКА
+    // ==========================================
 
     async function linkMyProfile() {
 
@@ -980,9 +843,7 @@
             result.innerHTML = `
 
                 <div class="card">
-
                     ❌ Telegram ID не найден.
-
                 </div>
 
             `;
@@ -1001,9 +862,7 @@
             result.innerHTML = `
 
                 <div class="card">
-
                     ❌ Введи тег игрока.
-
                 </div>
 
             `;
@@ -1074,20 +933,36 @@
             }
 
 
-            document.getElementById(
-                "myProfileSubtitle"
-            ).textContent =
-                "Аккаунт привязан";
+            document
+                .getElementById(
+                    "myProfileSubtitle"
+                )
+                .textContent =
+                    "Аккаунт привязан";
 
 
-            // После привязки сразу загружаем
-            // профиль через myprofile.js,
-            // чтобы показать статус клана.
+            result.innerHTML = `
 
-            await loadMyProfile();
+                ${createPlayerCard(
+                    data,
+                    cleanTag
+                )}
+
+                <div class="card">
+
+                    <p>
+                        ✅ Clash Royale аккаунт успешно привязан.
+                    </p>
+
+                </div>
+
+            `;
 
 
         } catch (error) {
+
+            console.error(error);
+
 
             result.innerHTML = `
 
@@ -1098,8 +973,7 @@
                     </h2>
 
                     <p>
-                        Не удалось подключиться
-                        к серверу.
+                        Не удалось подключиться к серверу.
                     </p>
 
                 </div>
@@ -1111,17 +985,85 @@
     }
 
 
-    // =========================
-    // СОЗДАНИЕ КАРТОЧКИ ИГРОКА
-    // =========================
+
+    // ==========================================
+    // ПРОВЕРКА КЛАНА
+    // ==========================================
+
+    async function checkClanMembership(tag) {
+
+        try {
+
+            const cleanTag =
+                normalizeTag(tag);
+
+
+            if (!cleanTag) {
+                return false;
+            }
+
+
+            const response =
+                await fetch(
+                    `/api/members?tag=${encodeURIComponent(CLAN_TAG)}`
+                );
+
+
+            if (!response.ok) {
+                return false;
+            }
+
+
+            const data =
+                await response.json();
+
+
+            const members =
+                data.items || [];
+
+
+            return members.some(member => {
+
+                const memberTag =
+                    normalizeTag(
+                        member.tag || ""
+                    );
+
+
+                return memberTag === cleanTag;
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Clan check:",
+                error
+            );
+
+
+            return false;
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // КАРТОЧКА ИГРОКА
+    // ==========================================
 
     function createPlayerCard(
         data,
-        fallbackTag = ""
+        fallbackTag = "",
+        clanStatus = null
     ) {
 
         const name =
-            data.name || "Без имени";
+            data.name ||
+            "Без имени";
 
 
         const tag =
@@ -1131,46 +1073,32 @@
             );
 
 
-        // ==========================================
-        // СТАТУС КЛАНА
-        // ==========================================
-
-        let clanStatus = "";
+        let clanHtml = "";
 
 
-        if (data.clan_status) {
+        if (clanStatus === true) {
 
-            if (
-                data.clan_status.is_member
-            ) {
+            clanHtml = `
 
-                clanStatus = `
+                <div class="clan-status">
 
-                    <p>
+                    ✅ Реальный кент клана!
 
-                        <b>
-                            ✅ Реальный кент клана!
-                        </b>
+                </div>
 
-                    </p>
+            `;
 
-                `;
+        } else if (clanStatus === false) {
 
-            } else {
+            clanHtml = `
 
-                clanStatus = `
+                <div class="clan-status">
 
-                    <p>
+                    😤 Не кент клана.
 
-                        <b>
-                            😤 Не кент клана.
-                        </b>
+                </div>
 
-                    </p>
-
-                `;
-
-            }
+            `;
 
         }
 
@@ -1186,9 +1114,7 @@
 
                 <p>
                     🏷 Тег:
-                    <b>
-                        #${escapeHtml(tag)}
-                    </b>
+                    <b>#${escapeHtml(tag)}</b>
                 </p>
 
 
@@ -1243,7 +1169,7 @@
                 </p>
 
 
-                ${clanStatus}
+                ${clanHtml}
 
             </div>
 
@@ -1252,9 +1178,10 @@
     }
 
 
-    // =========================
+
+    // ==========================================
     // ПРОФИЛЬ КЕНТА
-    // =========================
+    // ==========================================
 
     function openProfile() {
 
@@ -1272,9 +1199,10 @@
     }
 
 
-    // =========================
+
+    // ==========================================
     // ПОИСК ИГРОКА
-    // =========================
+    // ==========================================
 
     async function searchPlayer() {
 
@@ -1296,9 +1224,7 @@
             result.innerHTML = `
 
                 <div class="card">
-
                     ❌ Введи тег игрока.
-
                 </div>
 
             `;
@@ -1322,9 +1248,7 @@
 
                 <p>
                     Ищу игрока
-                    <b>
-                        #${escapeHtml(cleanTag)}
-                    </b>...
+                    <b>#${escapeHtml(cleanTag)}</b>...
                 </p>
 
             </div>
@@ -1367,14 +1291,25 @@
             }
 
 
-            result.innerHTML =
-                createPlayerCard(
-                    data,
+            const isMember =
+                await checkClanMembership(
+                    data.tag ||
                     cleanTag
                 );
 
 
+            result.innerHTML =
+                createPlayerCard(
+                    data,
+                    cleanTag,
+                    isMember
+                );
+
+
         } catch (error) {
+
+            console.error(error);
+
 
             result.innerHTML = `
 
@@ -1385,8 +1320,7 @@
                     </h2>
 
                     <p>
-                        Не удалось подключиться
-                        к серверу.
+                        Не удалось подключиться к серверу.
                     </p>
 
                 </div>
@@ -1398,9 +1332,10 @@
     }
 
 
-    // =========================
-    // ЗАГРУЗКА КЛАНА
-    // =========================
+
+    // ==========================================
+    // КЛАН
+    // ==========================================
 
     async function loadClan() {
 
@@ -1427,7 +1362,7 @@
 
             const clanResponse =
                 await fetch(
-                    "/api/clan?tag=GCGJ9VJV"
+                    `/api/clan?tag=${CLAN_TAG}`
                 );
 
 
@@ -1464,7 +1399,7 @@
 
             const membersResponse =
                 await fetch(
-                    "/api/members?tag=GCGJ9VJV"
+                    `/api/members?tag=${CLAN_TAG}`
                 );
 
 
@@ -1483,8 +1418,7 @@
                         </h2>
 
                         <p>
-                            Не удалось загрузить
-                            участников клана.
+                            Не удалось загрузить участников клана.
                         </p>
 
                     </div>
@@ -1525,32 +1459,27 @@
                 <div class="card">
 
                     <h2>
-
                         ⚜️ ${escapeHtml(
                             clanData.name ||
                             "Движуха"
                         )}
-
                     </h2>
 
 
                     <p>
-
                         🏷 Тег:
                         <b>
                             #${escapeHtml(
                                 normalizeTag(
                                     clanData.tag ||
-                                    "GCGJ9VJV"
+                                    CLAN_TAG
                                 )
                             )}
                         </b>
-
                     </p>
 
 
                     <p>
-
                         👥 Кенты:
                         <b>
                             ${
@@ -1559,12 +1488,10 @@
                                 "—"
                             }
                         </b>
-
                     </p>
 
 
                     <p>
-
                         📊 Требования:
                         <b>
                             ${
@@ -1572,7 +1499,6 @@
                                 "—"
                             }
                         </b>
-
                     </p>
 
                 </div>
@@ -1585,7 +1511,6 @@
                 <div class="ranking-title">
                     🏆 Топ-3 по кубкам
                 </div>
-
 
                 <div class="ranking">
 
@@ -1605,28 +1530,22 @@
                                     ${index + 1}.
                                 </div>
 
-
                                 <div class="ranking-name">
-
                                     ${escapeHtml(
                                         member.name ||
                                         "Без имени"
                                     )}
-
                                 </div>
 
                             </div>
 
 
                             <div class="ranking-value">
-
-                                🏆
-                                ${
+                                🏆 ${
                                     Number(
                                         member.trophies
                                     ) || 0
                                 }
-
                             </div>
 
                         </div>
@@ -1648,7 +1567,6 @@
                     🃏 Топ-3 донатеров
                 </div>
 
-
                 <div class="ranking">
 
             `;
@@ -1667,28 +1585,22 @@
                                     ${index + 1}.
                                 </div>
 
-
                                 <div class="ranking-name">
-
                                     ${escapeHtml(
                                         member.name ||
                                         "Без имени"
                                     )}
-
                                 </div>
 
                             </div>
 
 
                             <div class="ranking-value">
-
-                                🃏
-                                ${
+                                🃏 ${
                                     Number(
                                         member.donations
                                     ) || 0
                                 }
-
                             </div>
 
                         </div>
@@ -1710,6 +1622,9 @@
 
         } catch (error) {
 
+            console.error(error);
+
+
             result.innerHTML = `
 
                 <div class="card">
@@ -1719,8 +1634,7 @@
                     </h2>
 
                     <p>
-                        Не удалось получить
-                        данные клана.
+                        Не удалось получить данные клана.
                     </p>
 
                 </div>
@@ -1732,9 +1646,10 @@
     }
 
 
-    // =========================
-    // ЗАГРУЗКА КЕНТОВ
-    // =========================
+
+    // ==========================================
+    // КЕНТЫ
+    // ==========================================
 
     async function loadMembers() {
 
@@ -1761,7 +1676,7 @@
 
             const response =
                 await fetch(
-                    "/api/members?tag=GCGJ9VJV"
+                    `/api/members?tag=${CLAN_TAG}`
                 );
 
 
@@ -1851,7 +1766,8 @@
                     const cleanTag =
                         normalizeTag(
                             String(
-                                member.tag || ""
+                                member.tag ||
+                                ""
                             )
                         );
 
@@ -1867,8 +1783,7 @@
                         "—";
 
 
-                    let dailyHtml =
-                        "";
+                    let dailyHtml = "";
 
 
                     if (
@@ -1892,9 +1807,7 @@
 
                             `;
 
-                        } else if (
-                            change < 0
-                        ) {
+                        } else if (change < 0) {
 
                             dailyHtml = `
 
@@ -1927,28 +1840,22 @@
                         >
 
                             <div class="member-name">
-
                                 ${index + 1}.
                                 ${safeName}
-
                             </div>
 
 
                             <div class="member-info">
-
                                 ${
                                     member.tag
                                         ? "#" + safeTag
                                         : ""
                                 }
-
                             </div>
 
 
                             <div class="member-trophies">
-
                                 🏆 ${trophies}
-
                             </div>
 
 
@@ -1968,6 +1875,9 @@
 
         } catch (error) {
 
+            console.error(error);
+
+
             result.innerHTML = `
 
                 <div class="card">
@@ -1977,8 +1887,7 @@
                     </h2>
 
                     <p>
-                        Не удалось получить
-                        список участников.
+                        Не удалось получить список участников.
                     </p>
 
                 </div>
@@ -1990,9 +1899,10 @@
     }
 
 
-    // =========================
+
+    // ==========================================
     // ПРОФИЛЬ ИЗ КЕНТОВ
-    // =========================
+    // ==========================================
 
     async function openMemberProfile(tag) {
 
@@ -2047,8 +1957,7 @@
                         </h2>
 
                         <p>
-                            Не удалось загрузить
-                            профиль игрока.
+                            Не удалось загрузить профиль игрока.
                         </p>
 
                     </div>
@@ -2060,14 +1969,29 @@
             }
 
 
-            result.innerHTML =
-                createPlayerCard(
-                    data,
+            // Игрок открыт именно из списка
+            // клана — поэтому здесь проверка
+            // должна вернуть true.
+
+            const isMember =
+                await checkClanMembership(
+                    data.tag ||
                     cleanTag
                 );
 
 
+            result.innerHTML =
+                createPlayerCard(
+                    data,
+                    cleanTag,
+                    isMember
+                );
+
+
         } catch (error) {
+
+            console.error(error);
+
 
             result.innerHTML = `
 
@@ -2078,8 +2002,7 @@
                     </h2>
 
                     <p>
-                        Не удалось подключиться
-                        к серверу.
+                        Не удалось подключиться к серверу.
                     </p>
 
                 </div>
@@ -2091,9 +2014,10 @@
     }
 
 
-    // =========================
+
+    // ==========================================
     // STARTAPP
-    // =========================
+    // ==========================================
 
     function openStartAppScreen() {
 
@@ -2107,31 +2031,23 @@
         }
 
 
-        if (
-            startParam === "profile"
-        ) {
+        if (startParam === "profile") {
 
             openMyProfile();
 
-        } else if (
-            startParam === "clan"
-        ) {
+        } else if (startParam === "clan") {
 
             showScreen("clan");
 
             loadClan();
 
-        } else if (
-            startParam === "players"
-        ) {
+        } else if (startParam === "players") {
 
             showScreen("players");
 
             loadMembers();
 
-        } else if (
-            startParam === "help"
-        ) {
+        } else if (startParam === "help") {
 
             showScreen("help");
 
@@ -2140,9 +2056,10 @@
     }
 
 
-    // =========================
+
+    // ==========================================
     // НОРМАЛИЗАЦИЯ ТЕГА
-    // =========================
+    // ==========================================
 
     function normalizeTag(value) {
 
@@ -2154,45 +2071,32 @@
     }
 
 
-    // =========================
+
+    // ==========================================
     // ЗАЩИТА HTML
-    // =========================
+    // ==========================================
 
     function escapeHtml(value) {
 
         return String(value)
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-            .replace(
-                /</g,
-                "&lt;"
-            )
-            .replace(
-                />/g,
-                "&gt;"
-            )
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-            .replace(
-                /'/g,
-                "&#039;"
-            );
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
 
     }
 
 
-    // =========================
+
+    // ==========================================
     // ЗАПУСК
-    // =========================
+    // ==========================================
 
     openStartAppScreen();
 
 </script>
 
-
 </body>
+
 </html>
