@@ -51,6 +51,9 @@ export default async function handler(req, res) {
 
     const sql = neon(process.env.DATABASE_URL);
 
+    const playerTag = "#" + tag;
+    const trophies = data.trophies || 0;
+
     await sql`
       INSERT INTO players (
         player_tag,
@@ -61,9 +64,9 @@ export default async function handler(req, res) {
         updated_at
       )
       VALUES (
-        ${"#" + tag},
+        ${playerTag},
         ${data.name || ""},
-        ${data.trophies || 0},
+        ${trophies},
         ${data.wins || 0},
         ${data.losses || 0},
         NOW()
@@ -77,10 +80,35 @@ export default async function handler(req, res) {
         updated_at = NOW()
     `;
 
+    const lastHistory = await sql`
+      SELECT trophies
+      FROM trophy_history
+      WHERE player_tag = ${playerTag}
+      ORDER BY recorded_at DESC
+      LIMIT 1
+    `;
+
+    if (
+      lastHistory.length === 0 ||
+      lastHistory[0].trophies !== trophies
+    ) {
+      await sql`
+        INSERT INTO trophy_history (
+          player_tag,
+          trophies
+        )
+        VALUES (
+          ${playerTag},
+          ${trophies}
+        )
+      `;
+    }
+
     return res.status(200).json({
       ...data,
       neon: {
-        saved: true
+        saved: true,
+        trophy_history: true
       }
     });
 
