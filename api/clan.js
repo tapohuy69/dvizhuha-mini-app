@@ -65,7 +65,6 @@ export default async function handler(req, res) {
         week_start,
         message_count
       FROM weekly_winners
-      WHERE chat_id = '-1003932829286'
       ORDER BY week_start DESC
       LIMIT 1
     `;
@@ -87,7 +86,8 @@ export default async function handler(req, res) {
       const reward = rewardResult[0] || null;
 
       weeklyWinner = {
-        telegram_id: String(winner.telegram_id),
+        telegram_id:
+          String(winner.telegram_id),
 
         display_name:
           winner.first_name ||
