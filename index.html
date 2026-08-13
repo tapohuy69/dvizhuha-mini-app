@@ -245,31 +245,23 @@
             <p>Выбирай чё надо:</p>
         </div>
 
-        <!-- ПОИСК ЛЮБОГО ИГРОКА -->
-
-        <button class="button" onclick="openProfile()">
-            👤 Профиль кента
-        </button>
-
-        <!-- МОЙ ПРОФИЛЬ -->
-
+        <!-- НОВАЯ КНОПКА -->
         <button class="button" onclick="openMyProfile()">
-            🙋‍♂️ Мой профиль
+            👤 Мой профиль
         </button>
 
-        <!-- КЛАН -->
+        <!-- ПОИСК ДРУГОГО ИГРОКА -->
+        <button class="button secondary" onclick="openProfile()">
+            🔎 Профиль кента
+        </button>
 
         <button class="button secondary" onclick="showScreen('clan'); loadClan()">
             🏰 Клан
         </button>
 
-        <!-- КЕНТЫ -->
-
         <button class="button secondary" onclick="showScreen('players'); loadMembers()">
             👥 Кенты
         </button>
-
-        <!-- ПОМОЩЬ -->
 
         <button class="button secondary" onclick="showScreen('help')">
             🆘 Помощь
@@ -279,14 +271,39 @@
 
 
     <!-- =========================
+         МОЙ ПРОФИЛЬ
+    ========================= -->
+
+    <div id="myProfile" class="screen">
+
+        <div class="header">
+            <h1>👤 Мой профиль</h1>
+            <p id="myProfileSubtitle">Загрузка...</p>
+        </div>
+
+        <div id="myProfileResult">
+
+            <div class="card">
+                <p>⏳ Проверяю привязку...</p>
+            </div>
+
+        </div>
+
+        <button class="button secondary back" onclick="showScreen('menu')">
+            ⬅️ Назад
+        </button>
+
+    </div>
+
+
+    <!-- =========================
          ПРОФИЛЬ КЕНТА
-         ПОИСК ЛЮБОГО ИГРОКА
     ========================= -->
 
     <div id="profile" class="screen">
 
         <div class="header">
-            <h1>👤 Профиль кента</h1>
+            <h1>🔎 Профиль кента</h1>
             <p>Введи тег игрока</p>
         </div>
 
@@ -409,9 +426,12 @@
         </div>
 
         <div class="card">
-            <p>👤 <b>Профиль кента</b> — найти игрока по тегу.</p>
-            <p>🙋‍♂️ <b>Мой профиль</b> — посмотреть свой привязанный аккаунт.</p>
+            <p>👤 <b>Мой профиль</b> — твой привязанный Clash Royale аккаунт.</p>
+
+            <p>🔎 <b>Профиль кента</b> — найти любого игрока по тегу.</p>
+
             <p>🏰 <b>Клан</b> — информация о клане.</p>
+
             <p>👥 <b>Кенты</b> — список участников.</p>
         </div>
 
@@ -436,6 +456,13 @@
     tg.expand();
 
 
+    // Telegram ID текущего пользователя
+    const telegramId =
+        tg.initDataUnsafe?.user?.id
+            ? String(tg.initDataUnsafe.user.id)
+            : "";
+
+
     // =========================
     // ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ
     // =========================
@@ -453,7 +480,359 @@
 
 
     // =========================
-    // ОТКРЫТИЕ ПРОФИЛЯ КЕНТА
+    // МОЙ ПРОФИЛЬ
+    // =========================
+
+    function openMyProfile() {
+
+        showScreen("myProfile");
+
+        loadMyProfile();
+    }
+
+
+    // =========================
+    // ЗАГРУЗКА МОЕГО ПРОФИЛЯ
+    // =========================
+
+    async function loadMyProfile() {
+
+        const result =
+            document.getElementById("myProfileResult");
+
+        const subtitle =
+            document.getElementById("myProfileSubtitle");
+
+
+        if (!telegramId) {
+
+            subtitle.textContent =
+                "Telegram ID не найден";
+
+            result.innerHTML = `
+                <div class="card">
+
+                    <h2>❌ Ошибка</h2>
+
+                    <p>
+                        Не удалось получить Telegram ID.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        result.innerHTML = `
+            <div class="card">
+                <p>⏳ Проверяю привязку...</p>
+            </div>
+        `;
+
+
+        try {
+
+            const response = await fetch(
+                `/api/player?telegram_id=${encodeURIComponent(telegramId)}`
+            );
+
+            const data =
+                await response.json();
+
+
+            // ======================================
+            // ТЕГ ЕЩЁ НЕ ПРИВЯЗАН
+            // ======================================
+
+            if (
+                response.status === 404 ||
+                data.error === "PLAYER_NOT_LINKED"
+            ) {
+
+                subtitle.textContent =
+                    "Аккаунт ещё не привязан";
+
+                result.innerHTML = `
+
+                    <div class="card">
+
+                        <h2>🔗 Привяжи свой аккаунт</h2>
+
+                        <p>
+                            Введи тег своего Clash Royale аккаунта.
+                        </p>
+
+                        <input
+                            id="myPlayerTag"
+                            type="text"
+                            placeholder="#ABC123"
+                            autocomplete="off"
+                        >
+
+                        <button
+                            class="button"
+                            onclick="linkMyProfile()"
+                        >
+                            🔗 Привязать
+                        </button>
+
+                    </div>
+
+                `;
+
+                return;
+            }
+
+
+            if (!response.ok) {
+
+                result.innerHTML = `
+                    <div class="card">
+
+                        <h2>❌ Ошибка</h2>
+
+                        <p>
+                            ${escapeHtml(
+                                data.error ||
+                                "Не удалось получить профиль"
+                            )}
+                        </p>
+
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            // ======================================
+            // ПРОФИЛЬ НАЙДЕН
+            // ======================================
+
+            subtitle.textContent =
+                "Твой Clash Royale аккаунт";
+
+
+            result.innerHTML = createPlayerCard(
+                data,
+                data.tag || ""
+            );
+
+
+        } catch (error) {
+
+            result.innerHTML = `
+                <div class="card">
+
+                    <h2>❌ Ошибка подключения</h2>
+
+                    <p>
+                        Не удалось получить твой профиль.
+                    </p>
+
+                </div>
+            `;
+
+        }
+    }
+
+
+    // =========================
+    // ПРИВЯЗКА МОЕГО ПРОФИЛЯ
+    // =========================
+
+    async function linkMyProfile() {
+
+        const input =
+            document.getElementById("myPlayerTag");
+
+        const result =
+            document.getElementById("myProfileResult");
+
+
+        if (!telegramId) {
+
+            result.innerHTML = `
+                <div class="card">
+                    ❌ Telegram ID не найден.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        const value =
+            input.value.trim();
+
+
+        if (!value) {
+
+            result.innerHTML = `
+                <div class="card">
+                    ❌ Введи тег игрока.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        const cleanTag =
+            normalizeTag(value);
+
+
+        result.innerHTML = `
+            <div class="card">
+
+                <h2>⏳ Проверяю тег...</h2>
+
+                <p>
+                    Проверяю
+                    <b>#${escapeHtml(cleanTag)}</b>
+                </p>
+
+            </div>
+        `;
+
+
+        try {
+
+            const response = await fetch(
+                `/api/player?tag=${encodeURIComponent(cleanTag)}&telegram_id=${encodeURIComponent(telegramId)}`
+            );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                result.innerHTML = `
+                    <div class="card">
+
+                        <h2>❌ Не удалось привязать</h2>
+
+                        <p>
+                            ${escapeHtml(
+                                data.reason ||
+                                data.error ||
+                                "Проверь тег игрока."
+                            )}
+                        </p>
+
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            document.getElementById(
+                "myProfileSubtitle"
+            ).textContent =
+                "Аккаунт привязан";
+
+
+            result.innerHTML = `
+                ${createPlayerCard(data, cleanTag)}
+
+                <div class="card">
+
+                    <p>
+                        ✅ Clash Royale аккаунт успешно привязан.
+                    </p>
+
+                </div>
+            `;
+
+
+        } catch (error) {
+
+            result.innerHTML = `
+                <div class="card">
+
+                    <h2>❌ Ошибка</h2>
+
+                    <p>
+                        Не удалось подключиться к серверу.
+                    </p>
+
+                </div>
+            `;
+
+        }
+    }
+
+
+    // =========================
+    // СОЗДАНИЕ КАРТОЧКИ ИГРОКА
+    // =========================
+
+    function createPlayerCard(data, fallbackTag = "") {
+
+        const name =
+            data.name || "Без имени";
+
+        const tag =
+            normalizeTag(data.tag || fallbackTag);
+
+        return `
+
+            <div class="card">
+
+                <h2>
+                    👤 ${escapeHtml(name)}
+                </h2>
+
+                <p>
+                    🏷 Тег:
+                    <b>#${escapeHtml(tag)}</b>
+                </p>
+
+                <p>
+                    🏆 Кубки:
+                    <b>${data.trophies ?? "—"}</b>
+                </p>
+
+                <p>
+                    🏅 Лучшие кубки:
+                    <b>${data.bestTrophies ?? "—"}</b>
+                </p>
+
+                <p>
+                    ⚔️ Победы:
+                    <b>${data.wins ?? "—"}</b>
+                </p>
+
+                <p>
+                    💀 Поражения:
+                    <b>${data.losses ?? "—"}</b>
+                </p>
+
+                <p>
+                    ⭐ Уровень:
+                    <b>${data.expLevel ?? "—"}</b>
+                </p>
+
+                <p>
+                    🏰 Клан:
+                    <b>${escapeHtml(
+                        data.clan?.name || "Без клана"
+                    )}</b>
+                </p>
+
+            </div>
+
+        `;
+    }
+
+
+    // =========================
+    // ПРОФИЛЬ КЕНТА
     // =========================
 
     function openProfile() {
@@ -461,175 +840,108 @@
         showScreen('profile');
 
         setTimeout(() => {
-            document.getElementById('playerTag').focus();
+
+            document
+                .getElementById('playerTag')
+                .focus();
+
         }, 100);
     }
 
 
     // =========================
-    // МОЙ ПРОФИЛЬ
+    // ПОИСК ИГРОКА
     // =========================
 
-    async function openMyProfile() {
+    async function searchPlayer() {
 
-        showScreen("memberProfile");
+        const tag =
+            document
+                .getElementById('playerTag')
+                .value
+                .trim();
+
 
         const result =
-            document.getElementById("memberProfileResult");
+            document.getElementById('profileResult');
+
+
+        if (!tag) {
+
+            result.innerHTML = `
+                <div class="card">
+                    ❌ Введи тег игрока.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        const cleanTag =
+            normalizeTag(tag);
+
 
         result.innerHTML = `
             <div class="card">
-                <p>⏳ Загружаю твой профиль...</p>
+
+                <h2>🔎 Поиск</h2>
+
+                <p>
+                    Ищу игрока
+                    <b>#${escapeHtml(cleanTag)}</b>...
+                </p>
+
             </div>
         `;
 
+
         try {
 
-            const telegramId =
-                tg.initDataUnsafe?.user?.id;
-
-            if (!telegramId) {
-
-                result.innerHTML = `
-                    <div class="card">
-                        <h2>❌ Ошибка</h2>
-                        <p>
-                            Не удалось определить Telegram аккаунт.
-                        </p>
-                    </div>
-                `;
-
-                return;
-            }
-
             const response = await fetch(
-                `/api/my-profile?telegram_id=${encodeURIComponent(telegramId)}`
+                `/api/player?tag=${encodeURIComponent(cleanTag)}`
             );
+
 
             const data =
                 await response.json();
+
 
             if (!response.ok) {
 
                 result.innerHTML = `
                     <div class="card">
-                        <h2>❌ Аккаунт не привязан</h2>
+
+                        <h2>❌ Игрок не найден</h2>
 
                         <p>
-                            Сначала найди свой Clash Royale профиль
-                            через «👤 Профиль кента».
+                            Проверь правильность тега.
                         </p>
+
                     </div>
                 `;
 
                 return;
             }
 
-            result.innerHTML = `
-                <div class="card">
 
-                    <h2>
-                        🙋‍♂️ ${escapeHtml(
-                            data.name || "Без имени"
-                        )}
-                    </h2>
+            result.innerHTML =
+                createPlayerCard(data, cleanTag);
 
-                    <p>
-                        🏷 Тег:
-                        <b>#${escapeHtml(
-                            normalizeTag(
-                                data.tag ||
-                                data.linked_telegram?.player_tag ||
-                                ""
-                            )
-                        )}</b>
-                    </p>
-
-                    <p>
-                        🏆 Кубки:
-                        <b>${data.trophies ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        🏅 Лучшие кубки:
-                        <b>${data.bestTrophies ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        ⚔️ Победы:
-                        <b>${data.wins ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        💀 Поражения:
-                        <b>${data.losses ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        ⭐ Уровень:
-                        <b>${data.expLevel ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        🏰 Клан:
-                        <b>${escapeHtml(
-                            data.clan?.name || "Без клана"
-                        )}</b>
-                    </p>
-
-                </div>
-            `;
 
         } catch (error) {
 
-            console.error(error);
-
             result.innerHTML = `
                 <div class="card">
+
                     <h2>❌ Ошибка</h2>
+
                     <p>
-                        Не удалось загрузить твой профиль.
+                        Не удалось подключиться к серверу.
                     </p>
+
                 </div>
             `;
-        }
-    }
-
-
-    // =========================
-    // ЗАПУСК MINI APP ЧЕРЕЗ startapp
-    // =========================
-
-    function openStartAppScreen() {
-
-        const startParam =
-            tg.initDataUnsafe?.start_param || "";
-
-        if (!startParam) {
-            return;
-        }
-
-        if (startParam === "profile") {
-
-            openProfile();
-
-        } else if (startParam === "myprofile") {
-
-            openMyProfile();
-
-        } else if (startParam === "clan") {
-
-            showScreen("clan");
-            loadClan();
-
-        } else if (startParam === "players") {
-
-            showScreen("players");
-            loadMembers();
-
-        } else if (startParam === "help") {
-
-            showScreen("help");
 
         }
     }
@@ -641,7 +953,9 @@
 
     async function loadClan() {
 
-        const result = document.getElementById("clanResult");
+        const result =
+            document.getElementById("clanResult");
+
 
         result.innerHTML = `
             <div class="card">
@@ -649,209 +963,217 @@
             </div>
         `;
 
+
         try {
 
             const clanResponse = await fetch(
                 "/api/clan?tag=GCGJ9VJV"
             );
 
-            const clanData = await clanResponse.json();
+            const clanData =
+                await clanResponse.json();
+
 
             if (!clanResponse.ok) {
 
                 result.innerHTML = `
                     <div class="card">
+
                         <h2>❌ Ошибка</h2>
-                        <p>${escapeHtml(
-                            clanData.reason ||
-                            clanData.error ||
-                            "Не удалось загрузить клан"
-                        )}</p>
+
+                        <p>
+                            ${escapeHtml(
+                                clanData.reason ||
+                                clanData.error ||
+                                "Не удалось загрузить клан"
+                            )}
+                        </p>
+
                     </div>
                 `;
 
                 return;
             }
+
 
             const membersResponse = await fetch(
                 "/api/members?tag=GCGJ9VJV"
             );
 
-            const membersData = await membersResponse.json();
+            const membersData =
+                await membersResponse.json();
+
 
             if (!membersResponse.ok) {
 
                 result.innerHTML = `
                     <div class="card">
+
                         <h2>❌ Ошибка</h2>
-                        <p>Не удалось загрузить участников клана.</p>
+
+                        <p>
+                            Не удалось загрузить участников клана.
+                        </p>
+
                     </div>
                 `;
 
                 return;
             }
 
-            const members = membersData.items || [];
+
+            const members =
+                membersData.items || [];
 
 
-            // ТОП-3 ПО ТЕКУЩИМ КУБКАМ
-
-            const topTrophies = [...members]
-                .sort((a, b) =>
-                    (Number(b.trophies) || 0) -
-                    (Number(a.trophies) || 0)
-                )
-                .slice(0, 3);
-
-
-            // ТОП-3 ДОНАТЕРОВ
-
-            const topDonators = [...members]
-                .sort((a, b) =>
-                    (Number(b.donations) || 0) -
-                    (Number(a.donations) || 0)
-                )
-                .slice(0, 3);
+            const topTrophies =
+                [...members]
+                    .sort((a, b) =>
+                        (Number(b.trophies) || 0) -
+                        (Number(a.trophies) || 0)
+                    )
+                    .slice(0, 3);
 
 
-            // ОСНОВНАЯ ИНФОРМАЦИЯ
+            const topDonators =
+                [...members]
+                    .sort((a, b) =>
+                        (Number(b.donations) || 0) -
+                        (Number(a.donations) || 0)
+                    )
+                    .slice(0, 3);
+
 
             let html = `
+
                 <div class="card">
 
-                    <h2>⚜️ ${escapeHtml(
-                        clanData.name || "Движуха"
-                    )}</h2>
+                    <h2>
+                        ⚜️ ${escapeHtml(
+                            clanData.name || "Движуха"
+                        )}
+                    </h2>
 
                     <p>
                         🏷 Тег:
-                        <b>#${escapeHtml(
-                            normalizeTag(clanData.tag || "GCGJ9VJV")
-                        )}</b>
+                        <b>#
+                            ${escapeHtml(
+                                normalizeTag(
+                                    clanData.tag || "GCGJ9VJV"
+                                )
+                            )}
+                        </b>
                     </p>
 
                     <p>
                         👥 Кенты:
-                        <b>${members.length || clanData.members || "—"}</b>
+                        <b>
+                            ${members.length ||
+                            clanData.members ||
+                            "—"}
+                        </b>
                     </p>
 
                     <p>
                         📊 Требования:
-                        <b>${clanData.requiredTrophies ?? "—"}</b>
+                        <b>
+                            ${clanData.requiredTrophies ?? "—"}
+                        </b>
                     </p>
 
                 </div>
+
             `;
 
 
-            // ТОП-3 ПО КУБКАМ
-
             html += `
+
                 <div class="ranking-title">
                     🏆 Топ-3 по кубкам
                 </div>
 
                 <div class="ranking">
+
             `;
 
-            if (topTrophies.length === 0) {
+
+            topTrophies.forEach((member, index) => {
 
                 html += `
-                    <div class="card">
-                        <p>Нет данных.</p>
-                    </div>
-                `;
 
-            } else {
+                    <div class="ranking-item">
 
-                topTrophies.forEach((member, index) => {
+                        <div class="ranking-left">
 
-                    const name =
-                        escapeHtml(member.name || "Без имени");
-
-                    const trophies =
-                        Number(member.trophies) || 0;
-
-                    html += `
-                        <div class="ranking-item">
-
-                            <div class="ranking-left">
-
-                                <div class="ranking-number">
-                                    ${index + 1}.
-                                </div>
-
-                                <div class="ranking-name">
-                                    ${name}
-                                </div>
-
+                            <div class="ranking-number">
+                                ${index + 1}.
                             </div>
 
-                            <div class="ranking-value">
-                                🏆 ${trophies}
+                            <div class="ranking-name">
+                                ${escapeHtml(
+                                    member.name || "Без имени"
+                                )}
                             </div>
 
                         </div>
-                    `;
-                });
-            }
+
+                        <div class="ranking-value">
+                            🏆 ${Number(member.trophies) || 0}
+                        </div>
+
+                    </div>
+
+                `;
+
+            });
+
 
             html += `
                 </div>
             `;
 
 
-            // ТОП-3 ДОНАТЕРОВ
-
             html += `
+
                 <div class="ranking-title">
                     🃏 Топ-3 донатеров
                 </div>
 
                 <div class="ranking">
+
             `;
 
-            if (topDonators.length === 0) {
+
+            topDonators.forEach((member, index) => {
 
                 html += `
-                    <div class="card">
-                        <p>Нет данных о донатах.</p>
-                    </div>
-                `;
 
-            } else {
+                    <div class="ranking-item">
 
-                topDonators.forEach((member, index) => {
+                        <div class="ranking-left">
 
-                    const name =
-                        escapeHtml(member.name || "Без имени");
-
-                    const donations =
-                        Number(member.donations) || 0;
-
-                    html += `
-                        <div class="ranking-item">
-
-                            <div class="ranking-left">
-
-                                <div class="ranking-number">
-                                    ${index + 1}.
-                                </div>
-
-                                <div class="ranking-name">
-                                    ${name}
-                                </div>
-
+                            <div class="ranking-number">
+                                ${index + 1}.
                             </div>
 
-                            <div class="ranking-value">
-                                🃏 ${donations}
+                            <div class="ranking-name">
+                                ${escapeHtml(
+                                    member.name || "Без имени"
+                                )}
                             </div>
 
                         </div>
-                    `;
-                });
-            }
+
+                        <div class="ranking-value">
+                            🃏 ${Number(member.donations) || 0}
+                        </div>
+
+                    </div>
+
+                `;
+
+            });
+
 
             html += `
                 </div>
@@ -860,12 +1182,18 @@
 
             result.innerHTML = html;
 
+
         } catch (error) {
 
             result.innerHTML = `
                 <div class="card">
+
                     <h2>❌ Ошибка подключения</h2>
-                    <p>Не удалось получить данные клана.</p>
+
+                    <p>
+                        Не удалось получить данные клана.
+                    </p>
+
                 </div>
             `;
 
@@ -879,7 +1207,9 @@
 
     async function loadMembers() {
 
-        const result = document.getElementById("membersResult");
+        const result =
+            document.getElementById("membersResult");
+
 
         result.innerHTML = `
             <div class="card">
@@ -887,31 +1217,44 @@
             </div>
         `;
 
+
         try {
 
-            const response = await fetch(
-                "/api/members?tag=GCGJ9VJV"
-            );
+            const response =
+                await fetch(
+                    "/api/members?tag=GCGJ9VJV"
+                );
 
-            const data = await response.json();
+
+            const data =
+                await response.json();
+
 
             if (!response.ok) {
 
                 result.innerHTML = `
                     <div class="card">
+
                         <h2>❌ Ошибка</h2>
-                        <p>${escapeHtml(
-                            data.reason ||
-                            data.error ||
-                            "Не удалось загрузить участников"
-                        )}</p>
+
+                        <p>
+                            ${escapeHtml(
+                                data.reason ||
+                                data.error ||
+                                "Не удалось загрузить участников"
+                            )}
+                        </p>
+
                     </div>
                 `;
 
                 return;
             }
 
-            const members = data.items || [];
+
+            const members =
+                data.items || [];
+
 
             if (members.length === 0) {
 
@@ -924,32 +1267,50 @@
                 return;
             }
 
+
             let html = `
+
                 <div class="card">
-                    <h2 style="text-align:center; font-size:17px; margin:0;">
+
+                    <h2
+                        style="
+                            text-align:center;
+                            font-size:17px;
+                            margin:0;
+                        "
+                    >
                         👥 Кенты: ${members.length}
                     </h2>
+
                 </div>
+
             `;
+
 
             members.forEach((member, index) => {
 
                 const safeName =
-                    escapeHtml(member.name || "Без имени");
+                    escapeHtml(
+                        member.name || "Без имени"
+                    );
 
-                const rawTag =
-                    String(member.tag || "");
 
                 const cleanTag =
-                    normalizeTag(rawTag);
+                    normalizeTag(
+                        String(member.tag || "")
+                    );
+
 
                 const safeTag =
                     escapeHtml(cleanTag);
 
+
                 const trophies =
                     member.trophies ?? "—";
 
+
                 let dailyHtml = "";
+
 
                 if (
                     member.dailyChange !== null &&
@@ -958,6 +1319,7 @@
 
                     const change =
                         Number(member.dailyChange);
+
 
                     if (change > 0) {
 
@@ -985,7 +1347,9 @@
                     }
                 }
 
+
                 html += `
+
                     <button
                         class="member"
                         onclick="openMemberProfile('${safeTag}')"
@@ -996,7 +1360,9 @@
                         </div>
 
                         <div class="member-info">
-                            ${member.tag ? "#" + safeTag : ""}
+                            ${member.tag
+                                ? "#" + safeTag
+                                : ""}
                         </div>
 
                         <div class="member-trophies">
@@ -1006,17 +1372,26 @@
                         ${dailyHtml}
 
                     </button>
+
                 `;
+
             });
 
+
             result.innerHTML = html;
+
 
         } catch (error) {
 
             result.innerHTML = `
                 <div class="card">
+
                     <h2>❌ Ошибка подключения</h2>
-                    <p>Не удалось получить список участников.</p>
+
+                    <p>
+                        Не удалось получить список участников.
+                    </p>
+
                 </div>
             `;
 
@@ -1025,15 +1400,19 @@
 
 
     // =========================
-    // ПРОФИЛЬ КЕНТА ИЗ СПИСКА
+    // ПРОФИЛЬ ИЗ КЕНТОВ
     // =========================
 
     async function openMemberProfile(tag) {
 
         showScreen('memberProfile');
 
+
         const result =
-            document.getElementById("memberProfileResult");
+            document.getElementById(
+                "memberProfileResult"
+            );
+
 
         result.innerHTML = `
             <div class="card">
@@ -1041,91 +1420,56 @@
             </div>
         `;
 
+
         try {
 
             const cleanTag =
                 normalizeTag(tag);
 
-            const response = await fetch(
-                `/api/player?tag=${encodeURIComponent(cleanTag)}&telegram_id=${encodeURIComponent(
-                    tg.initDataUnsafe?.user?.id || ""
-                )}`
-            );
+
+            const response =
+                await fetch(
+                    `/api/player?tag=${encodeURIComponent(cleanTag)}`
+                );
+
 
             const data =
                 await response.json();
+
 
             if (!response.ok) {
 
                 result.innerHTML = `
                     <div class="card">
+
                         <h2>❌ Ошибка</h2>
-                        <p>Не удалось загрузить профиль игрока.</p>
+
+                        <p>
+                            Не удалось загрузить профиль игрока.
+                        </p>
+
                     </div>
                 `;
 
                 return;
             }
 
-            result.innerHTML = `
-                <div class="card">
 
-                    <h2>
-                        👤 ${escapeHtml(
-                            data.name || "Без имени"
-                        )}
-                    </h2>
+            result.innerHTML =
+                createPlayerCard(data, cleanTag);
 
-                    <p>
-                        🏷 Тег:
-                        <b>#${escapeHtml(
-                            normalizeTag(
-                                data.tag || cleanTag
-                            )
-                        )}</b>
-                    </p>
-
-                    <p>
-                        🏆 Кубки:
-                        <b>${data.trophies ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        🏅 Лучшие кубки:
-                        <b>${data.bestTrophies ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        ⚔️ Победы:
-                        <b>${data.wins ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        💀 Поражения:
-                        <b>${data.losses ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        ⭐ Уровень:
-                        <b>${data.expLevel ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        🏰 Клан:
-                        <b>${escapeHtml(
-                            data.clan?.name || "Без клана"
-                        )}</b>
-                    </p>
-
-                </div>
-            `;
 
         } catch (error) {
 
             result.innerHTML = `
                 <div class="card">
+
                     <h2>❌ Ошибка</h2>
-                    <p>Не удалось подключиться к серверу.</p>
+
+                    <p>
+                        Не удалось подключиться к серверу.
+                    </p>
+
                 </div>
             `;
 
@@ -1134,145 +1478,58 @@
 
 
     // =========================
-    // ПОИСК ИГРОКА
+    // STARTAPP
     // =========================
 
-    async function searchPlayer() {
+    function openStartAppScreen() {
 
-        const tag = document
-            .getElementById('playerTag')
-            .value
-            .trim();
+        const startParam =
+            tg.initDataUnsafe?.start_param || "";
 
-        const result =
-            document.getElementById('profileResult');
 
-        if (!tag) {
-
-            result.innerHTML = `
-                <div class="card">
-                    ❌ Введи тег игрока.
-                </div>
-            `;
-
+        if (!startParam) {
             return;
         }
 
-        const cleanTag =
-            normalizeTag(tag);
 
-        result.innerHTML = `
-            <div class="card">
-                <h2>🔎 Поиск</h2>
-                <p>
-                    Ищу игрока
-                    <b>#${escapeHtml(cleanTag)}</b>...
-                </p>
-            </div>
-        `;
+        if (startParam === "profile") {
 
-        try {
+            // Теперь profile = МОЙ профиль
+            openMyProfile();
 
-            const response = await fetch(
-                `/api/player?tag=${encodeURIComponent(cleanTag)}&telegram_id=${encodeURIComponent(
-                    tg.initDataUnsafe?.user?.id || ""
-                )}`
-            );
+        } else if (startParam === "clan") {
 
-            const data =
-                await response.json();
+            showScreen("clan");
+            loadClan();
 
-            if (!response.ok) {
+        } else if (startParam === "players") {
 
-                result.innerHTML = `
-                    <div class="card">
-                        <h2>❌ Игрок не найден</h2>
-                        <p>Проверь правильность тега.</p>
-                    </div>
-                `;
+            showScreen("players");
+            loadMembers();
 
-                return;
-            }
+        } else if (startParam === "help") {
 
-            result.innerHTML = `
-                <div class="card">
-
-                    <h2>
-                        👤 ${escapeHtml(
-                            data.name || "Без имени"
-                        )}
-                    </h2>
-
-                    <p>
-                        🏷 Тег:
-                        <b>#${escapeHtml(
-                            normalizeTag(
-                                data.tag || cleanTag
-                            )
-                        )}</b>
-                    </p>
-
-                    <p>
-                        🏆 Кубки:
-                        <b>${data.trophies ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        🏅 Лучшие кубки:
-                        <b>${data.bestTrophies ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        ⚔️ Победы:
-                        <b>${data.wins ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        💀 Поражения:
-                        <b>${data.losses ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        ⭐ Уровень:
-                        <b>${data.expLevel ?? "—"}</b>
-                    </p>
-
-                    <p>
-                        🏰 Клан:
-                        <b>${escapeHtml(
-                            data.clan?.name || "Без клана"
-                        )}</b>
-                    </p>
-
-                </div>
-            `;
-
-        } catch (error) {
-
-            result.innerHTML = `
-                <div class="card">
-                    <h2>❌ Ошибка</h2>
-                    <p>Не удалось подключиться к серверу.</p>
-                </div>
-            `;
+            showScreen("help");
 
         }
     }
 
 
     // =========================
-    // НОРМАЛИЗАЦИЯ ХЕШТЕГА
+    // НОРМАЛИЗАЦИЯ ТЕГА
     // =========================
 
     function normalizeTag(value) {
 
         return String(value || "")
-            .replace(/^#+/, "");
+            .replace(/^#+/, "")
+            .trim()
+            .toUpperCase();
     }
 
 
     // =========================
-    // ЗАЩИТА ТЕКСТА
+    // ЗАЩИТА HTML
     // =========================
 
     function escapeHtml(value) {
@@ -1287,7 +1544,7 @@
 
 
     // =========================
-    // ЗАПУСК startapp
+    // ЗАПУСК
     // =========================
 
     openStartAppScreen();
