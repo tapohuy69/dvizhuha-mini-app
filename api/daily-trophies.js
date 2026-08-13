@@ -4,34 +4,6 @@ export default async function handler(req, res) {
   try {
     const sql = neon(process.env.DATABASE_URL);
 
-    const now = new Date();
-
-    const kyivTime = new Intl.DateTimeFormat("en-GB", {
-      timeZone: "Europe/Kyiv",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false
-    }).format(now);
-
-    const kyivDate = new Intl.DateTimeFormat("en-CA", {
-      timeZone: "Europe/Kyiv",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit"
-    }).format(now);
-
-    // Работаем только в 00:00 по Киеву
-    if (kyivTime !== "00:00") {
-      return res.status(200).json({
-        ok: true,
-        skipped: true,
-        reason: "Сейчас не 00:00 по Киеву",
-        timezone: "Europe/Kyiv",
-        time: kyivTime,
-        date: kyivDate
-      });
-    }
-
     const clanTag = "GCGJ9VJV";
     const token = process.env.CR_API_TOKEN;
 
@@ -42,9 +14,27 @@ export default async function handler(req, res) {
       });
     }
 
+    // =========================
+    // ДАТА ПО КИЕВУ
+    // =========================
+
+    const now = new Date();
+
+    const kyivDate = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Europe/Kyiv",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).format(now);
+
+    // =========================
+    // ПОЛУЧАЕМ КЛАН
+    // =========================
+
     const clanResponse = await fetch(
       `https://proxy.royaleapi.dev/v1/clans/%23${clanTag}`,
       {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json"
@@ -57,17 +47,20 @@ export default async function handler(req, res) {
     if (!clanResponse.ok) {
       return res.status(clanResponse.status).json({
         ok: false,
-        error: "Не удалось получить клан",
+        error: "Не удалось получить данные клана",
         details: clanData
       });
     }
 
     const members = clanData.memberList || [];
 
+    // =========================
+    // СОХРАНЯЕМ СЕГОДНЯШНИЕ КУБКИ
+    // =========================
+
     let saved = 0;
 
     for (const member of members) {
-
       const playerTag = member.tag;
       const playerName = member.name || "";
       const trophies = Number(member.trophies) || 0;
@@ -94,21 +87,53 @@ export default async function handler(req, res) {
       saved++;
     }
 
+    // =========================
+    // НАХОДИМ ВЧЕРАШНЮЮ ДАТУ
+    // =========================
+
+    const yesterdayResult = await sql`
+      SELECT
+        TO_CHAR(
+          (${kyivDate}::date - INTERVAL '1 day'),
+          'YYYY-MM-DD'
+        ) AS yesterday
+    `;
+
+    const yesterday = yesterdayResult[0].yesterday;
+
+    // =========================
+    // СРАВНИВАЕМ С ВЧЕРА
+    // =========================
+
+    const changes = await sql`
+      SELECT
+        today.player_tag,
+        today.player_name,
+        today.trophies AS today_trophies,
+        yesterday.trophies AS yesterday_trophies,
+        today.trophies - yesterday.trophies AS change
+      FROM trophy_daily today
+      LEFT JOIN trophy_daily yesterday
+        ON yesterday.player_tag = today.player_tag
+        AND yesterday.recorded_date = ${yesterday}
+      WHERE today.recorded_date = ${kyivDate}
+      ORDER BY change DESC
+    `;
+
     return res.status(200).json({
       ok: true,
-      skipped: false,
       timezone: "Europe/Kyiv",
       date: kyivDate,
+      compared_with: yesterday,
       members: members.length,
-      saved
+      saved,
+      players: changes
     });
 
   } catch (error) {
-
     return res.status(500).json({
       ok: false,
       error: error.message
     });
-
   }
 }
