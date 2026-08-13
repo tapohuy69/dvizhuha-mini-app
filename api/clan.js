@@ -60,7 +60,7 @@ export default async function handler(req, res) {
     const winnerResult = await sql`
       SELECT
         telegram_id,
-        display_name,
+        first_name,
         username,
         week_start,
         message_count
@@ -73,28 +73,24 @@ export default async function handler(req, res) {
     let weeklyWinner = null;
 
     if (winnerResult.length > 0) {
-      const winner =
-        winnerResult[0];
+      const winner = winnerResult[0];
 
       const rewardResult = await sql`
         SELECT
           reward_emoji,
           reward_claimed
         FROM player_rewards
-        WHERE telegram_id =
-          ${String(winner.telegram_id)}
+        WHERE telegram_id = ${String(winner.telegram_id)}
         LIMIT 1
       `;
 
-      const reward =
-        rewardResult[0] || null;
+      const reward = rewardResult[0] || null;
 
       weeklyWinner = {
-        telegram_id:
-          String(winner.telegram_id),
+        telegram_id: String(winner.telegram_id),
 
         display_name:
-          winner.display_name ||
+          winner.first_name ||
           winner.username ||
           "Игрок",
 
@@ -134,6 +130,7 @@ export default async function handler(req, res) {
     return res.status(500).json({
       error:
         "Ошибка подключения к Clash Royale API",
+
       details:
         error.message
     });
