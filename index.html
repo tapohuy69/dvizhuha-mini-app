@@ -14,13 +14,51 @@
 
     <style>
 
+        /* ==================================================
+           BLACK PREMIUM
+        ================================================== */
+
         * {
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
+
+        :root {
+            --black: #050505;
+            --black-2: #080808;
+            --panel: #0d0d0d;
+            --panel-2: #111111;
+            --panel-3: #151515;
+
+            --gold: #d6b15c;
+            --gold-light: #f0d98a;
+            --gold-dark: #927533;
+
+            --white: #f5f5f5;
+            --muted: #8e8e8e;
+
+            --border: rgba(214, 177, 92, 0.16);
+            --border-light: rgba(255,255,255,0.07);
+
+            --shadow:
+                0 14px 40px rgba(0,0,0,0.45);
+
+            --gold-shadow:
+                0 8px 30px rgba(214,177,92,0.10);
+        }
+
+
+        html {
+            background: var(--black);
+        }
+
 
         body {
             margin: 0;
             padding: 20px;
+
+            min-height: 100vh;
+
             font-family:
                 -apple-system,
                 BlinkMacSystemFont,
@@ -28,73 +66,199 @@
                 sans-serif;
 
             background:
-                var(--tg-theme-bg-color, #111111);
+                radial-gradient(
+                    circle at 50% -10%,
+                    rgba(214,177,92,0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 100% 40%,
+                    rgba(214,177,92,0.035),
+                    transparent 28%
+                ),
+                linear-gradient(
+                    180deg,
+                    #050505 0%,
+                    #080808 45%,
+                    #050505 100%
+                );
 
-            color:
-                var(--tg-theme-text-color, #ffffff);
+            color: var(--white);
+
+            overflow-x: hidden;
         }
+
+
+        body::before {
+            content: "";
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+            right: 0;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(214,177,92,0.35),
+                    transparent
+                );
+
+            pointer-events: none;
+
+            z-index: 10000;
+        }
+
 
         .container {
             max-width: 500px;
             margin: 0 auto;
+            position: relative;
         }
+
+
+        /* ==================================================
+           HEADER
+        ================================================== */
 
         .header {
             text-align: center;
             margin-bottom: 30px;
         }
 
+
         .header h1 {
             margin: 0;
+
             font-size: 28px;
+            font-weight: 800;
+
+            letter-spacing: -0.5px;
+
+            color: var(--white);
+
+            text-shadow:
+                0 0 22px rgba(214,177,92,0.13);
         }
+
 
         .header p {
             margin-top: 10px;
-            opacity: 0.7;
+
+            color: var(--muted);
+
+            font-size: 14px;
         }
+
+
+        /* ==================================================
+           PREMIUM BUTTONS
+        ================================================== */
 
         .button {
             width: 100%;
-            border: none;
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 12px;
-            font-size: 17px;
-            font-weight: 600;
 
-            color:
-                var(--tg-theme-button-text-color, #ffffff);
+            border: 1px solid var(--border);
+
+            border-radius: 17px;
+
+            padding: 17px 18px;
+
+            margin-bottom: 12px;
+
+            font-size: 16px;
+            font-weight: 700;
+
+            color: #090909;
 
             background:
-                var(--tg-theme-button-color, #2481cc);
+                linear-gradient(
+                    135deg,
+                    var(--gold-light),
+                    var(--gold)
+                );
 
             cursor: pointer;
+
+            box-shadow:
+                0 7px 24px rgba(214,177,92,0.10);
+
+            transition:
+                transform 0.15s ease,
+                box-shadow 0.15s ease,
+                filter 0.15s ease;
         }
+
 
         .button:active {
-            transform: scale(0.98);
+            transform: scale(0.975);
+            filter: brightness(0.92);
         }
 
-        .secondary {
+
+        .button.secondary {
             background:
-                var(--tg-theme-secondary-bg-color, #222222);
+                linear-gradient(
+                    145deg,
+                    #151515,
+                    #0c0c0c
+                );
 
-            color:
-                var(--tg-theme-text-color, #ffffff);
+            color: var(--white);
+
+            border:
+                1px solid rgba(214,177,92,0.14);
+
+            box-shadow:
+                0 8px 28px rgba(0,0,0,0.35);
         }
+
+
+        .button.secondary:hover {
+            border-color:
+                rgba(214,177,92,0.30);
+        }
+
+
+        /* ==================================================
+           SCREENS
+        ================================================== */
 
         .screen {
             display: none;
         }
 
+
         .screen.active {
             display: block;
+
+            animation:
+                premiumFade 0.22s ease;
         }
 
-        /* =========================
+
+        @keyframes premiumFade {
+
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        /* ==================================================
            НАЗАД
-        ========================= */
+        ================================================== */
 
         .back {
             position: fixed;
@@ -121,22 +285,30 @@
             z-index: 9999;
 
             background:
-                var(--tg-theme-button-color, #2481cc);
+                linear-gradient(
+                    145deg,
+                    #171717,
+                    #0b0b0b
+                );
 
-            color:
-                var(--tg-theme-button-text-color, #ffffff);
+            color: var(--gold-light);
+
+            border:
+                1px solid rgba(214,177,92,0.20);
 
             box-shadow:
-                0 4px 12px rgba(0,0,0,0.25);
+                0 6px 20px rgba(0,0,0,0.5);
         }
+
 
         .back:active {
             transform: scale(0.92);
         }
 
-        /* =========================
+
+        /* ==================================================
            ОБНОВИТЬ
-        ========================= */
+        ================================================== */
 
         .refresh-button {
             position: fixed;
@@ -163,26 +335,41 @@
             z-index: 9999;
 
             background:
-                var(--tg-theme-button-color, #2481cc);
+                linear-gradient(
+                    145deg,
+                    #171717,
+                    #0b0b0b
+                );
 
-            color:
-                var(--tg-theme-button-text-color, #ffffff);
+            color: var(--gold-light);
+
+            border:
+                1px solid rgba(214,177,92,0.20);
 
             box-shadow:
-                0 4px 12px rgba(0,0,0,0.25);
+                0 6px 20px rgba(0,0,0,0.5);
         }
+
 
         .refresh-button:active {
             transform: scale(0.92);
         }
 
+
+        /* ==================================================
+           INPUT
+        ================================================== */
+
         input {
             width: 100%;
 
-            padding: 16px;
+            padding: 16px 17px;
 
-            border-radius: 14px;
-            border: none;
+            border-radius: 15px;
+
+            border:
+                1px solid rgba(255,255,255,0.06);
+
             outline: none;
 
             margin: 15px 0 12px;
@@ -190,95 +377,215 @@
             font-size: 17px;
 
             background:
-                var(--tg-theme-secondary-bg-color, #222222);
+                linear-gradient(
+                    145deg,
+                    #141414,
+                    #0b0b0b
+                );
 
-            color:
-                var(--tg-theme-text-color, #ffffff);
+            color: var(--white);
+
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.025),
+                0 8px 25px rgba(0,0,0,0.25);
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
         }
+
+
+        input::placeholder {
+            color: #666;
+        }
+
+
+        input:focus {
+            border-color:
+                rgba(214,177,92,0.42);
+
+            box-shadow:
+                0 0 0 3px rgba(214,177,92,0.06),
+                0 10px 28px rgba(0,0,0,0.35);
+        }
+
+
+        /* ==================================================
+           CARDS
+        ================================================== */
 
         .card {
             padding: 20px;
 
-            border-radius: 18px;
+            border-radius: 19px;
 
             margin-top: 15px;
 
             background:
-                var(--tg-theme-secondary-bg-color, #222222);
+                linear-gradient(
+                    145deg,
+                    rgba(20,20,20,0.98),
+                    rgba(10,10,10,0.98)
+                );
+
+            border:
+                1px solid var(--border-light);
+
+            box-shadow:
+                var(--shadow);
+
+            position: relative;
+
+            overflow: hidden;
         }
+
+
+        .card::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 18px;
+            right: 18px;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(214,177,92,0.25),
+                    transparent
+                );
+        }
+
 
         .card h2 {
             margin-top: 0;
+
+            color: var(--white);
         }
 
-        /* =========================
+
+        .card p {
+            color: #c7c7c7;
+        }
+
+
+        .card b {
+            color: var(--gold-light);
+        }
+
+
+        /* ==================================================
            КЕНТЫ
-        ========================= */
+        ================================================== */
 
         .member {
             width: 100%;
 
-            border: none;
+            border:
+                1px solid rgba(255,255,255,0.055);
+
             text-align: left;
 
-            padding: 12px;
+            padding: 13px;
+
             margin-top: 8px;
 
-            border-radius: 14px;
+            border-radius: 15px;
 
             background:
-                var(--tg-theme-secondary-bg-color, #222222);
+                linear-gradient(
+                    145deg,
+                    #151515,
+                    #0b0b0b
+                );
 
-            color:
-                var(--tg-theme-text-color, #ffffff);
+            color: var(--white);
 
             cursor: pointer;
+
+            box-shadow:
+                0 6px 20px rgba(0,0,0,0.28);
+
+            transition:
+                transform 0.15s ease,
+                border-color 0.15s ease;
         }
+
 
         .member:active {
             transform: scale(0.98);
+
+            border-color:
+                rgba(214,177,92,0.25);
         }
+
 
         .member-name {
             font-size: 15px;
             font-weight: 700;
+
             margin-bottom: 4px;
+
+            color: var(--white);
         }
+
 
         .member-info {
             font-size: 12px;
-            opacity: 0.75;
+
+            color: #777;
+
             line-height: 1.4;
         }
 
+
         .member-trophies {
             font-size: 13px;
-            font-weight: 600;
+
+            font-weight: 700;
+
             margin-top: 6px;
+
+            color: var(--gold-light);
         }
+
 
         .member-daily {
             font-size: 12px;
+
             font-weight: 700;
+
             margin-top: 3px;
         }
 
-        /* =========================
+
+        /* ==================================================
            ТОП
-        ========================= */
+        ================================================== */
 
         .ranking-title {
             text-align: center;
 
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 17px;
 
-            margin: 24px 0 10px;
+            font-weight: 800;
+
+            margin: 25px 0 10px;
+
+            color: var(--gold-light);
+
+            letter-spacing: 0.2px;
         }
+
 
         .ranking {
             margin-top: 10px;
         }
+
 
         .ranking-item {
             display: flex;
@@ -286,14 +593,26 @@
             align-items: center;
             justify-content: space-between;
 
-            padding: 12px 14px;
+            padding: 13px 14px;
+
             margin-top: 8px;
 
-            border-radius: 14px;
+            border-radius: 15px;
 
             background:
-                var(--tg-theme-secondary-bg-color, #222222);
+                linear-gradient(
+                    145deg,
+                    #151515,
+                    #0b0b0b
+                );
+
+            border:
+                1px solid rgba(255,255,255,0.055);
+
+            box-shadow:
+                0 6px 20px rgba(0,0,0,0.25);
         }
+
 
         .ranking-left {
             display: flex;
@@ -303,17 +622,23 @@
             min-width: 0;
         }
 
+
         .ranking-number {
             width: 28px;
 
             font-size: 15px;
-            font-weight: 700;
+
+            font-weight: 800;
+
+            color: var(--gold);
 
             flex-shrink: 0;
         }
 
+
         .ranking-name {
             font-size: 15px;
+
             font-weight: 600;
 
             white-space: nowrap;
@@ -321,18 +646,23 @@
             text-overflow: ellipsis;
         }
 
+
         .ranking-value {
             font-size: 14px;
-            font-weight: 700;
+
+            font-weight: 800;
 
             margin-left: 10px;
 
             white-space: nowrap;
+
+            color: var(--gold-light);
         }
 
-        /* =========================
+
+        /* ==================================================
            СМАЙЛИК ПОБЕДИТЕЛЯ
-        ========================= */
+        ================================================== */
 
         .winner-emoji {
             margin-left: 6px;
@@ -342,7 +672,13 @@
             display: inline-block;
 
             vertical-align: middle;
+
+            filter:
+                drop-shadow(
+                    0 0 5px rgba(214,177,92,0.15)
+                );
         }
+
 
         .profile-name-line {
             display: flex;
@@ -354,23 +690,33 @@
             flex-wrap: wrap;
         }
 
-        /* =========================
+
+        /* ==================================================
            НАГРАДА
-        ========================= */
+        ================================================== */
 
         .reward-winner {
             text-align: center;
 
-            font-size: 32px;
+            font-size: 34px;
 
             margin: 10px 0 20px;
+
+            filter:
+                drop-shadow(
+                    0 0 15px rgba(214,177,92,0.20)
+                );
         }
+
 
         .reward-message {
             text-align: center;
 
             line-height: 1.5;
+
+            color: #bdbdbd;
         }
+
 
         .emoji-grid {
             display: grid;
@@ -383,8 +729,10 @@
             margin-top: 18px;
         }
 
+
         .emoji-button {
-            border: none;
+            border:
+                1px solid rgba(255,255,255,0.06);
 
             border-radius: 14px;
 
@@ -393,17 +741,32 @@
             font-size: 28px;
 
             background:
-                var(--tg-theme-secondary-bg-color, #222222);
+                linear-gradient(
+                    145deg,
+                    #181818,
+                    #0c0c0c
+                );
 
-            color:
-                var(--tg-theme-text-color, #ffffff);
+            color: var(--white);
 
             cursor: pointer;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.28);
+
+            transition:
+                transform 0.15s ease,
+                border-color 0.15s ease;
         }
+
 
         .emoji-button:active {
             transform: scale(0.92);
+
+            border-color:
+                rgba(214,177,92,0.35);
         }
+
 
         .reward-selected {
             text-align: center;
@@ -411,6 +774,40 @@
             font-size: 22px;
 
             margin-top: 15px;
+
+            color: var(--gold-light);
+        }
+
+
+        /* ==================================================
+           PREMIUM SCROLLBAR
+        ================================================== */
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+
+
+        ::-webkit-scrollbar-thumb {
+            background: #292929;
+            border-radius: 10px;
+        }
+
+
+        /* ==================================================
+           SELECTION
+        ================================================== */
+
+        ::selection {
+            background:
+                rgba(214,177,92,0.25);
+
+            color: white;
         }
 
     </style>
@@ -1648,11 +2045,6 @@
 
             let emoji = "";
 
-            /*
-             * Если найденный игрок —
-             * сам пользователь, берём его награду.
-             */
-
             if (
                 telegramId &&
                 normalizeTag(
@@ -1672,12 +2064,6 @@
                     );
 
             }
-
-            /*
-             * Если это не текущий пользователь
-             * или смайлик ещё не найден —
-             * ищем его по тегу.
-             */
 
             if (!emoji) {
 
@@ -1777,12 +2163,6 @@
 
         try {
 
-            /*
-             * СНАЧАЛА получаем участников.
-             * Даже если /api/clan сломан,
-             * клан всё равно откроется.
-             */
-
             const membersResponse =
                 await fetch(
                     `/api/members?tag=${MY_CLAN_TAG}`
@@ -1818,12 +2198,6 @@
                 membersData.items ||
                 [];
 
-
-            /*
-             * Клан пробуем получить отдельно.
-             * Ошибка здесь НЕ ломает экран.
-             */
-
             let clanData = null;
 
             try {
@@ -1849,7 +2223,6 @@
 
             }
 
-
             const topTrophies =
                 [...members]
                     .sort(
@@ -1870,7 +2243,6 @@
                         3
                     );
 
-
             const topDonators =
                 [...members]
                     .sort(
@@ -1890,7 +2262,6 @@
                         0,
                         3
                     );
-
 
             let html = `
 
@@ -1951,10 +2322,6 @@
             `;
 
 
-            // ==================================================
-            // ТОП КУБКОВ
-            // ==================================================
-
             html += `
 
                 <div class="ranking-title">
@@ -1981,11 +2348,6 @@
                     member.emoji ||
                     "";
 
-                /*
-                 * Сначала Telegram ID,
-                 * затем поиск по TAG.
-                 */
-
                 if (
                     !emoji &&
                     member.telegram_id
@@ -2009,7 +2371,6 @@
                         );
 
                 }
-
 
                 html += `
 
@@ -2058,10 +2419,6 @@
                 </div>
             `;
 
-
-            // ==================================================
-            // ТОП ДОНАТЕРОВ
-            // ==================================================
 
             html += `
 
@@ -2112,7 +2469,6 @@
                         );
 
                 }
-
 
                 html += `
 
@@ -2268,7 +2624,6 @@
 
             }
 
-
             let html = `
 
                 <div class="card">
@@ -2315,10 +2670,8 @@
                         member.trophies ??
                         "—";
 
-
                     let dailyHtml =
                         "";
-
 
                     if (
                         member.dailyChange !== null &&
@@ -2329,7 +2682,6 @@
                             Number(
                                 member.dailyChange
                             );
-
 
                         if (
                             change > 0
@@ -2372,18 +2724,11 @@
 
                     }
 
-
-                    /*
-                     * members.js уже может отдавать
-                     * reward_emoji.
-                     */
-
                     const memberEmoji =
                         member.reward_emoji ||
                         member.rewardEmoji ||
                         member.emoji ||
                         "";
-
 
                     html += `
 
@@ -2523,12 +2868,6 @@
 
             }
 
-
-            /*
-             * Если это текущий пользователь —
-             * показываем его награду.
-             */
-
             let emoji = "";
 
             if (telegramId) {
@@ -2556,12 +2895,6 @@
 
             }
 
-            /*
-             * Если это не текущий пользователь
-             * или смайлик не найден —
-             * ищем по тегу.
-             */
-
             if (!emoji) {
 
                 emoji =
@@ -2571,7 +2904,6 @@
                     );
 
             }
-
 
             result.innerHTML =
                 createPlayerCard(
@@ -2629,7 +2961,6 @@
                 "rewardSubtitle"
             );
 
-
         if (!telegramId) {
 
             subtitle.textContent =
@@ -2653,7 +2984,6 @@
 
         }
 
-
         result.innerHTML = `
             <div class="card">
 
@@ -2664,7 +2994,6 @@
             </div>
         `;
 
-
         try {
 
             const response =
@@ -2674,7 +3003,6 @@
 
             const data =
                 await response.json();
-
 
             if (!response.ok) {
 
@@ -2699,7 +3027,6 @@
 
             }
 
-
             const winner =
                 data.winner ||
                 null;
@@ -2707,7 +3034,6 @@
             const reward =
                 data.reward ||
                 null;
-
 
             if (!winner) {
 
@@ -2741,10 +3067,8 @@
 
             }
 
-
             subtitle.textContent =
                 "Ты победитель недели!";
-
 
             if (
                 reward &&
@@ -2807,7 +3131,6 @@
 
             }
 
-
             result.innerHTML = `
 
                 <div class="card">
@@ -2845,110 +3168,23 @@
 
                     <div class="emoji-grid">
 
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('😀')"
-                        >
-                            😀
-                        </button>
+                        <button class="emoji-button" onclick="chooseReward('😀')">😀</button>
+                        <button class="emoji-button" onclick="chooseReward('😎')">😎</button>
+                        <button class="emoji-button" onclick="chooseReward('🔥')">🔥</button>
+                        <button class="emoji-button" onclick="chooseReward('❤️')">❤️</button>
+                        <button class="emoji-button" onclick="chooseReward('💀')">💀</button>
 
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('😎')"
-                        >
-                            😎
-                        </button>
+                        <button class="emoji-button" onclick="chooseReward('👑')">👑</button>
+                        <button class="emoji-button" onclick="chooseReward('⚡')">⚡</button>
+                        <button class="emoji-button" onclick="chooseReward('💎')">💎</button>
+                        <button class="emoji-button" onclick="chooseReward('🚀')">🚀</button>
+                        <button class="emoji-button" onclick="chooseReward('🤡')">🤡</button>
 
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('🔥')"
-                        >
-                            🔥
-                        </button>
-
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('❤️')"
-                        >
-                            ❤️
-                        </button>
-
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('💀')"
-                        >
-                            💀
-                        </button>
-
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('👑')"
-                        >
-                            👑
-                        </button>
-
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('⚡')"
-                        >
-                            ⚡
-                        </button>
-
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('💎')"
-                        >
-                            💎
-                        </button>
-
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('🚀')"
-                        >
-                            🚀
-                        </button>
-
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('🤡')"
-                        >
-                            🤡
-                        </button>
-
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('🐐')"
-                        >
-                            🐐
-                        </button>
-
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('🗿')"
-                        >
-                            🗿
-                        </button>
-
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('👽')"
-                        >
-                            👽
-                        </button>
-
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('🤠')"
-                        >
-                            🤠
-                        </button>
-
-                        <button
-                            class="emoji-button"
-                            onclick="chooseReward('😈')"
-                        >
-                            😈
-                        </button>
+                        <button class="emoji-button" onclick="chooseReward('🐐')">🐐</button>
+                        <button class="emoji-button" onclick="chooseReward('🗿')">🗿</button>
+                        <button class="emoji-button" onclick="chooseReward('👽')">👽</button>
+                        <button class="emoji-button" onclick="chooseReward('🤠')">🤠</button>
+                        <button class="emoji-button" onclick="chooseReward('😈')">😈</button>
 
                     </div>
 
@@ -3002,7 +3238,6 @@
                 "rewardResult"
             );
 
-
         if (!telegramId) {
 
             result.innerHTML = `
@@ -3023,7 +3258,6 @@
 
         }
 
-
         result.innerHTML = `
             <div class="card">
 
@@ -3039,7 +3273,6 @@
 
             </div>
         `;
-
 
         try {
 
@@ -3066,10 +3299,8 @@
                     }
                 );
 
-
             const data =
                 await response.json();
-
 
             if (!response.ok) {
 
@@ -3101,20 +3332,12 @@
 
             }
 
-
-            /*
-             * Сбрасываем кэш,
-             * чтобы новый смайлик сразу
-             * появился в профиле.
-             */
-
             emojiCache.set(
                 telegramId,
                 emoji
             );
 
             tagEmojiCache.clear();
-
 
             result.innerHTML = `
                 <div class="card">
@@ -3150,7 +3373,6 @@
 
                 </div>
             `;
-
 
         } catch (error) {
 
@@ -3198,7 +3420,6 @@
         if (!startParam) {
             return;
         }
-
 
         if (
             startParam ===
