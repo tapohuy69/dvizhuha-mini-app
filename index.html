@@ -169,6 +169,12 @@
             margin-top: 6px;
         }
 
+        .member-daily {
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 3px;
+        }
+
         /* =========================
            ТОПЫ В КЛАНЕ
         ========================= */
@@ -220,45 +226,6 @@
             font-weight: 700;
             margin-left: 10px;
             white-space: nowrap;
-        }
-
-        /* =========================
-           ИСТОРИЯ КУБКОВ
-        ========================= */
-
-        .history {
-            margin-top: 18px;
-        }
-
-        .history-title {
-            font-size: 17px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 12px;
-            margin-top: 7px;
-            border-radius: 12px;
-            background: var(--tg-theme-bg-color, #111111);
-        }
-
-        .history-trophies {
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .history-date {
-            font-size: 11px;
-            opacity: 0.65;
-        }
-
-        .history-empty {
-            font-size: 13px;
-            opacity: 0.7;
         }
     </style>
 </head>
@@ -765,7 +732,11 @@
                 result.innerHTML = `
                     <div class="card">
                         <h2>❌ Ошибка</h2>
-                        <p>${data.reason || data.error || "Не удалось загрузить участников"}</p>
+                        <p>${escapeHtml(
+                            data.reason ||
+                            data.error ||
+                            "Не удалось загрузить участников"
+                        )}</p>
                     </div>
                 `;
 
@@ -795,11 +766,56 @@
 
             members.forEach((member, index) => {
 
-                const safeName = escapeHtml(member.name || "Без имени");
+                const safeName =
+                    escapeHtml(member.name || "Без имени");
 
-                const rawTag = String(member.tag || "");
-                const cleanTag = normalizeTag(rawTag);
-                const safeTag = escapeHtml(cleanTag);
+                const rawTag =
+                    String(member.tag || "");
+
+                const cleanTag =
+                    normalizeTag(rawTag);
+
+                const safeTag =
+                    escapeHtml(cleanTag);
+
+                const trophies =
+                    member.trophies ?? "—";
+
+                let dailyHtml = "";
+
+                if (
+                    member.dailyChange !== null &&
+                    member.dailyChange !== undefined
+                ) {
+
+                    const change =
+                        Number(member.dailyChange);
+
+                    if (change > 0) {
+
+                        dailyHtml = `
+                            <div class="member-daily">
+                                🟢 +${change}
+                            </div>
+                        `;
+
+                    } else if (change < 0) {
+
+                        dailyHtml = `
+                            <div class="member-daily">
+                                🔴 ${change}
+                            </div>
+                        `;
+
+                    } else {
+
+                        dailyHtml = `
+                            <div class="member-daily">
+                                ⚪ 0
+                            </div>
+                        `;
+                    }
+                }
 
                 html += `
                     <button
@@ -816,8 +832,10 @@
                         </div>
 
                         <div class="member-trophies">
-                            🏆 ${member.trophies ?? "—"}
+                            🏆 ${trophies}
                         </div>
+
+                        ${dailyHtml}
 
                     </button>
                 `;
@@ -846,7 +864,8 @@
 
         showScreen('memberProfile');
 
-        const result = document.getElementById("memberProfileResult");
+        const result =
+            document.getElementById("memberProfileResult");
 
         result.innerHTML = `
             <div class="card">
@@ -856,13 +875,15 @@
 
         try {
 
-            const cleanTag = normalizeTag(tag);
+            const cleanTag =
+                normalizeTag(tag);
 
             const response = await fetch(
                 `/api/player?tag=${encodeURIComponent(cleanTag)}`
             );
 
-            const data = await response.json();
+            const data =
+                await response.json();
 
             if (!response.ok) {
 
@@ -879,12 +900,18 @@
             result.innerHTML = `
                 <div class="card">
 
-                    <h2>👤 ${escapeHtml(data.name || "Без имени")}</h2>
+                    <h2>
+                        👤 ${escapeHtml(
+                            data.name || "Без имени"
+                        )}
+                    </h2>
 
                     <p>
                         🏷 Тег:
                         <b>#${escapeHtml(
-                            normalizeTag(data.tag || cleanTag)
+                            normalizeTag(
+                                data.tag || cleanTag
+                            )
                         )}</b>
                     </p>
 
@@ -915,15 +942,13 @@
 
                     <p>
                         🏰 Клан:
-                        <b>${escapeHtml(data.clan?.name || "Без клана")}</b>
+                        <b>${escapeHtml(
+                            data.clan?.name || "Без клана"
+                        )}</b>
                     </p>
-
-                    <div id="memberHistory"></div>
 
                 </div>
             `;
-
-            loadTrophyHistory(cleanTag, "memberHistory");
 
         } catch (error) {
 
@@ -949,7 +974,8 @@
             .value
             .trim();
 
-        const result = document.getElementById('profileResult');
+        const result =
+            document.getElementById('profileResult');
 
         if (!tag) {
 
@@ -962,12 +988,16 @@
             return;
         }
 
-        const cleanTag = normalizeTag(tag);
+        const cleanTag =
+            normalizeTag(tag);
 
         result.innerHTML = `
             <div class="card">
                 <h2>🔎 Поиск</h2>
-                <p>Ищу игрока <b>#${escapeHtml(cleanTag)}</b>...</p>
+                <p>
+                    Ищу игрока
+                    <b>#${escapeHtml(cleanTag)}</b>...
+                </p>
             </div>
         `;
 
@@ -977,7 +1007,8 @@
                 `/api/player?tag=${encodeURIComponent(cleanTag)}`
             );
 
-            const data = await response.json();
+            const data =
+                await response.json();
 
             if (!response.ok) {
 
@@ -994,12 +1025,18 @@
             result.innerHTML = `
                 <div class="card">
 
-                    <h2>👤 ${escapeHtml(data.name || "Без имени")}</h2>
+                    <h2>
+                        👤 ${escapeHtml(
+                            data.name || "Без имени"
+                        )}
+                    </h2>
 
                     <p>
                         🏷 Тег:
                         <b>#${escapeHtml(
-                            normalizeTag(data.tag || cleanTag)
+                            normalizeTag(
+                                data.tag || cleanTag
+                            )
                         )}</b>
                     </p>
 
@@ -1030,15 +1067,13 @@
 
                     <p>
                         🏰 Клан:
-                        <b>${escapeHtml(data.clan?.name || "Без клана")}</b>
+                        <b>${escapeHtml(
+                            data.clan?.name || "Без клана"
+                        )}</b>
                     </p>
-
-                    <div id="profileHistory"></div>
 
                 </div>
             `;
-
-            loadTrophyHistory(cleanTag, "profileHistory");
 
         } catch (error) {
 
@@ -1050,155 +1085,6 @@
             `;
 
         }
-    }
-
-
-    // =========================
-    // ИСТОРИЯ КУБКОВ
-    // =========================
-
-    async function loadTrophyHistory(tag, elementId) {
-
-        const container = document.getElementById(elementId);
-
-        if (!container) {
-            return;
-        }
-
-        container.innerHTML = `
-            <div class="history">
-                <div class="history-title">
-                    📈 История кубков
-                </div>
-
-                <div class="history-empty">
-                    ⏳ Загружаю историю...
-                </div>
-            </div>
-        `;
-
-        try {
-
-            const cleanTag = normalizeTag(tag);
-
-            const response = await fetch(
-                `/api/trophy-history?tag=${encodeURIComponent(cleanTag)}`
-            );
-
-            const data = await response.json();
-
-            if (!response.ok) {
-
-                container.innerHTML = `
-                    <div class="history">
-                        <div class="history-title">
-                            📈 История кубков
-                        </div>
-
-                        <div class="history-empty">
-                            История пока недоступна.
-                        </div>
-                    </div>
-                `;
-
-                return;
-            }
-
-            const history = data.history || [];
-
-            if (history.length === 0) {
-
-                container.innerHTML = `
-                    <div class="history">
-                        <div class="history-title">
-                            📈 История кубков
-                        </div>
-
-                        <div class="history-empty">
-                            Пока нет данных об изменениях кубков.
-                        </div>
-                    </div>
-                `;
-
-                return;
-            }
-
-            let html = `
-                <div class="history">
-
-                    <div class="history-title">
-                        📈 История кубков
-                    </div>
-            `;
-
-            const reversedHistory = [...history].reverse();
-
-            reversedHistory.forEach(item => {
-
-                const trophies = Number(item.trophies) || 0;
-
-                const date = item.recorded_at
-                    ? formatHistoryDate(item.recorded_at)
-                    : "";
-
-                html += `
-                    <div class="history-item">
-
-                        <div class="history-trophies">
-                            🏆 ${trophies}
-                        </div>
-
-                        <div class="history-date">
-                            ${escapeHtml(date)}
-                        </div>
-
-                    </div>
-                `;
-            });
-
-            html += `
-                </div>
-            `;
-
-            container.innerHTML = html;
-
-        } catch (error) {
-
-            container.innerHTML = `
-                <div class="history">
-                    <div class="history-title">
-                        📈 История кубков
-                    </div>
-
-                    <div class="history-empty">
-                        Не удалось загрузить историю.
-                    </div>
-                </div>
-            `;
-
-        }
-    }
-
-
-    // =========================
-    // ФОРМАТ ДАТЫ ИСТОРИИ
-    // =========================
-
-    function formatHistoryDate(value) {
-
-        const date = new Date(value);
-
-        if (Number.isNaN(date.getTime())) {
-            return "";
-        }
-
-        return date.toLocaleString("ru-RU", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit"
-        });
     }
 
 
