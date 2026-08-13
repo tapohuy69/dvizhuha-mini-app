@@ -2,17 +2,6 @@ import { neon } from "@neondatabase/serverless";
 
 export default async function handler(req, res) {
 
-  // ==========================================
-  // НАШ КЛАН
-  // ==========================================
-
-  const OUR_CLAN_TAG = "#GCGJ9VJV";
-
-
-  // ==========================================
-  // TELEGRAM ID
-  // ==========================================
-
   const telegramId =
     String(req.query.telegram_id || "").trim();
 
@@ -22,17 +11,23 @@ export default async function handler(req, res) {
     });
   }
 
+  const token = process.env.CR_API_TOKEN;
+
+  if (!token) {
+    return res.status(500).json({
+      error: "CR_API_TOKEN не найден в Vercel"
+    });
+  }
 
   try {
 
     const sql = neon(process.env.DATABASE_URL);
 
-
     // ==========================================
-    // ИЩЕМ ПРИВЯЗКУ TELEGRAM → CLASH ROYALE
+    // ИЩЕМ ПРИВЯЗАННЫЙ АККАУНТ
     // ==========================================
 
-    const result = await sql`
+    const linked = await sql`
       SELECT
         telegram_id,
         player_tag,
@@ -42,32 +37,24 @@ export default async function handler(req, res) {
       LIMIT 1
     `;
 
-
-    // ==========================================
-    // АККАУНТ НЕ ПРИВЯЗАН
-    // ==========================================
-
-    if (result.length === 0) {
+    if (linked.length === 0) {
 
       return res.status(404).json({
         error: "PLAYER_NOT_LINKED",
-        message: "Аккаунт Clash Royale не привязан",
-        telegram_id: telegramId
+        message: "Аккаунт Clash Royale не привязан"
       });
 
     }
-
 
     // ==========================================
     // ПОЛУЧАЕМ ТЕГ
     // ==========================================
 
     const playerTag =
-      String(result[0].player_tag || "")
+      String(linked[0].player_tag || "")
         .replace(/^#+/, "")
         .trim()
         .toUpperCase();
-
 
     if (!playerTag) {
 
@@ -78,86 +65,105 @@ export default async function handler(req, res) {
 
     }
 
-
     // ==========================================
-    // CLASH ROYALE API
+    // ПОЛУЧАЕМ ПРОФИЛЬ CLASH ROYALE
     // ==========================================
 
-    const token =
-      process.env.CR_API_TOKEN;
-
-
-    if (!token) {
-
-      return res.status(500).json({
-        error: "CR_API_TOKEN не найден в Vercel"
-      });
-
-    }
-
-
-    const url =
+    const playerUrl =
       `https://proxy.royaleapi.dev/v1/players/%23${encodeURIComponent(playerTag)}`;
 
-
-    const response =
-      await fetch(url, {
+    const playerResponse =
+      await fetch(playerUrl, {
         method: "GET",
-
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json"
         }
       });
 
-
-    const text =
-      await response.text();
-
+    const playerText =
+      await playerResponse.text();
 
     let data;
 
     try {
-
-      data = JSON.parse(text);
-
+      data = JSON.parse(playerText);
     } catch {
 
       return res.status(502).json({
-        error: "API вернул не JSON"
+        error: "API вернул не JSON",
+        response: playerText
       });
 
     }
 
+    if (!playerResponse.ok) {
 
-    if (!response.ok) {
-
-      return res.status(response.status).json(data);
+      return res.status(playerResponse.status).json(data);
 
     }
 
-
     // ==========================================
-    // ПРОВЕРКА КЛАНА
+    // ПРОВЕРЯЕМ УЧАСТИЕ В КЛАНЕ
     // ==========================================
 
-    const playerClanTag =
-      String(data.clan?.tag || "")
-        .replace(/^#+/, "")
-        .trim()
-        .toUpperCase();
+    let isClanMember = false;
 
+    try {
 
-    const ourClanTag =
-      OUR_CLAN_TAG
-        .replace(/^#+/, "")
-        .trim()
-        .toUpperCase();
+      const clanUrl =
+        `https://proxy.royaleapi.dev/v1/clans/%23GCGJ9VJV/members`;
 
+      const clanResponse =
+        await fetch(clanUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json"
+          }
+        });
 
-    const isClanMember =
-      playerClanTag === ourClanTag;
+      const clanText =
+        await clanResponse.text();
 
+      let clanData;
+
+      try {
+        clanData = JSON.parse(clanText);
+      } catch {
+        clanData = null;
+      }
+
+      if (clanResponse.ok && clanData) {
+
+        const members =
+          clanData.items || [];
+
+        isClanMember =
+          members.some(member => {
+
+            const memberTag =
+              String(member.tag || "")
+                .replace(/^#+/, "")
+                .trim()
+                .toUpperCase();
+
+            return memberTag === playerTag;
+
+          });
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Clan membership check error:",
+        error
+      );
+
+      isClanMember = false;
+
+    }
 
     // ==========================================
     // ОБНОВЛЯЕМ PLAYERS
@@ -166,14 +172,11 @@ export default async function handler(req, res) {
     const cleanTag =
       "#" + playerTag;
 
-
     const trophies =
       Number(data.trophies || 0);
 
-
     const playerName =
       data.name || "";
-
 
     await sql`
       INSERT INTO players (
@@ -202,7 +205,6 @@ export default async function handler(req, res) {
         updated_at = NOW()
     `;
 
-
     // ==========================================
     // ИСТОРИЯ КУБКОВ
     // ==========================================
@@ -215,7 +217,6 @@ export default async function handler(req, res) {
         ORDER BY recorded_at DESC
         LIMIT 1
       `;
-
 
     if (
       lastHistory.length === 0 ||
@@ -235,7 +236,6 @@ export default async function handler(req, res) {
 
     }
 
-
     // ==========================================
     // ОТВЕТ
     // ==========================================
@@ -251,11 +251,11 @@ export default async function handler(req, res) {
         linked: true
       },
 
-      clan_status: {
+      clan: {
         is_member: isClanMember,
-        clan_tag: data.clan?.tag || null,
-        clan_name: data.clan?.name || null,
-        our_clan_tag: OUR_CLAN_TAG
+        message: isClanMember
+          ? "✅ Реальный кент клана!"
+          : "😤 Не кент клана."
       },
 
       neon: {
@@ -265,7 +265,6 @@ export default async function handler(req, res) {
 
     });
 
-
   } catch (error) {
 
     console.error(
@@ -273,12 +272,10 @@ export default async function handler(req, res) {
       error
     );
 
-
     return res.status(500).json({
       error: "Ошибка подключения",
       details: error.message
     });
 
   }
-
 }
