@@ -6,9 +6,17 @@ export default async function handler(req, res) {
     .trim()
     .toUpperCase();
 
+  const telegramId = String(req.query.telegram_id || "").trim();
+
   if (!tag) {
     return res.status(400).json({
       error: "Укажи тег игрока"
+    });
+  }
+
+  if (!telegramId) {
+    return res.status(400).json({
+      error: "Telegram ID не найден"
     });
   }
 
@@ -53,8 +61,12 @@ export default async function handler(req, res) {
 
     const playerTag = "#" + tag;
     const trophies = Number(data.trophies || 0);
+    const playerName = data.name || "";
 
-    // Сохраняем актуальные данные игрока
+    // ==========================================
+    // СОХРАНЯЕМ ИГРОКА
+    // ==========================================
+
     await sql`
       INSERT INTO players (
         player_tag,
@@ -66,7 +78,7 @@ export default async function handler(req, res) {
       )
       VALUES (
         ${playerTag},
-        ${data.name || ""},
+        ${playerName},
         ${trophies},
         ${data.wins || 0},
         ${data.losses || 0},
@@ -81,7 +93,10 @@ export default async function handler(req, res) {
         updated_at = NOW()
     `;
 
-    // Получаем последнюю запись истории
+    // ==========================================
+    // ИСТОРИЯ КУБКОВ
+    // ==========================================
+
     const lastHistory = await sql`
       SELECT trophies
       FROM trophy_history
@@ -90,7 +105,6 @@ export default async function handler(req, res) {
       LIMIT 1
     `;
 
-    // Записываем новую историю только если кубки изменились
     if (
       lastHistory.length === 0 ||
       Number(lastHistory[0].trophies) !== trophies
@@ -107,11 +121,36 @@ export default async function handler(req, res) {
       `;
     }
 
+    // ==========================================
+    // ПРИВЯЗЫВАЕМ TELEGRAM → CLASH ROYALE
+    // ==========================================
+
+    await sql`
+      INSERT INTO telegram_players (
+        telegram_id,
+        player_tag,
+        player_name,
+        updated_at
+      )
+      VALUES (
+        ${telegramId},
+        ${playerTag},
+        ${playerName},
+        NOW()
+      )
+      ON CONFLICT (telegram_id)
+      DO UPDATE SET
+        player_tag = EXCLUDED.player_tag,
+        player_name = EXCLUDED.player_name,
+        updated_at = NOW()
+    `;
+
     return res.status(200).json({
       ...data,
       neon: {
         saved: true,
-        trophy_history: true
+        trophy_history: true,
+        telegram_linked: true
       }
     });
 
