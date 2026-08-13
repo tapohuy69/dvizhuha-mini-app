@@ -403,6 +403,17 @@
 
 
     // =========================
+    // ПОЛУЧЕНИЕ TELEGRAM ID
+    // =========================
+
+    function getTelegramId() {
+
+        return tg.initDataUnsafe?.user?.id || null;
+
+    }
+
+
+    // =========================
     // ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ
     // =========================
 
@@ -878,8 +889,23 @@
             const cleanTag =
                 normalizeTag(tag);
 
+            const telegramId =
+                getTelegramId();
+
+            if (!telegramId) {
+
+                result.innerHTML = `
+                    <div class="card">
+                        <h2>❌ Telegram ID не найден</h2>
+                        <p>Открой Mini App через Telegram.</p>
+                    </div>
+                `;
+
+                return;
+            }
+
             const response = await fetch(
-                `/api/player?tag=${encodeURIComponent(cleanTag)}`
+                `/api/player?tag=${encodeURIComponent(cleanTag)}&telegram_id=${encodeURIComponent(telegramId)}`
             );
 
             const data =
@@ -991,6 +1017,21 @@
         const cleanTag =
             normalizeTag(tag);
 
+        const telegramId =
+            getTelegramId();
+
+        if (!telegramId) {
+
+            result.innerHTML = `
+                <div class="card">
+                    <h2>❌ Telegram ID не найден</h2>
+                    <p>Открой Mini App через Telegram.</p>
+                </div>
+            `;
+
+            return;
+        }
+
         result.innerHTML = `
             <div class="card">
                 <h2>🔎 Поиск</h2>
@@ -1004,7 +1045,7 @@
         try {
 
             const response = await fetch(
-                `/api/player?tag=${encodeURIComponent(cleanTag)}`
+                `/api/player?tag=${encodeURIComponent(cleanTag)}&telegram_id=${encodeURIComponent(telegramId)}`
             );
 
             const data =
