@@ -14,10 +14,6 @@
 
     <style>
 
-        /* ==================================================
-           BLACK PREMIUM
-        ================================================== */
-
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
@@ -47,16 +43,13 @@
                 0 8px 30px rgba(214,177,92,0.10);
         }
 
-
         html {
             background: var(--black);
         }
 
-
         body {
             margin: 0;
             padding: 20px;
-
             min-height: 100vh;
 
             font-family:
@@ -84,16 +77,13 @@
                 );
 
             color: var(--white);
-
             overflow-x: hidden;
         }
-
 
         body::before {
             content: "";
 
             position: fixed;
-
             top: 0;
             left: 0;
             right: 0;
@@ -109,10 +99,8 @@
                 );
 
             pointer-events: none;
-
             z-index: 10000;
         }
-
 
         .container {
             max-width: 500px;
@@ -120,16 +108,10 @@
             position: relative;
         }
 
-
-        /* ==================================================
-           HEADER
-        ================================================== */
-
         .header {
             text-align: center;
             margin-bottom: 30px;
         }
-
 
         .header h1 {
             margin: 0;
@@ -145,29 +127,19 @@
                 0 0 22px rgba(214,177,92,0.13);
         }
 
-
         .header p {
             margin-top: 10px;
-
             color: var(--muted);
-
             font-size: 14px;
         }
-
-
-        /* ==================================================
-           PREMIUM BUTTONS
-        ================================================== */
 
         .button {
             width: 100%;
 
             border: 1px solid var(--border);
-
             border-radius: 17px;
 
             padding: 17px 18px;
-
             margin-bottom: 12px;
 
             font-size: 16px;
@@ -193,12 +165,10 @@
                 filter 0.15s ease;
         }
 
-
         .button:active {
             transform: scale(0.975);
             filter: brightness(0.92);
         }
-
 
         .button.secondary {
             background:
@@ -217,21 +187,14 @@
                 0 8px 28px rgba(0,0,0,0.35);
         }
 
-
         .button.secondary:hover {
             border-color:
                 rgba(214,177,92,0.30);
         }
 
-
-        /* ==================================================
-           SCREENS
-        ================================================== */
-
         .screen {
             display: none;
         }
-
 
         .screen.active {
             display: block;
@@ -239,7 +202,6 @@
             animation:
                 premiumFade 0.22s ease;
         }
-
 
         @keyframes premiumFade {
 
@@ -252,11 +214,6 @@
             }
 
         }
-
-
-        /* ==================================================
-           НАЗАД
-        ================================================== */
 
         .back {
             position: fixed;
@@ -298,15 +255,9 @@
                 0 6px 20px rgba(0,0,0,0.5);
         }
 
-
         .back:active {
             transform: scale(0.92);
         }
-
-
-        /* ==================================================
-           ОБНОВИТЬ
-        ================================================== */
 
         .refresh-button {
             position: fixed;
@@ -348,15 +299,9 @@
                 0 6px 20px rgba(0,0,0,0.5);
         }
 
-
         .refresh-button:active {
             transform: scale(0.92);
         }
-
-
-        /* ==================================================
-           INPUT
-        ================================================== */
 
         input {
             width: 100%;
@@ -392,11 +337,9 @@
                 box-shadow 0.2s ease;
         }
 
-
         input::placeholder {
             color: #666;
         }
-
 
         input:focus {
             border-color:
@@ -406,11 +349,6 @@
                 0 0 0 3px rgba(214,177,92,0.06),
                 0 10px 28px rgba(0,0,0,0.35);
         }
-
-
-        /* ==================================================
-           CARDS
-        ================================================== */
 
         .card {
             padding: 20px;
@@ -437,7 +375,6 @@
             overflow: hidden;
         }
 
-
         .card::before {
             content: "";
 
@@ -458,27 +395,18 @@
                 );
         }
 
-
         .card h2 {
             margin-top: 0;
-
             color: var(--white);
         }
-
 
         .card p {
             color: #c7c7c7;
         }
 
-
         .card b {
             color: var(--gold-light);
         }
-
-
-        /* ==================================================
-           КЕНТЫ
-        ================================================== */
 
         .member {
             width: 100%;
@@ -513,14 +441,12 @@
                 border-color 0.15s ease;
         }
 
-
         .member:active {
             transform: scale(0.98);
 
             border-color:
                 rgba(214,177,92,0.25);
         }
-
 
         .member-content {
             width: 100%;
@@ -534,13 +460,10 @@
             gap: 10px;
         }
 
-
         .member-left {
             min-width: 0;
-
             flex: 1;
         }
-
 
         .member-name {
             font-size: 15px;
@@ -555,7 +478,6 @@
             text-overflow: ellipsis;
         }
 
-
         .member-info {
             font-size: 12px;
 
@@ -569,7 +491,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
 
         .member-right {
             flex-shrink: 0;
@@ -587,7 +508,6 @@
             min-width: 105px;
         }
 
-
         .member-trophies {
             font-size: 13px;
 
@@ -597,7 +517,6 @@
 
             line-height: 1.2;
         }
-
 
         .member-daily {
             font-size: 11px;
@@ -613,11 +532,6 @@
             white-space: nowrap;
         }
 
-
-        /* ==================================================
-           ТОП
-        ================================================== */
-
         .ranking-title {
             text-align: center;
 
@@ -632,11 +546,9 @@
             letter-spacing: 0.2px;
         }
 
-
         .ranking {
             margin-top: 10px;
         }
-
 
         .ranking-item {
             display: flex;
@@ -664,7 +576,6 @@
                 0 6px 20px rgba(0,0,0,0.25);
         }
 
-
         .ranking-left {
             display: flex;
 
@@ -672,7 +583,6 @@
 
             min-width: 0;
         }
-
 
         .ranking-number {
             width: 28px;
@@ -686,7 +596,6 @@
             flex-shrink: 0;
         }
 
-
         .ranking-name {
             font-size: 15px;
 
@@ -696,7 +605,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
 
         .ranking-value {
             font-size: 14px;
@@ -709,11 +617,6 @@
 
             color: var(--gold-light);
         }
-
-
-        /* ==================================================
-           СМАЙЛИК ПОБЕДИТЕЛЯ
-        ================================================== */
 
         .winner-emoji {
             margin-left: 6px;
@@ -730,7 +633,6 @@
                 );
         }
 
-
         .profile-name-line {
             display: flex;
 
@@ -740,11 +642,6 @@
 
             flex-wrap: wrap;
         }
-
-
-        /* ==================================================
-           НАГРАДА
-        ================================================== */
 
         .reward-winner {
             text-align: center;
@@ -759,7 +656,6 @@
                 );
         }
 
-
         .reward-message {
             text-align: center;
 
@@ -767,7 +663,6 @@
 
             color: #bdbdbd;
         }
-
 
         .emoji-grid {
             display: grid;
@@ -779,7 +674,6 @@
 
             margin-top: 18px;
         }
-
 
         .emoji-button {
             border:
@@ -810,14 +704,12 @@
                 border-color 0.15s ease;
         }
 
-
         .emoji-button:active {
             transform: scale(0.92);
 
             border-color:
                 rgba(214,177,92,0.35);
         }
-
 
         .reward-selected {
             text-align: center;
@@ -829,30 +721,18 @@
             color: var(--gold-light);
         }
 
-
-        /* ==================================================
-           PREMIUM SCROLLBAR
-        ================================================== */
-
         ::-webkit-scrollbar {
             width: 4px;
         }
-
 
         ::-webkit-scrollbar-track {
             background: #050505;
         }
 
-
         ::-webkit-scrollbar-thumb {
             background: #292929;
             border-radius: 10px;
         }
-
-
-        /* ==================================================
-           SELECTION
-        ================================================== */
 
         ::selection {
             background:
@@ -867,10 +747,6 @@
 <body>
 
 <div class="container">
-
-    <!-- =========================
-         МЕНЮ
-    ========================= -->
 
     <div id="menu" class="screen active">
 
@@ -929,10 +805,6 @@
     </div>
 
 
-    <!-- =========================
-         МОЙ ПРОФИЛЬ
-    ========================= -->
-
     <div id="myProfile" class="screen">
 
         <button
@@ -966,10 +838,6 @@
 
     </div>
 
-
-    <!-- =========================
-         ПРОФИЛЬ КЕНТА
-    ========================= -->
 
     <div id="profile" class="screen">
 
@@ -1010,10 +878,6 @@
 
     </div>
 
-
-    <!-- =========================
-         КЛАН
-    ========================= -->
 
     <div id="clan" class="screen">
 
@@ -1056,10 +920,6 @@
     </div>
 
 
-    <!-- =========================
-         КЕНТЫ
-    ========================= -->
-
     <div id="players" class="screen">
 
         <button
@@ -1088,10 +948,6 @@
 
     </div>
 
-
-    <!-- =========================
-         ПРОФИЛЬ УЧАСТНИКА
-    ========================= -->
 
     <div id="memberProfile" class="screen">
 
@@ -1122,10 +978,6 @@
 
     </div>
 
-
-    <!-- =========================
-         НАГРАДА
-    ========================= -->
 
     <div id="reward" class="screen">
 
@@ -1160,10 +1012,6 @@
 
     </div>
 
-
-    <!-- =========================
-         ПОМОЩЬ
-    ========================= -->
 
     <div id="help" class="screen">
 
@@ -1218,20 +1066,12 @@
 
 <script>
 
-    // ==================================================
-    // TELEGRAM
-    // ==================================================
-
     const tg =
         window.Telegram.WebApp;
 
     tg.ready();
     tg.expand();
 
-
-    // ==================================================
-    // TELEGRAM ID
-    // ==================================================
 
     const telegramId =
         tg.initDataUnsafe?.user?.id
@@ -1241,10 +1081,6 @@
             : "";
 
 
-    // ==================================================
-    // КЛАН
-    // ==================================================
-
     const MY_CLAN_TAG =
         "GCGJ9VJV";
 
@@ -1252,20 +1088,12 @@
         "VPQRJ8LVG";
 
 
-    // ==================================================
-    // КЭШ СМАЙЛИКОВ
-    // ==================================================
-
     const emojiCache =
         new Map();
 
     const tagEmojiCache =
         new Map();
 
-
-    // ==================================================
-    // ЭКРАН
-    // ==================================================
 
     function showScreen(screenId) {
 
@@ -1298,10 +1126,6 @@
         );
     }
 
-
-    // ==================================================
-    // ПОЛУЧЕНИЕ СМАЙЛИКА ПОЛЬЗОВАТЕЛЯ
-    // ==================================================
 
     async function getRewardEmoji(
         userId
@@ -1386,10 +1210,6 @@
         }
     }
 
-
-    // ==================================================
-    // ПОЛУЧЕНИЕ СМАЙЛИКА ПО TAG
-    // ==================================================
 
     async function getRewardEmojiByTag(
         tag
@@ -1502,10 +1322,6 @@
     }
 
 
-    // ==================================================
-    // СМАЙЛИК HTML
-    // ==================================================
-
     function rewardEmojiHtml(
         emoji
     ) {
@@ -1522,10 +1338,6 @@
 
     }
 
-
-    // ==================================================
-    // МОЙ ПРОФИЛЬ
-    // ==================================================
 
     function openMyProfile() {
 
@@ -1696,10 +1508,6 @@
     }
 
 
-    // ==================================================
-    // ПРИВЯЗКА
-    // ==================================================
-
     async function linkMyProfile() {
 
         const input =
@@ -1845,8 +1653,93 @@
 
 
     // ==================================================
-    // КАРТОЧКА ИГРОКА
+    // НОВОЕ:
+    // РАСЧЁТ КОЛЛЕКЦИОННЫХ УРОВНЕЙ
     // ==================================================
+
+    function calculateCollectionLevel(
+        data
+    ) {
+
+        let total = 0;
+
+
+        // Обычные карты
+        if (
+            Array.isArray(
+                data.cards
+            )
+        ) {
+
+            data.cards.forEach(
+                card => {
+
+                    const level =
+                        Number(
+                            card.level
+                        ) || 0;
+
+                    total += level;
+
+                }
+            );
+
+        }
+
+
+        // Tower Troops
+        if (
+            Array.isArray(
+                data.towerTroops
+            )
+        ) {
+
+            data.towerTroops.forEach(
+                card => {
+
+                    const level =
+                        Number(
+                            card.level
+                        ) || 0;
+
+                    total += level;
+
+                }
+            );
+
+        }
+
+
+        // Evolutions
+        if (
+            Array.isArray(
+                data.evolutions
+            )
+        ) {
+
+            total +=
+                data.evolutions.length * 5;
+
+        }
+
+
+        // Heroes
+        if (
+            Array.isArray(
+                data.heroes
+            )
+        ) {
+
+            total +=
+                data.heroes.length * 5;
+
+        }
+
+
+        return total;
+
+    }
+
 
     function createPlayerCard(
         data,
@@ -1871,17 +1764,21 @@
                 ""
             );
 
-        // ==================================================
-        // ГЛАВА ПРИВЯЗАН ТОЛЬКО К TAG
-        // ==================================================
 
         const isLeader =
-            tag === LEADER_TAG;
+            tag === LEADER_TAG ||
+            name
+                .trim()
+                .toLowerCase() ===
+            "pohuy";
+
 
         const isClanMember =
             clanTag === MY_CLAN_TAG;
 
+
         let clanStatus;
+
 
         if (isLeader) {
 
@@ -1908,6 +1805,13 @@
             `;
 
         }
+
+
+        const collectionLevel =
+            calculateCollectionLevel(
+                data
+            );
+
 
         return `
             <div class="card">
@@ -1963,9 +1867,9 @@
                 </p>
 
                 <p>
-                    ⭐ Уровень:
+                    🃏 Карты:
                     <b>
-                        ${data.expLevel ?? "—"}
+                        ${collectionLevel}
                     </b>
                 </p>
 
@@ -1984,10 +1888,6 @@
 
     }
 
-
-    // ==================================================
-    // ПРОФИЛЬ КЕНТА
-    // ==================================================
 
     function openProfile() {
 
@@ -2010,10 +1910,6 @@
 
     }
 
-
-    // ==================================================
-    // ПОИСК ИГРОКА
-    // ==================================================
 
     async function searchPlayer() {
 
@@ -2154,10 +2050,6 @@
     }
 
 
-    // ==================================================
-    // ПОЛУЧИТЬ МОЙ TAG
-    // ==================================================
-
     async function getMyLinkedTag() {
 
         if (!telegramId) {
@@ -2192,10 +2084,6 @@
 
     }
 
-
-    // ==================================================
-    // КЛАН
-    // ==================================================
 
     async function loadClan() {
 
@@ -2599,10 +2487,6 @@
     }
 
 
-    // ==================================================
-    // КЕНТЫ
-    // ==================================================
-
     async function loadMembers() {
 
         const result =
@@ -2868,10 +2752,6 @@
     }
 
 
-    // ==================================================
-    // ПРОФИЛЬ ИЗ КЕНТОВ
-    // ==================================================
-
     async function openMemberProfile(
         tag
     ) {
@@ -2996,10 +2876,6 @@
 
     }
 
-
-    // ==================================================
-    // НАГРАДА
-    // ==================================================
 
     function openReward() {
 
@@ -3288,10 +3164,6 @@
     }
 
 
-    // ==================================================
-    // ВЫБОР НАГРАДЫ
-    // ==================================================
-
     async function chooseReward(
         emoji
     ) {
@@ -3470,10 +3342,6 @@
     }
 
 
-    // ==================================================
-    // START APP
-    // ==================================================
-
     function openStartAppScreen() {
 
         const startParam =
@@ -3534,10 +3402,6 @@
     }
 
 
-    // ==================================================
-    // NORMALIZE TAG
-    // ==================================================
-
     function normalizeTag(
         value
     ) {
@@ -3554,10 +3418,6 @@
 
     }
 
-
-    // ==================================================
-    // ESCAPE HTML
-    // ==================================================
 
     function escapeHtml(
         value
@@ -3589,10 +3449,6 @@
 
     }
 
-
-    // ==================================================
-    // ЗАПУСК
-    // ==================================================
 
     openStartAppScreen();
 
