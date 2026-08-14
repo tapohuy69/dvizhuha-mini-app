@@ -132,6 +132,160 @@ export default async function handler(req, res) {
 
 
     // ==========================================
+    // УРОВЕНЬ КОЛЛЕКЦИИ
+    //
+    // Официальная формула Clash Royale:
+    //
+    // сумма уровней всех карт
+    // +5 за каждую эволюцию
+    // +5 за каждого героя
+    //
+    // ВАЖНО:
+    // НЕ используем card.count.
+    // count = количество физических карт,
+    // а не уровень коллекции.
+    // ==========================================
+
+    let collectionLevel = 0;
+
+    const cards =
+      Array.isArray(data.cards)
+        ? data.cards
+        : [];
+
+
+    // Сумма уровней обычных карт
+    for (const card of cards) {
+
+      const level =
+        Number(
+          card?.level || 0
+        );
+
+      collectionLevel +=
+        level;
+
+    }
+
+
+    // ==========================================
+    // ЭВОЛЮЦИИ
+    //
+    // API может отдавать evolutionLevel
+    // у карты, если эволюция открыта.
+    //
+    // Также поддерживаем несколько возможных
+    // форматов, чтобы код не ломался.
+    // ==========================================
+
+    let evolutionCount = 0;
+
+    for (const card of cards) {
+
+      const evolutionLevel =
+        Number(
+          card?.evolutionLevel || 0
+        );
+
+      const evolutionUnlocked =
+        card?.evolution === true ||
+        card?.hasEvolution === true ||
+        evolutionLevel > 0;
+
+      if (evolutionUnlocked) {
+
+        evolutionCount += 1;
+
+      }
+
+    }
+
+
+    // ==========================================
+    // ГЕРОИ
+    //
+    // Поддерживаем возможные поля API.
+    // ==========================================
+
+    let heroCount = 0;
+
+    if (
+      Array.isArray(
+        data.heroes
+      )
+    ) {
+
+      heroCount =
+        data.heroes.filter(
+          hero =>
+            hero &&
+            (
+              hero.unlocked === true ||
+              Number(hero.level || 0) > 0
+            )
+        ).length;
+
+    }
+
+
+    // Дополнительная поддержка,
+    // если API отдаёт heroes как число
+
+    if (
+      heroCount === 0 &&
+      Number.isFinite(
+        Number(data.heroCount)
+      )
+    ) {
+
+      heroCount =
+        Number(
+          data.heroCount
+        );
+
+    }
+
+
+    // ==========================================
+    // TOWER TROOPS
+    //
+    // Если API отдаёт их отдельным массивом,
+    // их уровни тоже входят в Collection Level.
+    // ==========================================
+
+    const towerCards =
+      Array.isArray(data.towerCards)
+        ? data.towerCards
+        : (
+            Array.isArray(data.towerTroops)
+              ? data.towerTroops
+              : []
+          );
+
+
+    for (const towerCard of towerCards) {
+
+      collectionLevel +=
+        Number(
+          towerCard?.level || 0
+        );
+
+    }
+
+
+    // ==========================================
+    // +5 ЗА ЭВОЛЮЦИЮ
+    // +5 ЗА ГЕРОЯ
+    // ==========================================
+
+    collectionLevel +=
+      evolutionCount * 5;
+
+    collectionLevel +=
+      heroCount * 5;
+
+
+    // ==========================================
     // СОХРАНЯЕМ В PLAYERS
     // ==========================================
 
@@ -278,9 +432,6 @@ export default async function handler(req, res) {
     }
 
 
-    // Если telegram_id передан напрямую,
-    // используем его
-
     if (telegramId) {
 
       rewardTelegramId =
@@ -333,6 +484,25 @@ export default async function handler(req, res) {
       tag:
         playerTag,
 
+      // ========================================
+      // НОВОЕ
+      // ========================================
+
+      collectionLevel:
+        collectionLevel,
+
+      collection_level:
+        collectionLevel,
+
+      evolutionCount:
+        evolutionCount,
+
+      heroCount:
+        heroCount,
+
+      towerCardsCount:
+        towerCards.length,
+
       reward_emoji:
         rewardEmoji,
 
@@ -356,7 +526,10 @@ export default async function handler(req, res) {
         reward_loaded:
           Boolean(
             rewardEmoji
-          )
+          ),
+
+        collection_level:
+          collectionLevel
 
       }
 
