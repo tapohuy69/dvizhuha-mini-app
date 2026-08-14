@@ -228,7 +228,6 @@
         }
 
         @keyframes premiumFade {
-
             from {
                 opacity: 0;
             }
@@ -236,7 +235,6 @@
             to {
                 opacity: 1;
             }
-
         }
 
         /* ==================================================
@@ -437,7 +435,6 @@
 
         .card h2 {
             margin-top: 0;
-
             color: var(--white);
         }
 
@@ -507,7 +504,6 @@
 
         .member-left {
             min-width: 0;
-
             flex: 1;
         }
 
@@ -816,10 +812,6 @@
             color: var(--gold-light);
         }
 
-        /* ==================================================
-           PREMIUM SCROLLBAR
-        ================================================== */
-
         ::-webkit-scrollbar {
             width: 4px;
         }
@@ -832,10 +824,6 @@
             background: #292929;
             border-radius: 10px;
         }
-
-        /* ==================================================
-           SELECTION
-        ================================================== */
 
         ::selection {
             background:
@@ -851,33 +839,18 @@
 
 <div class="container">
 
-    <!-- =========================
-         МЕНЮ
-    ========================= -->
-
     <div id="menu" class="screen active">
 
         <div class="header">
-
             <h1>⚜️ Движуха ⚜️</h1>
-
-            <p>
-                Выбирай чё надо:
-            </p>
-
+            <p>Выбирай чё надо:</p>
         </div>
 
-        <button
-            class="button"
-            onclick="openMyProfile()"
-        >
+        <button class="button" onclick="openMyProfile()">
             👤 Мой профиль
         </button>
 
-        <button
-            class="button secondary"
-            onclick="openProfile()"
-        >
+        <button class="button secondary" onclick="openProfile()">
             🔎 Профиль кента
         </button>
 
@@ -912,10 +885,6 @@
     </div>
 
 
-    <!-- =========================
-         МОЙ ПРОФИЛЬ
-    ========================= -->
-
     <div id="myProfile" class="screen">
 
         <button
@@ -927,9 +896,7 @@
 
         <div class="header">
 
-            <h1>
-                👤 Мой профиль
-            </h1>
+            <h1>👤 Мой профиль</h1>
 
             <p id="myProfileSubtitle">
                 Загрузка...
@@ -940,19 +907,13 @@
         <div id="myProfileResult">
 
             <div class="card">
-                <p>
-                    ⏳ Проверяю привязку...
-                </p>
+                <p>⏳ Проверяю привязку...</p>
             </div>
 
         </div>
 
     </div>
 
-
-    <!-- =========================
-         ПРОФИЛЬ КЕНТА
-    ========================= -->
 
     <div id="profile" class="screen">
 
@@ -965,13 +926,9 @@
 
         <div class="header">
 
-            <h1>
-                🔎 Профиль кента
-            </h1>
+            <h1>🔎 Профиль кента</h1>
 
-            <p>
-                Введи тег игрока
-            </p>
+            <p>Введи тег игрока</p>
 
         </div>
 
@@ -994,10 +951,6 @@
     </div>
 
 
-    <!-- =========================
-         КЛАН
-    ========================= -->
-
     <div id="clan" class="screen">
 
         <button
@@ -1016,13 +969,9 @@
 
         <div class="header">
 
-            <h1>
-                🏰 Клан
-            </h1>
+            <h1>🏰 Клан</h1>
 
-            <p>
-                ⚜️ Движуха ⚜️
-            </p>
+            <p>⚜️ Движуха ⚜️</p>
 
         </div>
 
@@ -1038,10 +987,6 @@
 
     </div>
 
-
-    <!-- =========================
-         КЕНТЫ
-    ========================= -->
 
     <div id="players" class="screen">
 
@@ -1072,10 +1017,6 @@
     </div>
 
 
-    <!-- =========================
-         ПРОФИЛЬ УЧАСТНИКА
-    ========================= -->
-
     <div id="memberProfile" class="screen">
 
         <button
@@ -1087,9 +1028,7 @@
 
         <div class="header">
 
-            <h1>
-                👤 Профиль кента
-            </h1>
+            <h1>👤 Профиль кента</h1>
 
         </div>
 
@@ -1106,10 +1045,6 @@
     </div>
 
 
-    <!-- =========================
-         НАГРАДА
-    ========================= -->
-
     <div id="reward" class="screen">
 
         <button
@@ -1121,9 +1056,7 @@
 
         <div class="header">
 
-            <h1>
-                🏆 Награда недели
-            </h1>
+            <h1>🏆 Награда недели</h1>
 
             <p id="rewardSubtitle">
                 Проверяю твою награду...
@@ -1134,19 +1067,13 @@
         <div id="rewardResult">
 
             <div class="card">
-                <p>
-                    ⏳ Проверяю...
-                </p>
+                <p>⏳ Проверяю...</p>
             </div>
 
         </div>
 
     </div>
 
-
-    <!-- =========================
-         ПОМОЩЬ
-    ========================= -->
 
     <div id="help" class="screen">
 
@@ -1158,11 +1085,7 @@
         </button>
 
         <div class="header">
-
-            <h1>
-                🆘 Помощь
-            </h1>
-
+            <h1>🆘 Помощь</h1>
         </div>
 
         <div class="card">
@@ -1232,7 +1155,7 @@
         "GCGJ9VJV";
 
     const LEADER_TAG =
-        "VPQRJ8LVG";
+        "VPQRJ8LV";
 
 
     // ==================================================
@@ -1286,9 +1209,7 @@
     // ПОЛУЧЕНИЕ СМАЙЛИКА
     // ==================================================
 
-    async function getRewardEmoji(
-        userId
-    ) {
+    async function getRewardEmoji(userId) {
 
         if (!userId) {
             return "";
@@ -1370,9 +1291,7 @@
     // СМАЙЛИК ПО TAG
     // ==================================================
 
-    async function getRewardEmojiByTag(
-        tag
-    ) {
+    async function getRewardEmojiByTag(tag) {
 
         const cleanTag =
             normalizeTag(tag);
@@ -1489,9 +1408,7 @@
     // СМАЙЛИК HTML
     // ==================================================
 
-    function rewardEmojiHtml(
-        emoji
-    ) {
+    function rewardEmojiHtml(emoji) {
 
         if (!emoji) {
             return "";
@@ -1521,6 +1438,11 @@
     }
 
 
+    // ==================================================
+    // ИСПРАВЛЕНО:
+    // МОЙ ПРОФИЛЬ ПОЛУЧАЕТ СВЕЖИЙ /api/player
+    // ==================================================
+
     async function loadMyProfile() {
 
         const result =
@@ -1532,6 +1454,7 @@
             document.getElementById(
                 "myProfileSubtitle"
             );
+
 
         if (!telegramId) {
 
@@ -1556,23 +1479,37 @@
 
         }
 
+
         result.innerHTML = `
             <div class="card">
+
                 <p>
                     ⏳ Загружаю профиль...
                 </p>
+
             </div>
         `;
 
+
         try {
+
+            // ==================================================
+            // 1. Получаем привязанный TAG
+            // ==================================================
 
             const response =
                 await fetch(
                     `/api/myprofile?telegram_id=${encodeURIComponent(telegramId)}`
                 );
 
+
             const data =
                 await response.json();
+
+
+            // ==================================================
+            // АККАУНТ НЕ ПРИВЯЗАН
+            // ==================================================
 
             if (
                 response.status === 404 ||
@@ -1615,6 +1552,11 @@
 
             }
 
+
+            // ==================================================
+            // ОШИБКА MYPROFILE
+            // ==================================================
+
             if (!response.ok) {
 
                 result.innerHTML = `
@@ -1638,20 +1580,121 @@
 
             }
 
-            subtitle.textContent =
-                "Твой Clash Royale аккаунт";
+
+            // ==================================================
+            // 2. ПОЛУЧАЕМ TAG
+            // ==================================================
+
+            const linkedTag =
+                normalizeTag(
+                    data.tag ||
+                    data.player_tag ||
+                    ""
+                );
+
+
+            if (!linkedTag) {
+
+                result.innerHTML = `
+                    <div class="card">
+
+                        <h2>
+                            ❌ Ошибка
+                        </h2>
+
+                        <p>
+                            Не удалось определить тег привязанного игрока.
+                        </p>
+
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            // ==================================================
+            // 3. ГЛАВНОЕ ИСПРАВЛЕНИЕ
+            //
+            // НЕ используем данные /api/myprofile
+            // для Collection Level.
+            //
+            // Запрашиваем настоящий свежий профиль
+            // через /api/player.
+            // ==================================================
+
+            const playerResponse =
+                await fetch(
+                    `/api/player?tag=${encodeURIComponent(linkedTag)}&telegram_id=${encodeURIComponent(telegramId)}`
+                );
+
+
+            const playerData =
+                await playerResponse.json();
+
+
+            if (!playerResponse.ok) {
+
+                result.innerHTML = `
+                    <div class="card">
+
+                        <h2>
+                            ❌ Не удалось обновить профиль
+                        </h2>
+
+                        <p>
+                            ${escapeHtml(
+                                playerData.error ||
+                                "Не удалось получить данные Clash Royale."
+                            )}
+                        </p>
+
+                        <button
+                            class="button"
+                            onclick="loadMyProfile()"
+                        >
+                            🔄 Попробовать снова
+                        </button>
+
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            // ==================================================
+            // 4. СМАЙЛИК
+            // ==================================================
 
             const emoji =
                 await getRewardEmoji(
                     telegramId
                 );
 
+
+            // ==================================================
+            // 5. ПОКАЗЫВАЕМ СВЕЖИЙ PLAYER DATA
+            //
+            // Здесь collectionLevel приходит
+            // непосредственно из /api/player.
+            //
+            // 1571
+            // ==================================================
+
+            subtitle.textContent =
+                "Твой Clash Royale аккаунт";
+
+
             result.innerHTML =
                 createPlayerCard(
-                    data,
-                    data.tag || "",
+                    playerData,
+                    linkedTag,
                     emoji
                 );
+
 
         } catch (error) {
 
@@ -1670,6 +1713,13 @@
                     <p>
                         Не удалось получить твой профиль.
                     </p>
+
+                    <button
+                        class="button"
+                        onclick="loadMyProfile()"
+                    >
+                        🔄 Попробовать снова
+                    </button>
 
                 </div>
             `;
@@ -1833,19 +1883,6 @@
     // ==================================================
     // УРОВЕНЬ КОЛЛЕКЦИИ
     // ==================================================
-    //
-    // Берём настоящий CollectionLevel,
-    // который player.js получает напрямую
-    // из Clash Royale API.
-    //
-    // НЕ складываем card.level вручную,
-    // потому что это даёт неправильные значения,
-    // например 962.
-    //
-    // Настоящее значение:
-    // data.collectionLevel
-    //
-    // ==================================================
 
     function calculateCollectionLevel(data) {
 
@@ -1853,12 +1890,6 @@
             return null;
         }
 
-        // ==================================================
-        // ОСНОВНОЙ И ПРАВИЛЬНЫЙ ВАРИАНТ
-        // player.js возвращает:
-        //
-        // collectionLevel: 1571
-        // ==================================================
 
         const directLevel =
             Number(
@@ -1875,10 +1906,6 @@
         }
 
 
-        // ==================================================
-        // ЗАПАСНОЙ ВАРИАНТ
-        // ==================================================
-
         const nestedLevel =
             Number(
                 data.collection?.level
@@ -1893,11 +1920,6 @@
 
         }
 
-
-        // ==================================================
-        // Если значение не пришло —
-        // ничего самостоятельно не считаем.
-        // ==================================================
 
         return null;
 
@@ -1980,19 +2002,11 @@
             );
 
 
-        // ==================================================
-        // НАСТОЯЩИЙ УРОВЕНЬ КОЛЛЕКЦИИ
-        // ==================================================
-
         const collectionLevel =
             calculateCollectionLevel(
                 data
             );
 
-
-        // ==================================================
-        // ГЛАВА
-        // ==================================================
 
         const isLeader =
             isLeaderPlayer(
@@ -3027,9 +3041,7 @@
     // ПРОФИЛЬ ИЗ КЕНТОВ
     // ==================================================
 
-    async function openMemberProfile(
-        tag
-    ) {
+    async function openMemberProfile(tag) {
 
         showScreen(
             "memberProfile"
@@ -3095,9 +3107,7 @@
 
                 if (
                     myTag &&
-                    normalizeTag(
-                        myTag
-                    ) ===
+                    normalizeTag(myTag) ===
                     normalizeTag(
                         data.tag ||
                         cleanTag
@@ -3270,17 +3280,13 @@
                             🏆
                         </div>
 
-                        <h2
-                            style="text-align:center;"
-                        >
+                        <h2 style="text-align:center;">
                             Пока без награды
                         </h2>
 
                         <p class="reward-message">
-
                             Ты ещё не становился
                             победителем недели.
-
                         </p>
 
                     </div>
@@ -3305,30 +3311,23 @@
                             🏆
                         </div>
 
-                        <h2
-                            style="text-align:center;"
-                        >
+                        <h2 style="text-align:center;">
                             Поздравляем!
                         </h2>
 
                         <p class="reward-message">
-
                             Ты победил в своей неделе
                             по количеству сообщений.
-
                         </p>
 
                         <p class="reward-message">
-
                             💬 Сообщений:
                             <b>
                                 ${winner.message_count}
                             </b>
-
                         </p>
 
                         <div class="reward-selected">
-
                             Твой смайлик:
                             <b>
                                 ${escapeHtml(
@@ -3337,7 +3336,6 @@
                                     ""
                                 )}
                             </b>
-
                         </div>
 
                         <p
@@ -3362,9 +3360,7 @@
                         🏆
                     </div>
 
-                    <h2
-                        style="text-align:center;"
-                    >
+                    <h2 style="text-align:center;">
                         Ты победитель недели!
                     </h2>
 
@@ -3373,20 +3369,16 @@
                     </p>
 
                     <p class="reward-message">
-
                         💬 Ты написал:
                         <b>
                             ${winner.message_count}
                         </b>
                         сообщений.
-
                     </p>
 
                     <p class="reward-message">
-
                         🎁 Выбери любой смайлик
                         себе в ник:
-
                     </p>
 
                     <div class="emoji-grid">
@@ -3452,9 +3444,7 @@
     // ВЫБОР НАГРАДЫ
     // ==================================================
 
-    async function chooseReward(
-        emoji
-    ) {
+    async function chooseReward(emoji) {
 
         const result =
             document.getElementById(
@@ -3489,9 +3479,7 @@
                 </div>
 
                 <p class="reward-message">
-
                     ⏳ Сохраняю твою награду...
-
                 </p>
 
             </div>
@@ -3569,22 +3557,16 @@
                         🏆
                     </div>
 
-                    <h2
-                        style="text-align:center;"
-                    >
+                    <h2 style="text-align:center;">
                         🎉 Награда получена!
                     </h2>
 
                     <p class="reward-message">
-
                         Твой выбранный смайлик:
-
                     </p>
 
                     <div class="reward-selected">
-
                         ${escapeHtml(emoji)}
-
                     </div>
 
                     <p
@@ -3698,9 +3680,7 @@
     // NORMALIZE TAG
     // ==================================================
 
-    function normalizeTag(
-        value
-    ) {
+    function normalizeTag(value) {
 
         return String(
             value || ""
@@ -3719,9 +3699,7 @@
     // ESCAPE HTML
     // ==================================================
 
-    function escapeHtml(
-        value
-    ) {
+    function escapeHtml(value) {
 
         return String(
             value
