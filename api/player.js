@@ -1,40 +1,9 @@
 import { neon } from "@neondatabase/serverless";
 
-
-// ==================================================
-// COLLECTION LEVEL
-// Берём реальное значение напрямую из Clash Royale API
-// badges -> CollectionLevel -> progress
-// ==================================================
-
-function getCollectionLevel(data) {
-
-  const badges =
-    Array.isArray(data.badges)
-      ? data.badges
-      : [];
-
-  const collectionBadge =
-    badges.find(
-      badge =>
-        badge &&
-        badge.name === "CollectionLevel"
-    );
-
-  const collectionLevel =
-    Number(
-      collectionBadge?.progress
-    ) || 0;
-
-  return collectionLevel;
-}
-
-
 export default async function handler(req, res) {
 
   const token =
     process.env.CR_API_TOKEN;
-
 
   if (!token) {
 
@@ -44,7 +13,6 @@ export default async function handler(req, res) {
     });
 
   }
-
 
   try {
 
@@ -148,12 +116,36 @@ export default async function handler(req, res) {
 
 
     // ==========================================
-    // COLLECTION LEVEL
-    // Реальное значение из Clash Royale API
+    // НАСТОЯЩИЙ COLLECTION LEVEL
+    // БЕРЁМ ПРЯМО ИЗ CLASH ROYALE API
     // ==========================================
 
-    const collectionLevel =
-      getCollectionLevel(data);
+    let collectionLevel = 0;
+
+    let collectionBadge = null;
+
+    if (
+      Array.isArray(data.badges)
+    ) {
+
+      collectionBadge =
+        data.badges.find(
+          badge =>
+            badge &&
+            badge.name === "CollectionLevel"
+        );
+
+    }
+
+
+    if (collectionBadge) {
+
+      collectionLevel =
+        Number(
+          collectionBadge.progress
+        ) || 0;
+
+    }
 
 
     // ==========================================
@@ -372,7 +364,7 @@ export default async function handler(req, res) {
 
 
       // ========================================
-      // РЕАЛЬНЫЙ COLLECTION LEVEL
+      // НАСТОЯЩИЙ COLLECTION LEVEL ИЗ API
       // ========================================
 
       collectionLevel:
