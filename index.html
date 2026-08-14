@@ -1839,101 +1839,85 @@
     // ==================================================
     // УРОВЕНЬ КОЛЛЕКЦИИ
     // ==================================================
+    //
+    // БЕРЁМ НАСТОЯЩИЙ COLLECTION LEVEL
+    // ПРЯМО ИЗ НОВОГО player.js.
+    //
+    // player.js возвращает:
+    //
+    // collectionLevel: 1571
+    //
+    // и также:
+    //
+    // collection: {
+    //     level: 1571
+    // }
+    //
+    // Больше НЕ используем data.cards,
+    // потому что это могло давать неправильные
+    // значения вроде 962.
+    //
+    // ==================================================
 
-    function calculateCollectionLevel(data) {
+    function calculateCollectionLevel(
+        data
+    ) {
 
         if (!data) {
             return null;
         }
 
-        /*
-         * Новый player.js может уже отдавать
-         * готовое правильное значение.
-         *
-         * Приоритет:
-         * collectionLevel
-         * collection_level
-         * cardsCollectionLevel
-         * cards_collection_level
-         */
 
-        const directValues = [
-            data.collectionLevel,
-            data.collection_level,
-            data.cardsCollectionLevel,
-            data.cards_collection_level
-        ];
-
-        for (
-            const value of directValues
-        ) {
-
-            const number =
-                Number(value);
-
-            if (
-                Number.isFinite(number) &&
-                number > 0
-            ) {
-
-                return number;
-
-            }
-
-        }
-
-        /*
-         * Запасной вариант:
-         * если готового значения нет,
-         * считаем сумму уровней карт.
-         */
+        // ==========================================
+        // ОСНОВНОЙ ВАРИАНТ
+        // ==========================================
 
         if (
-            Array.isArray(
-                data.cards
-            )
+            data.collectionLevel !== undefined &&
+            data.collectionLevel !== null
         ) {
 
-            let total = 0;
+            const level =
+                Number(
+                    data.collectionLevel
+                );
 
-            let foundLevels = false;
-
-            for (
-                const card of data.cards
+            if (
+                Number.isFinite(level)
             ) {
 
-                if (
-                    card &&
-                    card.level !== undefined &&
-                    card.level !== null
-                ) {
-
-                    const level =
-                        Number(
-                            card.level
-                        );
-
-                    if (
-                        Number.isFinite(level)
-                    ) {
-
-                        total += level;
-
-                        foundLevels = true;
-
-                    }
-
-                }
-
-            }
-
-            if (foundLevels) {
-
-                return total;
+                return level;
 
             }
 
         }
+
+
+        // ==========================================
+        // ЗАПАСНОЙ ВАРИАНТ
+        // ==========================================
+
+        if (
+            data.collection &&
+            data.collection.level !== undefined &&
+            data.collection.level !== null
+        ) {
+
+            const level =
+                Number(
+                    data.collection.level
+                );
+
+            if (
+                Number.isFinite(level)
+            ) {
+
+                return level;
+
+            }
+
+        }
+
 
         return null;
 
@@ -2015,10 +1999,20 @@
                 ""
             );
 
+
+        // ==================================================
+        // УРОВЕНЬ КОЛЛЕКЦИИ
+        // ==================================================
+
         const collectionLevel =
             calculateCollectionLevel(
                 data
             );
+
+
+        // ==================================================
+        // ГЛАВА
+        // ==================================================
 
         const isLeader =
             isLeaderPlayer(
@@ -2059,6 +2053,7 @@
             `;
 
         }
+
 
         return `
             <div class="card">
