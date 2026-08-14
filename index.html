@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -11,6 +13,7 @@
     <title>Движуха</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 
     <style>
 
@@ -23,7 +26,9 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+
         :root {
+
             --black: #050505;
             --black-2: #080808;
             --panel: #0d0d0d;
@@ -37,14 +42,18 @@
             --white: #f5f5f5;
             --muted: #8e8e8e;
 
-            --border: rgba(214, 177, 92, 0.16);
-            --border-light: rgba(255,255,255,0.07);
+            --border:
+                rgba(214, 177, 92, 0.16);
+
+            --border-light:
+                rgba(255,255,255,0.07);
 
             --shadow:
                 0 14px 40px rgba(0,0,0,0.45);
 
             --gold-shadow:
                 0 8px 30px rgba(214,177,92,0.10);
+
         }
 
 
@@ -54,6 +63,7 @@
 
 
         body {
+
             margin: 0;
             padding: 20px;
 
@@ -66,16 +76,19 @@
                 sans-serif;
 
             background:
+
                 radial-gradient(
                     circle at 50% -10%,
                     rgba(214,177,92,0.08),
                     transparent 32%
                 ),
+
                 radial-gradient(
                     circle at 100% 40%,
                     rgba(214,177,92,0.035),
                     transparent 28%
                 ),
+
                 linear-gradient(
                     180deg,
                     #050505 0%,
@@ -83,13 +96,17 @@
                     #050505 100%
                 );
 
-            color: var(--white);
+            color:
+                var(--white);
 
-            overflow-x: hidden;
+            overflow-x:
+                hidden;
+
         }
 
 
         body::before {
+
             content: "";
 
             position: fixed;
@@ -111,13 +128,18 @@
             pointer-events: none;
 
             z-index: 10000;
+
         }
 
 
         .container {
+
             max-width: 500px;
+
             margin: 0 auto;
+
             position: relative;
+
         }
 
 
@@ -126,43 +148,56 @@
         ================================================== */
 
         .header {
+
             text-align: center;
+
             margin-bottom: 30px;
+
         }
 
 
         .header h1 {
+
             margin: 0;
 
             font-size: 28px;
+
             font-weight: 800;
 
             letter-spacing: -0.5px;
 
-            color: var(--white);
+            color:
+                var(--white);
 
             text-shadow:
-                0 0 22px rgba(214,177,92,0.13);
+                0 0 22px
+                rgba(214,177,92,0.13);
+
         }
 
 
         .header p {
+
             margin-top: 10px;
 
-            color: var(--muted);
+            color:
+                var(--muted);
 
             font-size: 14px;
+
         }
 
 
         /* ==================================================
-           PREMIUM BUTTONS
+           BUTTONS
         ================================================== */
 
         .button {
+
             width: 100%;
 
-            border: 1px solid var(--border);
+            border:
+                1px solid var(--border);
 
             border-radius: 17px;
 
@@ -171,6 +206,7 @@
             margin-bottom: 12px;
 
             font-size: 16px;
+
             font-weight: 700;
 
             color: #090909;
@@ -185,22 +221,30 @@
             cursor: pointer;
 
             box-shadow:
-                0 7px 24px rgba(214,177,92,0.10);
+                0 7px 24px
+                rgba(214,177,92,0.10);
 
             transition:
                 transform 0.15s ease,
                 box-shadow 0.15s ease,
                 filter 0.15s ease;
+
         }
 
 
         .button:active {
-            transform: scale(0.975);
-            filter: brightness(0.92);
+
+            transform:
+                scale(0.975);
+
+            filter:
+                brightness(0.92);
+
         }
 
 
         .button.secondary {
+
             background:
                 linear-gradient(
                     145deg,
@@ -208,19 +252,25 @@
                     #0c0c0c
                 );
 
-            color: var(--white);
+            color:
+                var(--white);
 
             border:
-                1px solid rgba(214,177,92,0.14);
+                1px solid
+                rgba(214,177,92,0.14);
 
             box-shadow:
-                0 8px 28px rgba(0,0,0,0.35);
+                0 8px 28px
+                rgba(0,0,0,0.35);
+
         }
 
 
         .button.secondary:hover {
+
             border-color:
                 rgba(214,177,92,0.30);
+
         }
 
 
@@ -234,10 +284,12 @@
 
 
         .screen.active {
+
             display: block;
 
             animation:
                 premiumFade 0.22s ease;
+
         }
 
 
@@ -255,10 +307,11 @@
 
 
         /* ==================================================
-           НАЗАД
+           BACK
         ================================================== */
 
         .back {
+
             position: fixed;
 
             top: 10px;
@@ -268,16 +321,19 @@
             height: 42px;
 
             min-width: 0;
+
             padding: 0;
             margin: 0;
 
             display: flex;
+
             align-items: center;
             justify-content: center;
 
             border-radius: 12px;
 
             font-size: 20px;
+
             line-height: 1;
 
             z-index: 9999;
@@ -289,26 +345,34 @@
                     #0b0b0b
                 );
 
-            color: var(--gold-light);
+            color:
+                var(--gold-light);
 
             border:
-                1px solid rgba(214,177,92,0.20);
+                1px solid
+                rgba(214,177,92,0.20);
 
             box-shadow:
-                0 6px 20px rgba(0,0,0,0.5);
+                0 6px 20px
+                rgba(0,0,0,0.5);
+
         }
 
 
         .back:active {
-            transform: scale(0.92);
+
+            transform:
+                scale(0.92);
+
         }
 
 
         /* ==================================================
-           ОБНОВИТЬ
+           REFRESH
         ================================================== */
 
         .refresh-button {
+
             position: fixed;
 
             top: 10px;
@@ -318,16 +382,19 @@
             height: 42px;
 
             min-width: 0;
+
             padding: 0;
             margin: 0;
 
             display: flex;
+
             align-items: center;
             justify-content: center;
 
             border-radius: 12px;
 
             font-size: 20px;
+
             line-height: 1;
 
             z-index: 9999;
@@ -339,18 +406,25 @@
                     #0b0b0b
                 );
 
-            color: var(--gold-light);
+            color:
+                var(--gold-light);
 
             border:
-                1px solid rgba(214,177,92,0.20);
+                1px solid
+                rgba(214,177,92,0.20);
 
             box-shadow:
-                0 6px 20px rgba(0,0,0,0.5);
+                0 6px 20px
+                rgba(0,0,0,0.5);
+
         }
 
 
         .refresh-button:active {
-            transform: scale(0.92);
+
+            transform:
+                scale(0.92);
+
         }
 
 
@@ -359,6 +433,7 @@
         ================================================== */
 
         input {
+
             width: 100%;
 
             padding: 16px 17px;
@@ -366,7 +441,8 @@
             border-radius: 15px;
 
             border:
-                1px solid rgba(255,255,255,0.06);
+                1px solid
+                rgba(255,255,255,0.06);
 
             outline: none;
 
@@ -381,15 +457,20 @@
                     #0b0b0b
                 );
 
-            color: var(--white);
+            color:
+                var(--white);
 
             box-shadow:
-                inset 0 1px 0 rgba(255,255,255,0.025),
-                0 8px 25px rgba(0,0,0,0.25);
+                inset 0 1px 0
+                rgba(255,255,255,0.025),
+
+                0 8px 25px
+                rgba(0,0,0,0.25);
 
             transition:
                 border-color 0.2s ease,
                 box-shadow 0.2s ease;
+
         }
 
 
@@ -399,12 +480,17 @@
 
 
         input:focus {
+
             border-color:
                 rgba(214,177,92,0.42);
 
             box-shadow:
-                0 0 0 3px rgba(214,177,92,0.06),
-                0 10px 28px rgba(0,0,0,0.35);
+                0 0 0 3px
+                rgba(214,177,92,0.06),
+
+                0 10px 28px
+                rgba(0,0,0,0.35);
+
         }
 
 
@@ -413,6 +499,7 @@
         ================================================== */
 
         .card {
+
             padding: 20px;
 
             border-radius: 19px;
@@ -427,7 +514,8 @@
                 );
 
             border:
-                1px solid var(--border-light);
+                1px solid
+                var(--border-light);
 
             box-shadow:
                 var(--shadow);
@@ -435,15 +523,18 @@
             position: relative;
 
             overflow: hidden;
+
         }
 
 
         .card::before {
+
             content: "";
 
             position: absolute;
 
             top: 0;
+
             left: 18px;
             right: 18px;
 
@@ -456,23 +547,33 @@
                     rgba(214,177,92,0.25),
                     transparent
                 );
+
         }
 
 
         .card h2 {
+
             margin-top: 0;
 
-            color: var(--white);
+            color:
+                var(--white);
+
         }
 
 
         .card p {
-            color: #c7c7c7;
+
+            color:
+                #c7c7c7;
+
         }
 
 
         .card b {
-            color: var(--gold-light);
+
+            color:
+                var(--gold-light);
+
         }
 
 
@@ -481,10 +582,12 @@
         ================================================== */
 
         .member {
+
             width: 100%;
 
             border:
-                1px solid rgba(255,255,255,0.055);
+                1px solid
+                rgba(255,255,255,0.055);
 
             text-align: left;
 
@@ -501,28 +604,35 @@
                     #0b0b0b
                 );
 
-            color: var(--white);
+            color:
+                var(--white);
 
             cursor: pointer;
 
             box-shadow:
-                0 6px 20px rgba(0,0,0,0.28);
+                0 6px 20px
+                rgba(0,0,0,0.28);
 
             transition:
                 transform 0.15s ease,
                 border-color 0.15s ease;
+
         }
 
 
         .member:active {
-            transform: scale(0.98);
+
+            transform:
+                scale(0.98);
 
             border-color:
                 rgba(214,177,92,0.25);
+
         }
 
 
         .member-content {
+
             width: 100%;
 
             display: flex;
@@ -532,31 +642,41 @@
             justify-content: space-between;
 
             gap: 10px;
+
         }
 
 
         .member-left {
+
             min-width: 0;
 
             flex: 1;
+
         }
 
 
         .member-name {
+
             font-size: 15px;
+
             font-weight: 700;
 
-            color: var(--white);
+            color:
+                var(--white);
 
             line-height: 1.25;
 
             white-space: nowrap;
+
             overflow: hidden;
+
             text-overflow: ellipsis;
+
         }
 
 
         .member-info {
+
             font-size: 12px;
 
             color: #777;
@@ -566,12 +686,16 @@
             margin-top: 3px;
 
             white-space: nowrap;
+
             overflow: hidden;
+
             text-overflow: ellipsis;
+
         }
 
 
         .member-right {
+
             flex-shrink: 0;
 
             display: flex;
@@ -585,21 +709,26 @@
             text-align: right;
 
             min-width: 105px;
+
         }
 
 
         .member-trophies {
+
             font-size: 13px;
 
             font-weight: 700;
 
-            color: var(--gold-light);
+            color:
+                var(--gold-light);
 
             line-height: 1.2;
+
         }
 
 
         .member-daily {
+
             font-size: 11px;
 
             font-weight: 700;
@@ -608,9 +737,11 @@
 
             line-height: 1.2;
 
-            color: var(--gold-light);
+            color:
+                var(--gold-light);
 
             white-space: nowrap;
+
         }
 
 
@@ -619,6 +750,7 @@
         ================================================== */
 
         .ranking-title {
+
             text-align: center;
 
             font-size: 17px;
@@ -627,21 +759,27 @@
 
             margin: 25px 0 10px;
 
-            color: var(--gold-light);
+            color:
+                var(--gold-light);
 
             letter-spacing: 0.2px;
+
         }
 
 
         .ranking {
+
             margin-top: 10px;
+
         }
 
 
         .ranking-item {
+
             display: flex;
 
             align-items: center;
+
             justify-content: space-between;
 
             padding: 13px 14px;
@@ -658,47 +796,60 @@
                 );
 
             border:
-                1px solid rgba(255,255,255,0.055);
+                1px solid
+                rgba(255,255,255,0.055);
 
             box-shadow:
-                0 6px 20px rgba(0,0,0,0.25);
+                0 6px 20px
+                rgba(0,0,0,0.25);
+
         }
 
 
         .ranking-left {
+
             display: flex;
 
             align-items: center;
 
             min-width: 0;
+
         }
 
 
         .ranking-number {
+
             width: 28px;
 
             font-size: 15px;
 
             font-weight: 800;
 
-            color: var(--gold);
+            color:
+                var(--gold);
 
             flex-shrink: 0;
+
         }
 
 
         .ranking-name {
+
             font-size: 15px;
 
             font-weight: 600;
 
             white-space: nowrap;
+
             overflow: hidden;
+
             text-overflow: ellipsis;
+
         }
 
 
         .ranking-value {
+
             font-size: 14px;
 
             font-weight: 800;
@@ -707,15 +858,18 @@
 
             white-space: nowrap;
 
-            color: var(--gold-light);
+            color:
+                var(--gold-light);
+
         }
 
 
         /* ==================================================
-           СМАЙЛИК ПОБЕДИТЕЛЯ
+           СМАЙЛИК
         ================================================== */
 
         .winner-emoji {
+
             margin-left: 6px;
 
             font-size: 17px;
@@ -726,12 +880,15 @@
 
             filter:
                 drop-shadow(
-                    0 0 5px rgba(214,177,92,0.15)
+                    0 0 5px
+                    rgba(214,177,92,0.15)
                 );
+
         }
 
 
         .profile-name-line {
+
             display: flex;
 
             align-items: center;
@@ -739,6 +896,7 @@
             gap: 5px;
 
             flex-wrap: wrap;
+
         }
 
 
@@ -747,6 +905,7 @@
         ================================================== */
 
         .reward-winner {
+
             text-align: center;
 
             font-size: 34px;
@@ -755,21 +914,26 @@
 
             filter:
                 drop-shadow(
-                    0 0 15px rgba(214,177,92,0.20)
+                    0 0 15px
+                    rgba(214,177,92,0.20)
                 );
+
         }
 
 
         .reward-message {
+
             text-align: center;
 
             line-height: 1.5;
 
             color: #bdbdbd;
+
         }
 
 
         .emoji-grid {
+
             display: grid;
 
             grid-template-columns:
@@ -778,12 +942,15 @@
             gap: 8px;
 
             margin-top: 18px;
+
         }
 
 
         .emoji-button {
+
             border:
-                1px solid rgba(255,255,255,0.06);
+                1px solid
+                rgba(255,255,255,0.06);
 
             border-radius: 14px;
 
@@ -798,40 +965,49 @@
                     #0c0c0c
                 );
 
-            color: var(--white);
+            color:
+                var(--white);
 
             cursor: pointer;
 
             box-shadow:
-                0 5px 18px rgba(0,0,0,0.28);
+                0 5px 18px
+                rgba(0,0,0,0.28);
 
             transition:
                 transform 0.15s ease,
                 border-color 0.15s ease;
+
         }
 
 
         .emoji-button:active {
-            transform: scale(0.92);
+
+            transform:
+                scale(0.92);
 
             border-color:
                 rgba(214,177,92,0.35);
+
         }
 
 
         .reward-selected {
+
             text-align: center;
 
             font-size: 22px;
 
             margin-top: 15px;
 
-            color: var(--gold-light);
+            color:
+                var(--gold-light);
+
         }
 
 
         /* ==================================================
-           PREMIUM SCROLLBAR
+           SCROLLBAR
         ================================================== */
 
         ::-webkit-scrollbar {
@@ -845,44 +1021,53 @@
 
 
         ::-webkit-scrollbar-thumb {
-            background: #292929;
+
+            background:
+                #292929;
+
             border-radius: 10px;
+
         }
 
 
-        /* ==================================================
-           SELECTION
-        ================================================== */
-
         ::selection {
+
             background:
                 rgba(214,177,92,0.25);
 
             color: white;
+
         }
 
     </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-    <!-- =========================
-         МЕНЮ
-    ========================= -->
+
+    <!-- ==================================================
+         MENU
+    ================================================== -->
 
     <div id="menu" class="screen active">
 
         <div class="header">
 
-            <h1>⚜️ Движуха ⚜️</h1>
+            <h1>
+                ⚜️ Движуха ⚜️
+            </h1>
 
             <p>
                 Выбирай чё надо:
             </p>
 
         </div>
+
 
         <button
             class="button"
@@ -891,12 +1076,14 @@
             👤 Мой профиль
         </button>
 
+
         <button
             class="button secondary"
             onclick="openProfile()"
         >
             🔎 Профиль кента
         </button>
+
 
         <button
             class="button secondary"
@@ -905,6 +1092,7 @@
             🏰 Клан
         </button>
 
+
         <button
             class="button secondary"
             onclick="showScreen('players'); loadMembers()"
@@ -912,12 +1100,14 @@
             👥 Кенты
         </button>
 
+
         <button
             class="button secondary"
             onclick="openReward()"
         >
             🏆 Награда недели
         </button>
+
 
         <button
             class="button secondary"
@@ -929,11 +1119,14 @@
     </div>
 
 
-    <!-- =========================
-         МОЙ ПРОФИЛЬ
-    ========================= -->
+    <!-- ==================================================
+         MY PROFILE
+    ================================================== -->
 
-    <div id="myProfile" class="screen">
+    <div
+        id="myProfile"
+        class="screen"
+    >
 
         <button
             class="button back"
@@ -941,6 +1134,7 @@
         >
             ⬅️
         </button>
+
 
         <div class="header">
 
@@ -954,12 +1148,15 @@
 
         </div>
 
+
         <div id="myProfileResult">
 
             <div class="card">
+
                 <p>
                     ⏳ Проверяю привязку...
                 </p>
+
             </div>
 
         </div>
@@ -967,11 +1164,14 @@
     </div>
 
 
-    <!-- =========================
-         ПРОФИЛЬ КЕНТА
-    ========================= -->
+    <!-- ==================================================
+         PROFILE
+    ================================================== -->
 
-    <div id="profile" class="screen">
+    <div
+        id="profile"
+        class="screen"
+    >
 
         <button
             class="button back"
@@ -979,6 +1179,7 @@
         >
             ⬅️
         </button>
+
 
         <div class="header">
 
@@ -992,12 +1193,14 @@
 
         </div>
 
+
         <input
             id="playerTag"
             type="text"
             placeholder="#ABC123"
             autocomplete="off"
         >
+
 
         <button
             class="button"
@@ -1006,16 +1209,20 @@
             🔎 Найти
         </button>
 
+
         <div id="profileResult"></div>
 
     </div>
 
 
-    <!-- =========================
-         КЛАН
-    ========================= -->
+    <!-- ==================================================
+         CLAN
+    ================================================== -->
 
-    <div id="clan" class="screen">
+    <div
+        id="clan"
+        class="screen"
+    >
 
         <button
             class="button back"
@@ -1024,12 +1231,14 @@
             ⬅️
         </button>
 
+
         <button
             class="button refresh-button"
             onclick="loadClan()"
         >
             🔄
         </button>
+
 
         <div class="header">
 
@@ -1043,12 +1252,15 @@
 
         </div>
 
+
         <div id="clanResult">
 
             <div class="card">
+
                 <p>
                     ⏳ Загружаю информацию о клане...
                 </p>
+
             </div>
 
         </div>
@@ -1056,11 +1268,14 @@
     </div>
 
 
-    <!-- =========================
-         КЕНТЫ
-    ========================= -->
+    <!-- ==================================================
+         PLAYERS
+    ================================================== -->
 
-    <div id="players" class="screen">
+    <div
+        id="players"
+        class="screen"
+    >
 
         <button
             class="button back"
@@ -1069,6 +1284,7 @@
             ⬅️
         </button>
 
+
         <button
             class="button refresh-button"
             onclick="loadMembers()"
@@ -1076,12 +1292,15 @@
             🔄
         </button>
 
+
         <div id="membersResult">
 
             <div class="card">
+
                 <p>
                     ⏳ Загружаю участников...
                 </p>
+
             </div>
 
         </div>
@@ -1089,11 +1308,14 @@
     </div>
 
 
-    <!-- =========================
-         ПРОФИЛЬ УЧАСТНИКА
-    ========================= -->
+    <!-- ==================================================
+         MEMBER PROFILE
+    ================================================== -->
 
-    <div id="memberProfile" class="screen">
+    <div
+        id="memberProfile"
+        class="screen"
+    >
 
         <button
             class="button back"
@@ -1101,6 +1323,7 @@
         >
             ⬅️
         </button>
+
 
         <div class="header">
 
@@ -1110,12 +1333,15 @@
 
         </div>
 
+
         <div id="memberProfileResult">
 
             <div class="card">
+
                 <p>
                     ⏳ Загружаю профиль...
                 </p>
+
             </div>
 
         </div>
@@ -1123,11 +1349,14 @@
     </div>
 
 
-    <!-- =========================
-         НАГРАДА
-    ========================= -->
+    <!-- ==================================================
+         REWARD
+    ================================================== -->
 
-    <div id="reward" class="screen">
+    <div
+        id="reward"
+        class="screen"
+    >
 
         <button
             class="button back"
@@ -1135,6 +1364,7 @@
         >
             ⬅️
         </button>
+
 
         <div class="header">
 
@@ -1148,12 +1378,15 @@
 
         </div>
 
+
         <div id="rewardResult">
 
             <div class="card">
+
                 <p>
                     ⏳ Проверяю...
                 </p>
+
             </div>
 
         </div>
@@ -1161,11 +1394,14 @@
     </div>
 
 
-    <!-- =========================
-         ПОМОЩЬ
-    ========================= -->
+    <!-- ==================================================
+         HELP
+    ================================================== -->
 
-    <div id="help" class="screen">
+    <div
+        id="help"
+        class="screen"
+    >
 
         <button
             class="button back"
@@ -1173,6 +1409,7 @@
         >
             ⬅️
         </button>
+
 
         <div class="header">
 
@@ -1182,6 +1419,7 @@
 
         </div>
 
+
         <div class="card">
 
             <p>
@@ -1189,20 +1427,24 @@
                 твой привязанный Clash Royale аккаунт.
             </p>
 
+
             <p>
                 🔎 <b>Профиль кента</b> —
                 найти любого игрока по тегу.
             </p>
+
 
             <p>
                 🏰 <b>Клан</b> —
                 информация о клане.
             </p>
 
+
             <p>
                 👥 <b>Кенты</b> —
                 список участников.
             </p>
+
 
             <p>
                 🏆 <b>Награда недели</b> —
@@ -1213,10 +1455,12 @@
 
     </div>
 
+
 </div>
 
 
 <script>
+
 
     // ==================================================
     // TELEGRAM
@@ -1225,7 +1469,9 @@
     const tg =
         window.Telegram.WebApp;
 
+
     tg.ready();
+
     tg.expand();
 
 
@@ -1242,47 +1488,57 @@
 
 
     // ==================================================
-    // КЛАН
+    // CLAN
     // ==================================================
 
     const MY_CLAN_TAG =
         "GCGJ9VJV";
 
+
     const LEADER_TAG =
-        "VPQRJ8LVG";
+        "VPQRJ8LV";
 
 
     // ==================================================
-    // КЭШ СМАЙЛИКОВ
+    // CACHE
     // ==================================================
 
     const emojiCache =
         new Map();
+
 
     const tagEmojiCache =
         new Map();
 
 
     // ==================================================
-    // ЭКРАН
+    // SCREEN
     // ==================================================
 
-    function showScreen(screenId) {
+    function showScreen(
+        screenId
+    ) {
 
         document
-            .querySelectorAll(".screen")
-            .forEach(screen => {
+            .querySelectorAll(
+                ".screen"
+            )
+            .forEach(
+                screen => {
 
-                screen.classList.remove(
-                    "active"
-                );
+                    screen.classList.remove(
+                        "active"
+                    );
 
-            });
+                }
+            );
+
 
         const screen =
             document.getElementById(
                 screenId
             );
+
 
         if (screen) {
 
@@ -1292,15 +1548,17 @@
 
         }
 
+
         window.scrollTo(
             0,
             0
         );
+
     }
 
 
     // ==================================================
-    // ПОЛУЧЕНИЕ СМАЙЛИКА ПОЛЬЗОВАТЕЛЯ
+    // REWARD EMOJI
     // ==================================================
 
     async function getRewardEmoji(
@@ -1311,14 +1569,19 @@
             return "";
         }
 
+
         const id =
             String(userId);
 
-        if (emojiCache.has(id)) {
+
+        if (
+            emojiCache.has(id)
+        ) {
 
             return emojiCache.get(id);
 
         }
+
 
         try {
 
@@ -1326,6 +1589,7 @@
                 await fetch(
                     `/api/message-stats?action=reward&telegram_id=${encodeURIComponent(id)}`
                 );
+
 
             if (!response.ok) {
 
@@ -1338,15 +1602,23 @@
 
             }
 
+
             const data =
                 await response.json();
 
-            let emoji = "";
+
+            let emoji =
+                "";
+
 
             if (
+
                 data.reward &&
+
                 data.reward.reward_claimed === true &&
+
                 data.reward.reward_emoji
+
             ) {
 
                 emoji =
@@ -1354,10 +1626,17 @@
                         data.reward.reward_emoji
                     );
 
-            } else if (
+            }
+
+
+            else if (
+
                 data.winner &&
+
                 data.winner.reward_claimed === true &&
+
                 data.winner.emoji
+
             ) {
 
                 emoji =
@@ -1367,12 +1646,15 @@
 
             }
 
+
             emojiCache.set(
                 id,
                 emoji
             );
 
+
             return emoji;
+
 
         } catch (error) {
 
@@ -1381,14 +1663,16 @@
                 error
             );
 
+
             return "";
 
         }
+
     }
 
 
     // ==================================================
-    // ПОЛУЧЕНИЕ СМАЙЛИКА ПО TAG
+    // REWARD BY TAG
     // ==================================================
 
     async function getRewardEmojiByTag(
@@ -1396,11 +1680,15 @@
     ) {
 
         const cleanTag =
-            normalizeTag(tag);
+            normalizeTag(
+                tag
+            );
+
 
         if (!cleanTag) {
             return "";
         }
+
 
         if (
             tagEmojiCache.has(
@@ -1414,12 +1702,14 @@
 
         }
 
+
         try {
 
             const response =
                 await fetch(
                     `/api/members?tag=${encodeURIComponent(MY_CLAN_TAG)}`
                 );
+
 
             if (!response.ok) {
 
@@ -1432,11 +1722,14 @@
 
             }
 
+
             const data =
                 await response.json();
 
+
             const members =
                 data.items || [];
+
 
             const member =
                 members.find(
@@ -1445,6 +1738,7 @@
                             item.tag || ""
                         ) === cleanTag
                 );
+
 
             if (!member) {
 
@@ -1457,13 +1751,18 @@
 
             }
 
+
             let emoji =
                 member.reward_emoji ||
                 member.rewardEmoji ||
                 member.emoji ||
                 "";
 
-            if (!emoji && member.telegram_id) {
+
+            if (
+                !emoji &&
+                member.telegram_id
+            ) {
 
                 emoji =
                     await getRewardEmoji(
@@ -1472,17 +1771,21 @@
 
             }
 
+
             emoji =
                 String(
                     emoji || ""
                 );
+
 
             tagEmojiCache.set(
                 cleanTag,
                 emoji
             );
 
+
             return emoji;
+
 
         } catch (error) {
 
@@ -1491,19 +1794,22 @@
                 error
             );
 
+
             tagEmojiCache.set(
                 cleanTag,
                 ""
             );
 
+
             return "";
 
         }
+
     }
 
 
     // ==================================================
-    // СМАЙЛИК HTML
+    // EMOJI HTML
     // ==================================================
 
     function rewardEmojiHtml(
@@ -1514,17 +1820,24 @@
             return "";
         }
 
+
         return `
+
             <span class="winner-emoji">
-                ${escapeHtml(emoji)}
+
+                ${escapeHtml(
+                    emoji
+                )}
+
             </span>
+
         `;
 
     }
 
 
     // ==================================================
-    // МОЙ ПРОФИЛЬ
+    // MY PROFILE
     // ==================================================
 
     function openMyProfile() {
@@ -1532,6 +1845,7 @@
         showScreen(
             "myProfile"
         );
+
 
         loadMyProfile();
 
@@ -1545,17 +1859,21 @@
                 "myProfileResult"
             );
 
+
         const subtitle =
             document.getElementById(
                 "myProfileSubtitle"
             );
+
 
         if (!telegramId) {
 
             subtitle.textContent =
                 "Telegram ID не найден";
 
+
             result.innerHTML = `
+
                 <div class="card">
 
                     <h2>
@@ -1567,19 +1885,27 @@
                     </p>
 
                 </div>
+
             `;
+
 
             return;
 
         }
 
+
         result.innerHTML = `
+
             <div class="card">
+
                 <p>
                     ⏳ Загружаю профиль...
                 </p>
+
             </div>
+
         `;
+
 
         try {
 
@@ -1588,19 +1914,26 @@
                     `/api/myprofile?telegram_id=${encodeURIComponent(telegramId)}`
                 );
 
+
             const data =
                 await response.json();
 
+
             if (
+
                 response.status === 404 ||
+
                 data.error ===
                 "PLAYER_NOT_LINKED"
+
             ) {
 
                 subtitle.textContent =
                     "Аккаунт ещё не привязан";
 
+
                 result.innerHTML = `
+
                     <div class="card">
 
                         <h2>
@@ -1611,12 +1944,14 @@
                             Введи тег своего Clash Royale аккаунта.
                         </p>
 
+
                         <input
                             id="myPlayerTag"
                             type="text"
                             placeholder="#ABC123"
                             autocomplete="off"
                         >
+
 
                         <button
                             class="button"
@@ -1626,15 +1961,19 @@
                         </button>
 
                     </div>
+
                 `;
+
 
                 return;
 
             }
 
+
             if (!response.ok) {
 
                 result.innerHTML = `
+
                     <div class="card">
 
                         <h2>
@@ -1649,26 +1988,87 @@
                         </p>
 
                     </div>
+
                 `;
+
 
                 return;
 
             }
 
+
+            /*
+             * Если myprofile не отдаёт
+             * collectionLevel,
+             * получаем свежий профиль
+             * через /api/player.
+             */
+
+            let profileData =
+                data;
+
+
+            const linkedTag =
+                normalizeTag(
+                    data.tag ||
+                    data.player_tag ||
+                    ""
+                );
+
+
+            if (
+                linkedTag &&
+                !data.collectionLevel
+            ) {
+
+                try {
+
+                    const playerResponse =
+                        await fetch(
+                            `/api/player?tag=${encodeURIComponent(linkedTag)}&telegram_id=${encodeURIComponent(telegramId)}`
+                        );
+
+
+                    if (
+                        playerResponse.ok
+                    ) {
+
+                        profileData =
+                            await playerResponse.json();
+
+                    }
+
+                } catch (error) {
+
+                    console.warn(
+                        "Collection level refresh error:",
+                        error
+                    );
+
+                }
+
+            }
+
+
             subtitle.textContent =
                 "Твой Clash Royale аккаунт";
+
 
             const emoji =
                 await getRewardEmoji(
                     telegramId
                 );
 
+
             result.innerHTML =
                 createPlayerCard(
-                    data,
-                    data.tag || "",
+                    profileData,
+                    profileData.tag ||
+                    linkedTag ||
+                    "",
                     emoji
                 );
+
 
         } catch (error) {
 
@@ -1677,7 +2077,9 @@
                 error
             );
 
+
             result.innerHTML = `
+
                 <div class="card">
 
                     <h2>
@@ -1689,6 +2091,7 @@
                     </p>
 
                 </div>
+
             `;
 
         }
@@ -1697,7 +2100,7 @@
 
 
     // ==================================================
-    // ПРИВЯЗКА
+    // LINK PROFILE
     // ==================================================
 
     async function linkMyProfile() {
@@ -1707,44 +2110,61 @@
                 "myPlayerTag"
             );
 
+
         const result =
             document.getElementById(
                 "myProfileResult"
             );
 
+
         if (!telegramId) {
 
             result.innerHTML = `
+
                 <div class="card">
+
                     ❌ Telegram ID не найден.
+
                 </div>
+
             `;
+
 
             return;
 
         }
+
 
         const value =
             input.value.trim();
 
+
         if (!value) {
 
             result.innerHTML = `
+
                 <div class="card">
+
                     ❌ Введи тег игрока.
+
                 </div>
+
             `;
+
 
             return;
 
         }
+
 
         const cleanTag =
             normalizeTag(
                 value
             );
 
+
         result.innerHTML = `
+
             <div class="card">
 
                 <h2>
@@ -1752,14 +2172,19 @@
                 </h2>
 
                 <p>
+
                     Проверяю
+
                     <b>
                         #${escapeHtml(cleanTag)}
                     </b>
+
                 </p>
 
             </div>
+
         `;
+
 
         try {
 
@@ -1768,12 +2193,15 @@
                     `/api/player?tag=${encodeURIComponent(cleanTag)}&telegram_id=${encodeURIComponent(telegramId)}`
                 );
 
+
             const data =
                 await response.json();
+
 
             if (!response.ok) {
 
                 result.innerHTML = `
+
                     <div class="card">
 
                         <h2>
@@ -1781,19 +2209,24 @@
                         </h2>
 
                         <p>
+
                             ${escapeHtml(
                                 data.reason ||
                                 data.error ||
                                 "Проверь тег игрока."
                             )}
+
                         </p>
 
                     </div>
+
                 `;
+
 
                 return;
 
             }
+
 
             document
                 .getElementById(
@@ -1802,30 +2235,45 @@
                 .textContent =
                 "Аккаунт привязан";
 
+
             const emoji =
                 await getRewardEmoji(
                     telegramId
                 );
 
+
             result.innerHTML = `
+
                 ${createPlayerCard(
                     data,
                     cleanTag,
                     emoji
                 )}
 
+
                 <div class="card">
 
                     <p>
+
                         ✅ Clash Royale аккаунт успешно привязан.
+
                     </p>
 
                 </div>
+
             `;
+
 
         } catch (error) {
 
+            console.error(
+                "Link profile error:",
+                error
+            );
+
+
             result.innerHTML = `
+
                 <div class="card">
 
                     <h2>
@@ -1837,6 +2285,7 @@
                     </p>
 
                 </div>
+
             `;
 
         }
@@ -1845,7 +2294,7 @@
 
 
     // ==================================================
-    // КАРТОЧКА ИГРОКА
+    // PLAYER CARD
     // ==================================================
 
     function createPlayerCard(
@@ -1875,25 +2324,49 @@
 
 
         // ==================================================
-        // УРОВЕНЬ КОЛЛЕКЦИИ
-        //
-        // Берём готовое значение из API:
-        // collection_level
-        //
-        // ВАЖНО:
-        // Здесь больше НЕТ подсчёта card.count.
-        // Поэтому вместо 47811 будет отображаться
-        // настоящий Collection Level.
+        // COLLECTION LEVEL
         // ==================================================
 
-        const collectionLevel =
-            data.collection_level ??
-            data.collectionLevel ??
-            "—";
+        let collectionLevel =
+            data.collectionLevel;
+
+
+        /*
+         * Важно:
+         *
+         * Больше НЕ используем:
+         *
+         * card.count
+         *
+         * и НЕ показываем:
+         *
+         * 47811
+         *
+         * Также не выводим старый
+         * самодельный показатель 1047,
+         * если API уже дал настоящий
+         * collectionLevel.
+         */
+
+
+        if (
+            collectionLevel ===
+            undefined ||
+            collectionLevel ===
+            null ||
+            collectionLevel ===
+            ""
+        ) {
+
+            collectionLevel =
+                data.collection_level ??
+                null;
+
+        }
 
 
         // ==================================================
-        // ГЛАВА ПРИВЯЗАН ТОЛЬКО К TAG
+        // LEADER
         // ==================================================
 
         const isLeader =
@@ -1910,39 +2383,75 @@
         if (isLeader) {
 
             clanStatus = `
+
                 <p>
-                    ⚜️ <b>Глава</b> ⚜️
+
+                    ⚜️
+                    <b>
+                        Глава
+                    </b>
+                    ⚜️
+
                 </p>
+
             `;
 
-        } else if (isClanMember) {
+        }
+
+
+        else if (isClanMember) {
 
             clanStatus = `
+
                 <p>
-                    ✅ <b>Реальный кент клана!</b>
+
+                    ✅
+                    <b>
+                        Реальный кент клана!
+                    </b>
+
                 </p>
+
             `;
 
-        } else {
+        }
+
+
+        else {
 
             clanStatus = `
+
                 <p>
-                    😤 <b>Не кент клана.</b>
+
+                    😤
+                    <b>
+                        Не кент клана.
+                    </b>
+
                 </p>
+
             `;
 
         }
 
 
         return `
+
             <div class="card">
+
 
                 <h2 class="profile-name-line">
 
                     <span>
+
                         👤
-                        ${escapeHtml(name)}
+
+                        ${escapeHtml(
+                            name
+                        )}
+
                     </span>
+
 
                     ${rewardEmojiHtml(
                         rewardEmoji
@@ -1952,10 +2461,17 @@
 
 
                 <p>
+
                     🏷 Тег:
+
                     <b>
-                        #${escapeHtml(tag)}
+
+                        #${escapeHtml(
+                            tag
+                        )}
+
                     </b>
+
                 </p>
 
 
@@ -1963,63 +2479,117 @@
 
 
                 <p>
+
                     🏆 Кубки:
+
                     <b>
-                        ${data.trophies ?? "—"}
+
+                        ${data.trophies ??
+                        "—"}
+
                     </b>
+
                 </p>
 
 
                 <p>
+
                     🏅 Лучшие кубки:
+
                     <b>
-                        ${data.bestTrophies ?? "—"}
+
+                        ${data.bestTrophies ??
+                        "—"}
+
                     </b>
+
                 </p>
 
 
                 <p>
+
                     ⚔️ Победы:
+
                     <b>
-                        ${data.wins ?? "—"}
+
+                        ${data.wins ??
+                        "—"}
+
                     </b>
+
                 </p>
 
 
                 <p>
+
                     💀 Поражения:
+
                     <b>
-                        ${data.losses ?? "—"}
+
+                        ${data.losses ??
+                        "—"}
+
                     </b>
+
                 </p>
 
 
+                <!-- =====================================
+                     COLLECTION LEVEL
+                     ===================================== -->
+
+
                 <p>
+
                     🃏 Уровень коллекции:
+
                     <b>
-                        ${collectionLevel}
+
+                        ${
+                            collectionLevel !==
+                                null &&
+                            collectionLevel !==
+                                undefined &&
+                            collectionLevel !==
+                                ""
+                                ? Number(
+                                    collectionLevel
+                                  ).toLocaleString(
+                                    "ru-RU"
+                                  )
+                                : "—"
+                        }
+
                     </b>
+
                 </p>
 
 
                 <p>
+
                     🏰 Клан:
+
                     <b>
+
                         ${escapeHtml(
                             data.clan?.name ||
                             "Без клана"
                         )}
+
                     </b>
+
                 </p>
 
+
             </div>
+
         `;
 
     }
 
 
     // ==================================================
-    // ПРОФИЛЬ КЕНТА
+    // PROFILE SEARCH
     // ==================================================
 
     function openProfile() {
@@ -2027,6 +2597,7 @@
         showScreen(
             "profile"
         );
+
 
         setTimeout(
             () => {
@@ -2045,7 +2616,7 @@
 
 
     // ==================================================
-    // ПОИСК ИГРОКА
+    // SEARCH PLAYER
     // ==================================================
 
     async function searchPlayer() {
@@ -2058,29 +2629,39 @@
                 .value
                 .trim();
 
+
         const result =
             document.getElementById(
                 "profileResult"
             );
 
+
         if (!tag) {
 
             result.innerHTML = `
+
                 <div class="card">
+
                     ❌ Введи тег игрока.
+
                 </div>
+
             `;
+
 
             return;
 
         }
+
 
         const cleanTag =
             normalizeTag(
                 tag
             );
 
+
         result.innerHTML = `
+
             <div class="card">
 
                 <h2>
@@ -2088,14 +2669,19 @@
                 </h2>
 
                 <p>
+
                     Ищу игрока
+
                     <b>
                         #${escapeHtml(cleanTag)}
                     </b>...
+
                 </p>
 
             </div>
+
         `;
+
 
         try {
 
@@ -2104,12 +2690,15 @@
                     `/api/player?tag=${encodeURIComponent(cleanTag)}`
                 );
 
+
             const data =
                 await response.json();
+
 
             if (!response.ok) {
 
                 result.innerHTML = `
+
                     <div class="card">
 
                         <h2>
@@ -2121,33 +2710,50 @@
                         </p>
 
                     </div>
+
                 `;
+
 
                 return;
 
             }
 
-            let emoji = "";
+
+            let emoji =
+                "";
+
 
             if (
-                telegramId &&
-                normalizeTag(
-                    data.tag ||
-                    ""
-                ) ===
-                normalizeTag(
-                    (
-                        await getMyLinkedTag()
-                    ) || ""
-                )
+                telegramId
             ) {
 
-                emoji =
-                    await getRewardEmoji(
-                        telegramId
-                    );
+                const myTag =
+                    await getMyLinkedTag();
+
+
+                if (
+
+                    normalizeTag(
+                        data.tag ||
+                        ""
+                    ) ===
+
+                    normalizeTag(
+                        myTag ||
+                        ""
+                    )
+
+                ) {
+
+                    emoji =
+                        await getRewardEmoji(
+                            telegramId
+                        );
+
+                }
 
             }
+
 
             if (!emoji) {
 
@@ -2159,6 +2765,7 @@
 
             }
 
+
             result.innerHTML =
                 createPlayerCard(
                     data,
@@ -2166,9 +2773,17 @@
                     emoji
                 );
 
+
         } catch (error) {
 
+            console.error(
+                "Search player error:",
+                error
+            );
+
+
             result.innerHTML = `
+
                 <div class="card">
 
                     <h2>
@@ -2180,6 +2795,7 @@
                     </p>
 
                 </div>
+
             `;
 
         }
@@ -2188,7 +2804,7 @@
 
 
     // ==================================================
-    // ПОЛУЧИТЬ МОЙ TAG
+    // GET MY TAG
     // ==================================================
 
     async function getMyLinkedTag() {
@@ -2197,6 +2813,7 @@
             return "";
         }
 
+
         try {
 
             const response =
@@ -2204,18 +2821,22 @@
                     `/api/myprofile?telegram_id=${encodeURIComponent(telegramId)}`
                 );
 
+
             if (!response.ok) {
                 return "";
             }
 
+
             const data =
                 await response.json();
+
 
             return normalizeTag(
                 data.tag ||
                 data.player_tag ||
                 ""
             );
+
 
         } catch {
 
@@ -2227,7 +2848,7 @@
 
 
     // ==================================================
-    // КЛАН
+    // CLAN
     // ==================================================
 
     async function loadClan() {
@@ -2237,13 +2858,19 @@
                 "clanResult"
             );
 
+
         result.innerHTML = `
+
             <div class="card">
+
                 <p>
                     ⏳ Загружаю клан...
                 </p>
+
             </div>
+
         `;
+
 
         try {
 
@@ -2252,12 +2879,15 @@
                     `/api/members?tag=${MY_CLAN_TAG}`
                 );
 
+
             const membersData =
                 await membersResponse.json();
+
 
             if (!membersResponse.ok) {
 
                 result.innerHTML = `
+
                     <div class="card">
 
                         <h2>
@@ -2265,24 +2895,32 @@
                         </h2>
 
                         <p>
+
                             ${escapeHtml(
                                 membersData.error ||
                                 "Ошибка загрузки."
                             )}
+
                         </p>
 
                     </div>
+
                 `;
+
 
                 return;
 
             }
 
+
             const members =
                 membersData.items ||
                 [];
 
-            let clanData = null;
+
+            let clanData =
+                null;
+
 
             try {
 
@@ -2291,12 +2929,16 @@
                         `/api/clan?tag=${MY_CLAN_TAG}`
                     );
 
-                if (clanResponse.ok) {
+
+                if (
+                    clanResponse.ok
+                ) {
 
                     clanData =
                         await clanResponse.json();
 
                 }
+
 
             } catch (error) {
 
@@ -2307,45 +2949,58 @@
 
             }
 
+
             const topTrophies =
                 [...members]
                     .sort(
                         (a, b) =>
+
                             (
                                 Number(
                                     b.trophies
                                 ) || 0
-                            ) -
+                            )
+
+                            -
+
                             (
                                 Number(
                                     a.trophies
                                 ) || 0
                             )
+
                     )
                     .slice(
                         0,
                         3
                     );
 
+
             const topDonators =
                 [...members]
                     .sort(
                         (a, b) =>
+
                             (
                                 Number(
                                     b.donations
                                 ) || 0
-                            ) -
+                            )
+
+                            -
+
                             (
                                 Number(
                                     a.donations
                                 ) || 0
                             )
+
                     )
                     .slice(
                         0,
                         3
                     );
+
 
             let html = `
 
@@ -2354,6 +3009,7 @@
                     <h2>
 
                         ⚜️
+
                         ${escapeHtml(
                             clanData?.name ||
                             "Движуха"
@@ -2361,10 +3017,13 @@
 
                     </h2>
 
+
                     <p>
 
                         🏷 Тег:
+
                         <b>
+
                             #
                             ${escapeHtml(
                                 normalizeTag(
@@ -2372,31 +3031,40 @@
                                     MY_CLAN_TAG
                                 )
                             )}
+
                         </b>
 
                     </p>
 
+
                     <p>
 
                         👥 Кенты:
+
                         <b>
+
                             ${
                                 members.length ||
                                 clanData?.members ||
                                 "—"
                             }
+
                         </b>
 
                     </p>
 
+
                     <p>
 
                         📊 Требования:
+
                         <b>
+
                             ${
                                 clanData?.requiredTrophies ??
                                 "—"
                             }
+
                         </b>
 
                     </p>
@@ -2409,8 +3077,11 @@
             html += `
 
                 <div class="ranking-title">
+
                     🏆 Топ-3 по кубкам
+
                 </div>
+
 
                 <div class="ranking">
 
@@ -2426,15 +3097,20 @@
                 const member =
                     topTrophies[index];
 
+
                 let emoji =
                     member.reward_emoji ||
                     member.rewardEmoji ||
                     member.emoji ||
                     "";
 
+
                 if (
+
                     !emoji &&
+
                     member.telegram_id
+
                 ) {
 
                     emoji =
@@ -2444,9 +3120,13 @@
 
                 }
 
+
                 if (
+
                     !emoji &&
+
                     member.tag
+
                 ) {
 
                     emoji =
@@ -2456,6 +3136,7 @@
 
                 }
 
+
                 html += `
 
                     <div class="ranking-item">
@@ -2463,8 +3144,11 @@
                         <div class="ranking-left">
 
                             <div class="ranking-number">
+
                                 ${index + 1}.
+
                             </div>
+
 
                             <div class="ranking-name">
 
@@ -2481,9 +3165,11 @@
 
                         </div>
 
+
                         <div class="ranking-value">
 
                             🏆
+
                             ${
                                 Number(
                                     member.trophies
@@ -2507,8 +3193,11 @@
             html += `
 
                 <div class="ranking-title">
+
                     🃏 Топ-3 донатеров
+
                 </div>
+
 
                 <div class="ranking">
 
@@ -2524,15 +3213,20 @@
                 const member =
                     topDonators[index];
 
+
                 let emoji =
                     member.reward_emoji ||
                     member.rewardEmoji ||
                     member.emoji ||
                     "";
 
+
                 if (
+
                     !emoji &&
+
                     member.telegram_id
+
                 ) {
 
                     emoji =
@@ -2542,9 +3236,13 @@
 
                 }
 
+
                 if (
+
                     !emoji &&
+
                     member.tag
+
                 ) {
 
                     emoji =
@@ -2554,6 +3252,7 @@
 
                 }
 
+
                 html += `
 
                     <div class="ranking-item">
@@ -2561,8 +3260,11 @@
                         <div class="ranking-left">
 
                             <div class="ranking-number">
+
                                 ${index + 1}.
+
                             </div>
+
 
                             <div class="ranking-name">
 
@@ -2579,9 +3281,11 @@
 
                         </div>
 
+
                         <div class="ranking-value">
 
                             🃏
+
                             ${
                                 Number(
                                     member.donations
@@ -2613,7 +3317,9 @@
                 error
             );
 
+
             result.innerHTML = `
+
                 <div class="card">
 
                     <h2>
@@ -2625,6 +3331,7 @@
                     </p>
 
                 </div>
+
             `;
 
         }
@@ -2633,7 +3340,7 @@
 
 
     // ==================================================
-    // КЕНТЫ
+    // MEMBERS
     // ==================================================
 
     async function loadMembers() {
@@ -2643,7 +3350,9 @@
                 "membersResult"
             );
 
+
         result.innerHTML = `
+
             <div class="card">
 
                 <p>
@@ -2651,7 +3360,9 @@
                 </p>
 
             </div>
+
         `;
+
 
         try {
 
@@ -2660,12 +3371,15 @@
                     `/api/members?tag=${MY_CLAN_TAG}`
                 );
 
+
             const data =
                 await response.json();
+
 
             if (!response.ok) {
 
                 result.innerHTML = `
+
                     <div class="card">
 
                         <h2>
@@ -2673,28 +3387,35 @@
                         </h2>
 
                         <p>
+
                             ${escapeHtml(
                                 data.reason ||
                                 data.error ||
                                 "Не удалось загрузить участников"
                             )}
+
                         </p>
 
                     </div>
+
                 `;
+
 
                 return;
 
             }
 
+
             const members =
                 data.items || [];
+
 
             if (
                 members.length === 0
             ) {
 
                 result.innerHTML = `
+
                     <div class="card">
 
                         <p>
@@ -2702,11 +3423,14 @@
                         </p>
 
                     </div>
+
                 `;
+
 
                 return;
 
             }
+
 
             let html = `
 
@@ -2719,8 +3443,10 @@
                             margin:0;
                         "
                     >
+
                         👥 Кенты:
                         ${members.length}
+
                     </h2>
 
                 </div>
@@ -2737,6 +3463,7 @@
                             "Без имени"
                         );
 
+
                     const cleanTag =
                         normalizeTag(
                             String(
@@ -2745,21 +3472,28 @@
                             )
                         );
 
+
                     const safeTag =
                         escapeHtml(
                             cleanTag
                         );
 
+
                     const trophies =
                         member.trophies ??
                         "—";
 
+
                     let dailyHtml =
                         "";
 
+
                     if (
+
                         member.dailyChange !== null &&
+
                         member.dailyChange !== undefined
+
                     ) {
 
                         const change =
@@ -2767,46 +3501,84 @@
                                 member.dailyChange
                             );
 
+
                         if (
                             change > 0
                         ) {
 
                             dailyHtml = `
+
                                 <div class="member-daily">
+
                                     🟢 +${change}
-                                    <span style="font-weight:500; opacity:0.7;">
+
+                                    <span
+                                        style="
+                                            font-weight:500;
+                                            opacity:0.7;
+                                        "
+                                    >
                                         (за последние сутки)
                                     </span>
+
                                 </div>
+
                             `;
 
-                        } else if (
+                        }
+
+
+                        else if (
                             change < 0
                         ) {
 
                             dailyHtml = `
+
                                 <div class="member-daily">
+
                                     🔴 ${change}
-                                    <span style="font-weight:500; opacity:0.7;">
+
+                                    <span
+                                        style="
+                                            font-weight:500;
+                                            opacity:0.7;
+                                        "
+                                    >
                                         (за последние сутки)
                                     </span>
+
                                 </div>
+
                             `;
 
-                        } else {
+                        }
+
+
+                        else {
 
                             dailyHtml = `
+
                                 <div class="member-daily">
+
                                     ⚪ 0
-                                    <span style="font-weight:500; opacity:0.7;">
+
+                                    <span
+                                        style="
+                                            font-weight:500;
+                                            opacity:0.7;
+                                        "
+                                    >
                                         (за последние сутки)
                                     </span>
+
                                 </div>
+
                             `;
 
                         }
 
                     }
+
 
                     const memberEmoji =
                         member.reward_emoji ||
@@ -2814,16 +3586,22 @@
                         member.emoji ||
                         "";
 
+
                     html += `
 
                         <button
+
                             class="member"
+
                             onclick="openMemberProfile('${safeTag}')"
+
                         >
 
                             <div class="member-content">
 
+
                                 <div class="member-left">
+
 
                                     <div class="member-name">
 
@@ -2835,6 +3613,7 @@
                                         )}
 
                                     </div>
+
 
                                     <div class="member-info">
 
@@ -2848,7 +3627,9 @@
 
                                 </div>
 
+
                                 <div class="member-right">
+
 
                                     <div class="member-trophies">
 
@@ -2857,9 +3638,11 @@
 
                                     </div>
 
+
                                     ${dailyHtml}
 
                                 </div>
+
 
                             </div>
 
@@ -2882,7 +3665,9 @@
                 error
             );
 
+
             result.innerHTML = `
+
                 <div class="card">
 
                     <h2>
@@ -2894,6 +3679,7 @@
                     </p>
 
                 </div>
+
             `;
 
         }
@@ -2902,7 +3688,7 @@
 
 
     // ==================================================
-    // ПРОФИЛЬ ИЗ КЕНТОВ
+    // MEMBER PROFILE
     // ==================================================
 
     async function openMemberProfile(
@@ -2913,12 +3699,15 @@
             "memberProfile"
         );
 
+
         const result =
             document.getElementById(
                 "memberProfileResult"
             );
 
+
         result.innerHTML = `
+
             <div class="card">
 
                 <p>
@@ -2926,6 +3715,7 @@
                 </p>
 
             </div>
+
         `;
 
 
@@ -2936,17 +3726,29 @@
                     tag
                 );
 
+
+            /*
+             * Здесь теперь используется
+             * /api/player.
+             *
+             * Именно он возвращает
+             * collectionLevel.
+             */
+
             const response =
                 await fetch(
                     `/api/player?tag=${encodeURIComponent(cleanTag)}`
                 );
 
+
             const data =
                 await response.json();
+
 
             if (!response.ok) {
 
                 result.innerHTML = `
+
                     <div class="card">
 
                         <h2>
@@ -2958,28 +3760,38 @@
                         </p>
 
                     </div>
+
                 `;
+
 
                 return;
 
             }
 
-            let emoji = "";
+
+            let emoji =
+                "";
+
 
             if (telegramId) {
 
                 const myTag =
                     await getMyLinkedTag();
 
+
                 if (
+
                     myTag &&
+
                     normalizeTag(
                         myTag
                     ) ===
+
                     normalizeTag(
                         data.tag ||
                         cleanTag
                     )
+
                 ) {
 
                     emoji =
@@ -2991,6 +3803,7 @@
 
             }
 
+
             if (!emoji) {
 
                 emoji =
@@ -3000,6 +3813,7 @@
                     );
 
             }
+
 
             result.innerHTML =
                 createPlayerCard(
@@ -3011,7 +3825,14 @@
 
         } catch (error) {
 
+            console.error(
+                "Member profile error:",
+                error
+            );
+
+
             result.innerHTML = `
+
                 <div class="card">
 
                     <h2>
@@ -3023,6 +3844,7 @@
                     </p>
 
                 </div>
+
             `;
 
         }
@@ -3031,7 +3853,7 @@
 
 
     // ==================================================
-    // НАГРАДА
+    // REWARD
     // ==================================================
 
     function openReward() {
@@ -3039,6 +3861,7 @@
         showScreen(
             "reward"
         );
+
 
         loadReward();
 
@@ -3052,17 +3875,21 @@
                 "rewardResult"
             );
 
+
         const subtitle =
             document.getElementById(
                 "rewardSubtitle"
             );
+
 
         if (!telegramId) {
 
             subtitle.textContent =
                 "Telegram ID не найден";
 
+
             result.innerHTML = `
+
                 <div class="card">
 
                     <h2>
@@ -3074,13 +3901,17 @@
                     </p>
 
                 </div>
+
             `;
+
 
             return;
 
         }
 
+
         result.innerHTML = `
+
             <div class="card">
 
                 <p>
@@ -3088,7 +3919,9 @@
                 </p>
 
             </div>
+
         `;
+
 
         try {
 
@@ -3097,12 +3930,15 @@
                     `/api/message-stats?action=reward&telegram_id=${encodeURIComponent(telegramId)}`
                 );
 
+
             const data =
                 await response.json();
+
 
             if (!response.ok) {
 
                 result.innerHTML = `
+
                     <div class="card">
 
                         <h2>
@@ -3110,44 +3946,55 @@
                         </h2>
 
                         <p>
+
                             ${escapeHtml(
                                 data.error ||
                                 "Не удалось проверить награду."
                             )}
+
                         </p>
 
                     </div>
+
                 `;
+
 
                 return;
 
             }
 
+
             const winner =
                 data.winner ||
                 null;
 
+
             const reward =
                 data.reward ||
                 null;
+
 
             if (!winner) {
 
                 subtitle.textContent =
                     "Победы пока нет";
 
+
                 result.innerHTML = `
+
                     <div class="card">
 
                         <div class="reward-winner">
                             🏆
                         </div>
 
+
                         <h2
                             style="text-align:center;"
                         >
                             Пока без награды
                         </h2>
+
 
                         <p class="reward-message">
 
@@ -3157,32 +4004,42 @@
                         </p>
 
                     </div>
+
                 `;
+
 
                 return;
 
             }
 
+
             subtitle.textContent =
                 "Ты победитель недели!";
 
+
             if (
+
                 reward &&
+
                 reward.reward_claimed === true
+
             ) {
 
                 result.innerHTML = `
+
                     <div class="card">
 
                         <div class="reward-winner">
                             🏆
                         </div>
 
+
                         <h2
                             style="text-align:center;"
                         >
                             Поздравляем!
                         </h2>
+
 
                         <p class="reward-message">
 
@@ -3191,27 +4048,34 @@
 
                         </p>
 
+
                         <p class="reward-message">
 
                             💬 Сообщений:
+
                             <b>
                                 ${winner.message_count}
                             </b>
 
                         </p>
 
+
                         <div class="reward-selected">
 
                             Твой смайлик:
+
                             <b>
+
                                 ${escapeHtml(
                                     reward.reward_emoji ||
                                     winner.emoji ||
                                     ""
                                 )}
+
                             </b>
 
                         </div>
+
 
                         <p
                             class="reward-message"
@@ -3221,11 +4085,14 @@
                         </p>
 
                     </div>
+
                 `;
+
 
                 return;
 
             }
+
 
             result.innerHTML = `
 
@@ -3235,25 +4102,31 @@
                         🏆
                     </div>
 
+
                     <h2
                         style="text-align:center;"
                     >
                         Ты победитель недели!
                     </h2>
 
+
                     <p class="reward-message">
                         Поздравляем! 🎉
                     </p>
 
+
                     <p class="reward-message">
 
                         💬 Ты написал:
+
                         <b>
                             ${winner.message_count}
                         </b>
+
                         сообщений.
 
                     </p>
+
 
                     <p class="reward-message">
 
@@ -3262,31 +4135,136 @@
 
                     </p>
 
+
                     <div class="emoji-grid">
 
-                        <button class="emoji-button" onclick="chooseReward('😀')">😀</button>
-                        <button class="emoji-button" onclick="chooseReward('😎')">😎</button>
-                        <button class="emoji-button" onclick="chooseReward('🔥')">🔥</button>
-                        <button class="emoji-button" onclick="chooseReward('❤️')">❤️</button>
-                        <button class="emoji-button" onclick="chooseReward('💀')">💀</button>
 
-                        <button class="emoji-button" onclick="chooseReward('👑')">👑</button>
-                        <button class="emoji-button" onclick="chooseReward('⚡')">⚡</button>
-                        <button class="emoji-button" onclick="chooseReward('💎')">💎</button>
-                        <button class="emoji-button" onclick="chooseReward('🚀')">🚀</button>
-                        <button class="emoji-button" onclick="chooseReward('🤡')">🤡</button>
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('😀')"
+                        >
+                            😀
+                        </button>
 
-                        <button class="emoji-button" onclick="chooseReward('🐐')">🐐</button>
-                        <button class="emoji-button" onclick="chooseReward('🗿')">🗿</button>
-                        <button class="emoji-button" onclick="chooseReward('👽')">👽</button>
-                        <button class="emoji-button" onclick="chooseReward('🤠')">🤠</button>
-                        <button class="emoji-button" onclick="chooseReward('😈')">😈</button>
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('😎')"
+                        >
+                            😎
+                        </button>
+
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('🔥')"
+                        >
+                            🔥
+                        </button>
+
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('❤️')"
+                        >
+                            ❤️
+                        </button>
+
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('💀')"
+                        >
+                            💀
+                        </button>
+
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('👑')"
+                        >
+                            👑
+                        </button>
+
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('⚡')"
+                        >
+                            ⚡
+                        </button>
+
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('💎')"
+                        >
+                            💎
+                        </button>
+
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('🚀')"
+                        >
+                            🚀
+                        </button>
+
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('🤡')"
+                        >
+                            🤡
+                        </button>
+
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('🐐')"
+                        >
+                            🐐
+                        </button>
+
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('🗿')"
+                        >
+                            🗿
+                        </button>
+
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('👽')"
+                        >
+                            👽
+                        </button>
+
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('🤠')"
+                        >
+                            🤠
+                        </button>
+
+
+                        <button
+                            class="emoji-button"
+                            onclick="chooseReward('😈')"
+                        >
+                            😈
+                        </button>
+
 
                     </div>
 
                 </div>
 
             `;
+
 
         } catch (error) {
 
@@ -3295,7 +4273,9 @@
                 error
             );
 
+
             result.innerHTML = `
+
                 <div class="card">
 
                     <h2>
@@ -3306,6 +4286,7 @@
                         Не удалось проверить награду.
                     </p>
 
+
                     <button
                         class="button"
                         onclick="loadReward()"
@@ -3314,6 +4295,7 @@
                     </button>
 
                 </div>
+
             `;
 
         }
@@ -3322,7 +4304,7 @@
 
 
     // ==================================================
-    // ВЫБОР НАГРАДЫ
+    // CHOOSE REWARD
     // ==================================================
 
     async function chooseReward(
@@ -3334,9 +4316,11 @@
                 "rewardResult"
             );
 
+
         if (!telegramId) {
 
             result.innerHTML = `
+
                 <div class="card">
 
                     <h2>
@@ -3348,18 +4332,27 @@
                     </p>
 
                 </div>
+
             `;
+
 
             return;
 
         }
 
+
         result.innerHTML = `
+
             <div class="card">
 
                 <div class="reward-winner">
-                    ${escapeHtml(emoji)}
+
+                    ${escapeHtml(
+                        emoji
+                    )}
+
                 </div>
+
 
                 <p class="reward-message">
 
@@ -3368,39 +4361,52 @@
                 </p>
 
             </div>
+
         `;
+
 
         try {
 
             const response =
                 await fetch(
+
                     `/api/message-stats?action=reward&telegram_id=${encodeURIComponent(telegramId)}`,
+
                     {
+
                         method: "POST",
 
                         headers: {
+
                             "Content-Type":
                                 "application/json"
+
                         },
 
-                        body: JSON.stringify({
+                        body:
+                            JSON.stringify({
 
-                            telegram_id:
-                                telegramId,
+                                telegram_id:
+                                    telegramId,
 
-                            emoji:
-                                emoji
+                                emoji:
+                                    emoji
 
-                        })
+                            })
+
                     }
+
                 );
+
 
             const data =
                 await response.json();
 
+
             if (!response.ok) {
 
                 result.innerHTML = `
+
                     <div class="card">
 
                         <h2>
@@ -3408,11 +4414,14 @@
                         </h2>
 
                         <p>
+
                             ${escapeHtml(
                                 data.error ||
                                 "Ошибка сохранения награды."
                             )}
+
                         </p>
+
 
                         <button
                             class="button"
@@ -3422,25 +4431,32 @@
                         </button>
 
                     </div>
+
                 `;
+
 
                 return;
 
             }
+
 
             emojiCache.set(
                 telegramId,
                 emoji
             );
 
+
             tagEmojiCache.clear();
 
+
             result.innerHTML = `
+
                 <div class="card">
 
                     <div class="reward-winner">
                         🏆
                     </div>
+
 
                     <h2
                         style="text-align:center;"
@@ -3448,17 +4464,22 @@
                         🎉 Награда получена!
                     </h2>
 
+
                     <p class="reward-message">
 
                         Твой выбранный смайлик:
 
                     </p>
 
+
                     <div class="reward-selected">
 
-                        ${escapeHtml(emoji)}
+                        ${escapeHtml(
+                            emoji
+                        )}
 
                     </div>
+
 
                     <p
                         class="reward-message"
@@ -3468,7 +4489,9 @@
                     </p>
 
                 </div>
+
             `;
+
 
         } catch (error) {
 
@@ -3477,7 +4500,9 @@
                 error
             );
 
+
             result.innerHTML = `
+
                 <div class="card">
 
                     <h2>
@@ -3488,6 +4513,7 @@
                         Не удалось сохранить награду.
                     </p>
 
+
                     <button
                         class="button"
                         onclick="loadReward()"
@@ -3496,6 +4522,7 @@
                     </button>
 
                 </div>
+
             `;
 
         }
@@ -3513,9 +4540,11 @@
             tg.initDataUnsafe?.start_param ||
             "";
 
+
         if (!startParam) {
             return;
         }
+
 
         if (
             startParam ===
@@ -3524,7 +4553,10 @@
 
             openMyProfile();
 
-        } else if (
+        }
+
+
+        else if (
             startParam ===
             "clan"
         ) {
@@ -3533,9 +4565,13 @@
                 "clan"
             );
 
+
             loadClan();
 
-        } else if (
+        }
+
+
+        else if (
             startParam ===
             "players"
         ) {
@@ -3544,16 +4580,23 @@
                 "players"
             );
 
+
             loadMembers();
 
-        } else if (
+        }
+
+
+        else if (
             startParam ===
             "reward"
         ) {
 
             openReward();
 
-        } else if (
+        }
+
+
+        else if (
             startParam ===
             "help"
         ) {
@@ -3578,11 +4621,14 @@
         return String(
             value || ""
         )
+
             .replace(
                 /^#+/,
                 ""
             )
+
             .trim()
+
             .toUpperCase();
 
     }
@@ -3599,22 +4645,27 @@
         return String(
             value
         )
+
             .replace(
                 /&/g,
                 "&amp;"
             )
+
             .replace(
                 /</g,
                 "&lt;"
             )
+
             .replace(
                 />/g,
                 "&gt;"
             )
+
             .replace(
                 /"/g,
                 "&quot;"
             )
+
             .replace(
                 /'/g,
                 "&#039;"
@@ -3624,12 +4675,14 @@
 
 
     // ==================================================
-    // ЗАПУСК
+    // START
     // ==================================================
 
     openStartAppScreen();
 
 </script>
 
+
 </body>
+
 </html>
