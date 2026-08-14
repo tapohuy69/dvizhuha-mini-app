@@ -1871,12 +1871,13 @@
                 ""
             );
 
+        // ==================================================
+        // ГЛАВА ОПРЕДЕЛЯЕТСЯ ТОЛЬКО ПО TAG
+        // #VPQRJ8LV
+        // ==================================================
+
         const isLeader =
-            tag === LEADER_TAG ||
-            name
-                .trim()
-                .toLowerCase() ===
-            "pohuy";
+            tag === LEADER_TAG;
 
         const isClanMember =
             clanTag === MY_CLAN_TAG;
@@ -1887,7 +1888,7 @@
 
             clanStatus = `
                 <p>
-                    ⚜️ <b>Лидер</b> ⚜️
+                    ⚜️ <b>Глава</b> ⚜️
                 </p>
             `;
 
