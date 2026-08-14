@@ -3,123 +3,30 @@ import { neon } from "@neondatabase/serverless";
 
 // ==================================================
 // COLLECTION LEVEL
+// Берём реальное значение напрямую из Clash Royale API
+// badges -> CollectionLevel -> progress
 // ==================================================
 
-function calculateCollectionLevel(data) {
+function getCollectionLevel(data) {
 
-  let collectionLevel = 0;
-
-  let cardLevels = 0;
-  let towerTroopLevels = 0;
-  let evolutions = 0;
-  let heroes = 0;
-
-  // ==========================================
-  // ОБЫЧНЫЕ КАРТЫ
-  // ==========================================
-
-  const cards =
-    Array.isArray(data.cards)
-      ? data.cards
+  const badges =
+    Array.isArray(data.badges)
+      ? data.badges
       : [];
 
-  for (const card of cards) {
+  const collectionBadge =
+    badges.find(
+      badge =>
+        badge &&
+        badge.name === "CollectionLevel"
+    );
 
-    const level =
-      Number(card?.level) || 0;
+  const collectionLevel =
+    Number(
+      collectionBadge?.progress
+    ) || 0;
 
-    cardLevels += level;
-
-    // Каждая открытая эволюция = +5
-    const evolutionLevel =
-      Number(card?.evolutionLevel) || 0;
-
-    if (evolutionLevel > 0) {
-      evolutions++;
-    }
-
-  }
-
-
-  // ==========================================
-  // TOWER TROOPS
-  // ==========================================
-
-  const supportCards =
-    Array.isArray(data.supportCards)
-      ? data.supportCards
-      : [];
-
-  for (const card of supportCards) {
-
-    const level =
-      Number(card?.level) || 0;
-
-    towerTroopLevels += level;
-
-  }
-
-
-  // ==========================================
-  // HEROES
-  //
-  // В публичном Clash Royale API
-  // отдельный список Heroes может отсутствовать.
-  //
-  // Поэтому используем hero-related данные,
-  // если API их возвращает.
-  // ==========================================
-
-  if (
-    Array.isArray(data.heroes)
-  ) {
-
-    heroes =
-      data.heroes.filter(
-        hero =>
-          hero &&
-          (
-            hero.unlocked === true ||
-            Number(hero.level) > 0
-          )
-      ).length;
-
-  } else if (
-    Array.isArray(data.heroCards)
-  ) {
-
-    heroes =
-      data.heroCards.filter(
-        hero =>
-          hero &&
-          (
-            hero.unlocked === true ||
-            Number(hero.level) > 0
-          )
-      ).length;
-
-  }
-
-
-  // ==========================================
-  // ИТОГ
-  // ==========================================
-
-  collectionLevel =
-    cardLevels +
-    towerTroopLevels +
-    (evolutions * 5) +
-    (heroes * 5);
-
-
-  return {
-    collectionLevel,
-    cardLevels,
-    towerTroopLevels,
-    evolutions,
-    heroes
-  };
-
+  return collectionLevel;
 }
 
 
@@ -242,12 +149,11 @@ export default async function handler(req, res) {
 
     // ==========================================
     // COLLECTION LEVEL
+    // Реальное значение из Clash Royale API
     // ==========================================
 
-    const collection =
-      calculateCollectionLevel(
-        data
-      );
+    const collectionLevel =
+      getCollectionLevel(data);
 
 
     // ==========================================
@@ -464,29 +370,18 @@ export default async function handler(req, res) {
       tag:
         playerTag,
 
+
       // ========================================
-      // НОВОЕ
+      // РЕАЛЬНЫЙ COLLECTION LEVEL
       // ========================================
 
       collectionLevel:
-        collection.collectionLevel,
+        collectionLevel,
 
       collection: {
 
         level:
-          collection.collectionLevel,
-
-        card_levels:
-          collection.cardLevels,
-
-        tower_troop_levels:
-          collection.towerTroopLevels,
-
-        evolutions:
-          collection.evolutions,
-
-        heroes:
-          collection.heroes
+          collectionLevel
 
       },
 
