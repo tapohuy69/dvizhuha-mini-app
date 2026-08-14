@@ -132,157 +132,124 @@ export default async function handler(req, res) {
 
 
     // ==========================================
-    // УРОВЕНЬ КОЛЛЕКЦИИ
+    // COLLECTION LEVEL
     //
-    // Официальная формула Clash Royale:
+    // Clash Royale 2026:
     //
-    // сумма уровней всех карт
-    // +5 за каждую эволюцию
-    // +5 за каждого героя
+    // - уровень каждой карты = +1
+    // - Evolution = +5
+    // - Hero = +5
     //
     // ВАЖНО:
     // НЕ используем card.count.
-    // count = количество физических карт,
-    // а не уровень коллекции.
+    // Именно count давал 47811.
     // ==========================================
 
-    let collectionLevel = 0;
+    function calculateCollectionLevel(
+      player
+    ) {
 
-    const cards =
-      Array.isArray(data.cards)
-        ? data.cards
-        : [];
+      const cards =
+        Array.isArray(player.cards)
+          ? player.cards
+          : [];
 
+      let levelTotal = 0;
 
-    // Сумма уровней обычных карт
-    for (const card of cards) {
+      let evolutionBonus = 0;
 
-      const level =
-        Number(
-          card?.level || 0
-        );
-
-      collectionLevel +=
-        level;
-
-    }
+      let heroBonus = 0;
 
 
-    // ==========================================
-    // ЭВОЛЮЦИИ
-    //
-    // API может отдавать evolutionLevel
-    // у карты, если эволюция открыта.
-    //
-    // Также поддерживаем несколько возможных
-    // форматов, чтобы код не ломался.
-    // ==========================================
+      // ========================================
+      // СУММА УРОВНЕЙ КАРТ
+      // ========================================
 
-    let evolutionCount = 0;
+      for (
+        const card of cards
+      ) {
 
-    for (const card of cards) {
+        const level =
+          Number(
+            card?.level || 0
+          );
 
-      const evolutionLevel =
-        Number(
-          card?.evolutionLevel || 0
-        );
+        levelTotal +=
+          level;
 
-      const evolutionUnlocked =
-        card?.evolution === true ||
-        card?.hasEvolution === true ||
-        evolutionLevel > 0;
 
-      if (evolutionUnlocked) {
+        // ======================================
+        // EVOLUTION
+        // ======================================
 
-        evolutionCount += 1;
+        const evolutionLevel =
+          Number(
+            card?.evolutionLevel || 0
+          );
+
+        if (
+          evolutionLevel > 0
+        ) {
+
+          evolutionBonus += 5;
+
+        }
+
+
+        // Некоторые версии API могут
+        // возвращать evolution иначе
+
+        else if (
+          card?.evolution?.unlocked === true
+        ) {
+
+          evolutionBonus += 5;
+
+        }
 
       }
 
-    }
 
+      // ========================================
+      // HERO
+      //
+      // Поддерживаем возможные варианты
+      // полей нового API.
+      // ========================================
 
-    // ==========================================
-    // ГЕРОИ
-    //
-    // Поддерживаем возможные поля API.
-    // ==========================================
+      for (
+        const card of cards
+      ) {
 
-    let heroCount = 0;
-
-    if (
-      Array.isArray(
-        data.heroes
-      )
-    ) {
-
-      heroCount =
-        data.heroes.filter(
-          hero =>
-            hero &&
-            (
-              hero.unlocked === true ||
-              Number(hero.level || 0) > 0
-            )
-        ).length;
-
-    }
-
-
-    // Дополнительная поддержка,
-    // если API отдаёт heroes как число
-
-    if (
-      heroCount === 0 &&
-      Number.isFinite(
-        Number(data.heroCount)
-      )
-    ) {
-
-      heroCount =
-        Number(
-          data.heroCount
-        );
-
-    }
-
-
-    // ==========================================
-    // TOWER TROOPS
-    //
-    // Если API отдаёт их отдельным массивом,
-    // их уровни тоже входят в Collection Level.
-    // ==========================================
-
-    const towerCards =
-      Array.isArray(data.towerCards)
-        ? data.towerCards
-        : (
-            Array.isArray(data.towerTroops)
-              ? data.towerTroops
-              : []
+        const heroLevel =
+          Number(
+            card?.heroLevel || 0
           );
 
+        if (
+          heroLevel > 0
+        ) {
 
-    for (const towerCard of towerCards) {
+          heroBonus += 5;
 
-      collectionLevel +=
-        Number(
-          towerCard?.level || 0
-        );
+        }
+
+      }
+
+
+      return (
+        levelTotal +
+        evolutionBonus +
+        heroBonus
+      );
 
     }
 
 
-    // ==========================================
-    // +5 ЗА ЭВОЛЮЦИЮ
-    // +5 ЗА ГЕРОЯ
-    // ==========================================
-
-    collectionLevel +=
-      evolutionCount * 5;
-
-    collectionLevel +=
-      heroCount * 5;
+    const collectionLevel =
+      calculateCollectionLevel(
+        data
+      );
 
 
     // ==========================================
@@ -485,23 +452,11 @@ export default async function handler(req, res) {
         playerTag,
 
       // ========================================
-      // НОВОЕ
+      // НОВОЕ ПОЛЕ
       // ========================================
-
-      collectionLevel:
-        collectionLevel,
 
       collection_level:
         collectionLevel,
-
-      evolutionCount:
-        evolutionCount,
-
-      heroCount:
-        heroCount,
-
-      towerCardsCount:
-        towerCards.length,
 
       reward_emoji:
         rewardEmoji,
@@ -526,10 +481,7 @@ export default async function handler(req, res) {
         reward_loaded:
           Boolean(
             rewardEmoji
-          ),
-
-        collection_level:
-          collectionLevel
+          )
 
       }
 
