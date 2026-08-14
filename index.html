@@ -16,7 +16,7 @@
 
         /* ==================================================
            BLACK PREMIUM
-        ================================================== */
+           ================================================== */
 
         * {
             box-sizing: border-box;
@@ -118,7 +118,7 @@
 
         /* ==================================================
            HEADER
-        ================================================== */
+           ================================================== */
 
         .header {
             text-align: center;
@@ -149,7 +149,7 @@
 
         /* ==================================================
            PREMIUM BUTTONS
-        ================================================== */
+           ================================================== */
 
         .button {
             width: 100%;
@@ -214,7 +214,7 @@
 
         /* ==================================================
            SCREENS
-        ================================================== */
+           ================================================== */
 
         .screen {
             display: none;
@@ -239,7 +239,7 @@
 
         /* ==================================================
            НАЗАД
-        ================================================== */
+           ================================================== */
 
         .back {
             position: fixed;
@@ -287,7 +287,7 @@
 
         /* ==================================================
            ОБНОВИТЬ
-        ================================================== */
+           ================================================== */
 
         .refresh-button {
             position: fixed;
@@ -335,7 +335,7 @@
 
         /* ==================================================
            INPUT
-        ================================================== */
+           ================================================== */
 
         input {
             width: 100%;
@@ -386,7 +386,7 @@
 
         /* ==================================================
            CARDS
-        ================================================== */
+           ================================================== */
 
         .card {
             padding: 20px;
@@ -448,7 +448,7 @@
 
         /* ==================================================
            КЕНТЫ
-        ================================================== */
+           ================================================== */
 
         .member {
             width: 100%;
@@ -576,7 +576,7 @@
 
         /* ==================================================
            ТОП
-        ================================================== */
+           ================================================== */
 
         .ranking-title {
             text-align: center;
@@ -666,7 +666,7 @@
 
         /* ==================================================
            СМАЙЛИК ПОБЕДИТЕЛЯ
-        ================================================== */
+           ================================================== */
 
         .winner-emoji {
             margin-left: 6px;
@@ -695,7 +695,7 @@
 
         /* ==================================================
            УРОВЕНЬ КОЛЛЕКЦИИ
-        ================================================== */
+           ================================================== */
 
         .collection-level {
             margin-top: 18px;
@@ -732,7 +732,7 @@
 
         /* ==================================================
            НАГРАДА
-        ================================================== */
+           ================================================== */
 
         .reward-winner {
             text-align: center;
@@ -1154,9 +1154,6 @@
     const MY_CLAN_TAG =
         "GCGJ9VJV";
 
-    const LEADER_TAG =
-        "VPQRJ8LV";
-
 
     // ==================================================
     // КЭШ СМАЙЛИКОВ
@@ -1166,6 +1163,17 @@
         new Map();
 
     const tagEmojiCache =
+        new Map();
+
+
+    // ==================================================
+    // КЭШ УЧАСТНИКОВ КЛАНА
+    //
+    // Используется только для проверки:
+    // является ли введённый игрок реальным участником.
+    // ==================================================
+
+    const clanMembersCache =
         new Map();
 
 
@@ -1439,8 +1447,7 @@
 
 
     // ==================================================
-    // ИСПРАВЛЕНО:
-    // МОЙ ПРОФИЛЬ ПОЛУЧАЕТ СВЕЖИЙ /api/player
+    // МОЙ ПРОФИЛЬ
     // ==================================================
 
     async function loadMyProfile() {
@@ -1493,10 +1500,6 @@
 
         try {
 
-            // ==================================================
-            // 1. Получаем привязанный TAG
-            // ==================================================
-
             const response =
                 await fetch(
                     `/api/myprofile?telegram_id=${encodeURIComponent(telegramId)}`
@@ -1506,10 +1509,6 @@
             const data =
                 await response.json();
 
-
-            // ==================================================
-            // АККАУНТ НЕ ПРИВЯЗАН
-            // ==================================================
 
             if (
                 response.status === 404 ||
@@ -1553,10 +1552,6 @@
             }
 
 
-            // ==================================================
-            // ОШИБКА MYPROFILE
-            // ==================================================
-
             if (!response.ok) {
 
                 result.innerHTML = `
@@ -1580,10 +1575,6 @@
 
             }
 
-
-            // ==================================================
-            // 2. ПОЛУЧАЕМ TAG
-            // ==================================================
 
             const linkedTag =
                 normalizeTag(
@@ -1613,16 +1604,6 @@
 
             }
 
-
-            // ==================================================
-            // 3. ГЛАВНОЕ ИСПРАВЛЕНИЕ
-            //
-            // НЕ используем данные /api/myprofile
-            // для Collection Level.
-            //
-            // Запрашиваем настоящий свежий профиль
-            // через /api/player.
-            // ==================================================
 
             const playerResponse =
                 await fetch(
@@ -1665,31 +1646,18 @@
             }
 
 
-            // ==================================================
-            // 4. СМАЙЛИК
-            // ==================================================
-
             const emoji =
                 await getRewardEmoji(
                     telegramId
                 );
 
 
-            // ==================================================
-            // 5. ПОКАЗЫВАЕМ СВЕЖИЙ PLAYER DATA
-            //
-            // Здесь collectionLevel приходит
-            // непосредственно из /api/player.
-            //
-            // 1571
-            // ==================================================
-
             subtitle.textContent =
                 "Твой Clash Royale аккаунт";
 
 
             result.innerHTML =
-                createPlayerCard(
+                await createPlayerCard(
                     playerData,
                     linkedTag,
                     emoji
@@ -1839,7 +1807,7 @@
                 );
 
             result.innerHTML = `
-                ${createPlayerCard(
+                ${await createPlayerCard(
                     data,
                     cleanTag,
                     emoji
@@ -1927,58 +1895,115 @@
 
 
     // ==================================================
-    // ПРОВЕРКА ГЛАВЫ
+    // ПРОВЕРКА РЕАЛЬНОГО КЕНТА КЛАНА
+    //
+    // ТОЛЬКО список /api/members
+    //
+    // НИКАКИХ:
+    // role
+    // leader
+    // coLeader
+    // elder
+    // clan.role
     // ==================================================
 
-    function isLeaderPlayer(
-        data,
-        tag
-    ) {
+    async function isRealClanMember(tag) {
 
         const cleanTag =
             normalizeTag(tag);
 
-        const leaderTag =
-            normalizeTag(
-                LEADER_TAG
+        if (!cleanTag) {
+            return false;
+        }
+
+
+        if (
+            clanMembersCache.has(
+                cleanTag
+            )
+        ) {
+
+            return clanMembersCache.get(
+                cleanTag
             );
 
-        if (
-            cleanTag &&
-            cleanTag === leaderTag
-        ) {
-
-            return true;
-
         }
 
-        const role =
-            String(
-                data?.role ||
-                data?.clan?.role ||
-                ""
-            ).toLowerCase();
 
-        if (
-            role === "leader" ||
-            role === "главa" ||
-            role === "глава"
-        ) {
+        try {
 
-            return true;
+            const response =
+                await fetch(
+                    `/api/members?tag=${encodeURIComponent(MY_CLAN_TAG)}`
+                );
+
+
+            if (!response.ok) {
+
+                clanMembersCache.set(
+                    cleanTag,
+                    false
+                );
+
+                return false;
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            const members =
+                data.items || [];
+
+
+            const isMember =
+                members.some(
+                    member =>
+                        normalizeTag(
+                            member.tag || ""
+                        ) === cleanTag
+                );
+
+
+            clanMembersCache.set(
+                cleanTag,
+                isMember
+            );
+
+
+            return isMember;
+
+
+        } catch (error) {
+
+            console.error(
+                "Clan membership check error:",
+                error
+            );
+
+            clanMembersCache.set(
+                cleanTag,
+                false
+            );
+
+            return false;
 
         }
-
-        return false;
 
     }
 
 
     // ==================================================
     // КАРТОЧКА ИГРОКА
+    //
+    // КЕНТ = TAG ЕСТЬ В /api/members
+    //
+    // role: leader НИ НА ЧТО НЕ ВЛИЯЕТ
     // ==================================================
 
-    function createPlayerCard(
+    async function createPlayerCard(
         data,
         fallbackTag = "",
         rewardEmoji = ""
@@ -1988,16 +2013,11 @@
             data.name ||
             "Без имени";
 
+
         const tag =
             normalizeTag(
                 data.tag ||
                 fallbackTag ||
-                ""
-            );
-
-        const clanTag =
-            normalizeTag(
-                data.clan?.tag ||
                 ""
             );
 
@@ -2008,29 +2028,16 @@
             );
 
 
-        const isLeader =
-            isLeaderPlayer(
-                data,
+        const isClanMember =
+            await isRealClanMember(
                 tag
             );
 
-        const isClanMember =
-            clanTag ===
-            normalizeTag(
-                MY_CLAN_TAG
-            );
 
         let clanStatus;
 
-        if (isLeader) {
 
-            clanStatus = `
-                <p>
-                    ⚜️ <b>Глава</b> ⚜️
-                </p>
-            `;
-
-        } else if (isClanMember) {
+        if (isClanMember) {
 
             clanStatus = `
                 <p>
@@ -2047,6 +2054,7 @@
             `;
 
         }
+
 
         return `
             <div class="card">
@@ -2291,7 +2299,7 @@
             }
 
             result.innerHTML =
-                createPlayerCard(
+                await createPlayerCard(
                     data,
                     cleanTag,
                     emoji
@@ -2844,6 +2852,33 @@
 
             }
 
+            // Обновляем кэш участников,
+            // чтобы проверка была основана
+            // на актуальном списке.
+
+            clanMembersCache.clear();
+
+            members.forEach(
+                member => {
+
+                    const memberTag =
+                        normalizeTag(
+                            member.tag || ""
+                        );
+
+                    if (memberTag) {
+
+                        clanMembersCache.set(
+                            memberTag,
+                            true
+                        );
+
+                    }
+
+                }
+            );
+
+
             let html = `
 
                 <div class="card">
@@ -3134,7 +3169,7 @@
             }
 
             result.innerHTML =
-                createPlayerCard(
+                await createPlayerCard(
                     data,
                     cleanTag,
                     emoji
