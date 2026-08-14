@@ -1963,9 +1963,13 @@
                 </p>
 
                 <p>
-                    ⭐ Уровень:
+                    🃏 Коллекция карт:
                     <b>
-                        ${data.expLevel ?? "—"}
+                        ${
+                            Array.isArray(data.cards)
+                                ? data.cards.length
+                                : "—"
+                        }
                     </b>
                 </p>
 
