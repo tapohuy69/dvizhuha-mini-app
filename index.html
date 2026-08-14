@@ -1231,14 +1231,8 @@
     const MY_CLAN_TAG =
         "GCGJ9VJV";
 
-    /*
-       ВАЖНО:
-       Это тег главы клана.
-       Проверяется без # и всегда в верхнем регистре.
-    */
-
     const LEADER_TAG =
-        "VPQRJ8LV";
+        "VPQRJ8LVG";
 
 
     // ==================================================
@@ -1840,84 +1834,70 @@
     // УРОВЕНЬ КОЛЛЕКЦИИ
     // ==================================================
     //
-    // БЕРЁМ НАСТОЯЩИЙ COLLECTION LEVEL
-    // ПРЯМО ИЗ НОВОГО player.js.
+    // Берём настоящий CollectionLevel,
+    // который player.js получает напрямую
+    // из Clash Royale API.
     //
-    // player.js возвращает:
+    // НЕ складываем card.level вручную,
+    // потому что это даёт неправильные значения,
+    // например 962.
     //
-    // collectionLevel: 1571
-    //
-    // и также:
-    //
-    // collection: {
-    //     level: 1571
-    // }
-    //
-    // Больше НЕ используем data.cards,
-    // потому что это могло давать неправильные
-    // значения вроде 962.
+    // Настоящее значение:
+    // data.collectionLevel
     //
     // ==================================================
 
-    function calculateCollectionLevel(
-        data
-    ) {
+    function calculateCollectionLevel(data) {
 
         if (!data) {
             return null;
         }
 
+        // ==================================================
+        // ОСНОВНОЙ И ПРАВИЛЬНЫЙ ВАРИАНТ
+        // player.js возвращает:
+        //
+        // collectionLevel: 1571
+        // ==================================================
 
-        // ==========================================
-        // ОСНОВНОЙ ВАРИАНТ
-        // ==========================================
+        const directLevel =
+            Number(
+                data.collectionLevel
+            );
 
         if (
-            data.collectionLevel !== undefined &&
-            data.collectionLevel !== null
+            Number.isFinite(directLevel) &&
+            directLevel > 0
         ) {
 
-            const level =
-                Number(
-                    data.collectionLevel
-                );
-
-            if (
-                Number.isFinite(level)
-            ) {
-
-                return level;
-
-            }
+            return directLevel;
 
         }
 
 
-        // ==========================================
+        // ==================================================
         // ЗАПАСНОЙ ВАРИАНТ
-        // ==========================================
+        // ==================================================
+
+        const nestedLevel =
+            Number(
+                data.collection?.level
+            );
 
         if (
-            data.collection &&
-            data.collection.level !== undefined &&
-            data.collection.level !== null
+            Number.isFinite(nestedLevel) &&
+            nestedLevel > 0
         ) {
 
-            const level =
-                Number(
-                    data.collection.level
-                );
-
-            if (
-                Number.isFinite(level)
-            ) {
-
-                return level;
-
-            }
+            return nestedLevel;
 
         }
 
+
+        // ==================================================
+        // Если значение не пришло —
+        // ничего самостоятельно не считаем.
+        // ==================================================
 
         return null;
 
@@ -2001,7 +1981,7 @@
 
 
         // ==================================================
-        // УРОВЕНЬ КОЛЛЕКЦИИ
+        // НАСТОЯЩИЙ УРОВЕНЬ КОЛЛЕКЦИИ
         // ==================================================
 
         const collectionLevel =
@@ -2053,7 +2033,6 @@
             `;
 
         }
-
 
         return `
             <div class="card">
