@@ -1231,6 +1231,12 @@
     const MY_CLAN_TAG =
         "GCGJ9VJV";
 
+    /*
+       ВАЖНО:
+       Это тег главы клана.
+       Проверяется без # и всегда в верхнем регистре.
+    */
+
     const LEADER_TAG =
         "VPQRJ8LV";
 
@@ -1831,60 +1837,105 @@
 
 
     // ==================================================
-    // ЗАПАСНОЙ РАСЧЁТ
+    // УРОВЕНЬ КОЛЛЕКЦИИ
     // ==================================================
 
-    function calculateCollectionLevel(
-        data
-    ) {
+    function calculateCollectionLevel(data) {
 
-        if (
-            !data ||
-            !Array.isArray(data.cards)
-        ) {
-
+        if (!data) {
             return null;
-
         }
 
-        let total = 0;
+        /*
+         * Новый player.js может уже отдавать
+         * готовое правильное значение.
+         *
+         * Приоритет:
+         * collectionLevel
+         * collection_level
+         * cardsCollectionLevel
+         * cards_collection_level
+         */
 
-        let foundLevels = false;
+        const directValues = [
+            data.collectionLevel,
+            data.collection_level,
+            data.cardsCollectionLevel,
+            data.cards_collection_level
+        ];
 
         for (
-            const card of data.cards
+            const value of directValues
         ) {
 
+            const number =
+                Number(value);
+
             if (
-                card &&
-                card.level !== undefined &&
-                card.level !== null
+                Number.isFinite(number) &&
+                number > 0
             ) {
 
-                const level =
-                    Number(
-                        card.level
-                    );
-
-                if (
-                    Number.isFinite(level)
-                ) {
-
-                    total += level;
-
-                    foundLevels = true;
-
-                }
+                return number;
 
             }
 
         }
 
-        if (!foundLevels) {
-            return null;
+        /*
+         * Запасной вариант:
+         * если готового значения нет,
+         * считаем сумму уровней карт.
+         */
+
+        if (
+            Array.isArray(
+                data.cards
+            )
+        ) {
+
+            let total = 0;
+
+            let foundLevels = false;
+
+            for (
+                const card of data.cards
+            ) {
+
+                if (
+                    card &&
+                    card.level !== undefined &&
+                    card.level !== null
+                ) {
+
+                    const level =
+                        Number(
+                            card.level
+                        );
+
+                    if (
+                        Number.isFinite(level)
+                    ) {
+
+                        total += level;
+
+                        foundLevels = true;
+
+                    }
+
+                }
+
+            }
+
+            if (foundLevels) {
+
+                return total;
+
+            }
+
         }
 
-        return total;
+        return null;
 
     }
 
@@ -1964,31 +2015,10 @@
                 ""
             );
 
-        // ==================================================
-        // УРОВЕНЬ КОЛЛЕКЦИИ
-        // ==================================================
-        //
-        // СНАЧАЛА берём значение,
-        // которое рассчитывает новый player.js.
-        //
-        // Например:
-        //
-        // data.collectionLevel = 1571
-        //
-        // Если player.js его не передал,
-        // используем старый запасной расчёт.
-        //
-        // ==================================================
-
         const collectionLevel =
-            data.collectionLevel ??
             calculateCollectionLevel(
                 data
             );
-
-        // ==================================================
-        // ГЛАВА
-        // ==================================================
 
         const isLeader =
             isLeaderPlayer(
@@ -2084,8 +2114,7 @@
                 </p>
 
                 ${
-                    collectionLevel !== null &&
-                    collectionLevel !== undefined
+                    collectionLevel !== null
                     ? `
                         <div class="collection-level">
 
