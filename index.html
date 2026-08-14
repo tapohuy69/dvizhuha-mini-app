@@ -1872,6 +1872,27 @@
             );
 
         // ==================================================
+        // КОЛИЧЕСТВО КАРТ
+        // Суммируем count всех карт из Clash Royale API
+        // ==================================================
+
+        const cardCollection =
+            Array.isArray(data.cards)
+                ? data.cards.reduce(
+                    (
+                        total,
+                        card
+                    ) =>
+                        total +
+                        Number(
+                            card?.count || 0
+                        ),
+                    0
+                )
+                : null;
+
+
+        // ==================================================
         // ГЛАВА ПРИВЯЗАН ТОЛЬКО К TAG
         // ==================================================
 
@@ -1963,11 +1984,11 @@
                 </p>
 
                 <p>
-                    🃏 Коллекция карт:
+                    🃏 Карты:
                     <b>
                         ${
-                            Array.isArray(data.cards)
-                                ? data.cards.length
+                            cardCollection !== null
+                                ? cardCollection
                                 : "—"
                         }
                     </b>
