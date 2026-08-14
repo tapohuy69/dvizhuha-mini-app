@@ -47,9 +47,11 @@
                 0 8px 30px rgba(214,177,92,0.10);
         }
 
+
         html {
             background: var(--black);
         }
+
 
         body {
             margin: 0;
@@ -86,6 +88,7 @@
             overflow-x: hidden;
         }
 
+
         body::before {
             content: "";
 
@@ -110,20 +113,23 @@
             z-index: 10000;
         }
 
+
         .container {
             max-width: 500px;
             margin: 0 auto;
             position: relative;
         }
 
+
         /* ==================================================
            HEADER
-           ================================================== */
+        ================================================== */
 
         .header {
             text-align: center;
             margin-bottom: 30px;
         }
+
 
         .header h1 {
             margin: 0;
@@ -139,6 +145,7 @@
                 0 0 22px rgba(214,177,92,0.13);
         }
 
+
         .header p {
             margin-top: 10px;
 
@@ -147,9 +154,10 @@
             font-size: 14px;
         }
 
+
         /* ==================================================
            PREMIUM BUTTONS
-           ================================================== */
+        ================================================== */
 
         .button {
             width: 100%;
@@ -185,10 +193,12 @@
                 filter 0.15s ease;
         }
 
+
         .button:active {
             transform: scale(0.975);
             filter: brightness(0.92);
         }
+
 
         .button.secondary {
             background:
@@ -207,18 +217,21 @@
                 0 8px 28px rgba(0,0,0,0.35);
         }
 
+
         .button.secondary:hover {
             border-color:
                 rgba(214,177,92,0.30);
         }
 
+
         /* ==================================================
            SCREENS
-           ================================================== */
+        ================================================== */
 
         .screen {
             display: none;
         }
+
 
         .screen.active {
             display: block;
@@ -226,6 +239,7 @@
             animation:
                 premiumFade 0.22s ease;
         }
+
 
         @keyframes premiumFade {
 
@@ -239,9 +253,10 @@
 
         }
 
+
         /* ==================================================
            НАЗАД
-           ================================================== */
+        ================================================== */
 
         .back {
             position: fixed;
@@ -283,13 +298,15 @@
                 0 6px 20px rgba(0,0,0,0.5);
         }
 
+
         .back:active {
             transform: scale(0.92);
         }
 
+
         /* ==================================================
            ОБНОВИТЬ
-           ================================================== */
+        ================================================== */
 
         .refresh-button {
             position: fixed;
@@ -331,13 +348,15 @@
                 0 6px 20px rgba(0,0,0,0.5);
         }
 
+
         .refresh-button:active {
             transform: scale(0.92);
         }
 
+
         /* ==================================================
            INPUT
-           ================================================== */
+        ================================================== */
 
         input {
             width: 100%;
@@ -373,9 +392,11 @@
                 box-shadow 0.2s ease;
         }
 
+
         input::placeholder {
             color: #666;
         }
+
 
         input:focus {
             border-color:
@@ -386,9 +407,10 @@
                 0 10px 28px rgba(0,0,0,0.35);
         }
 
+
         /* ==================================================
            CARDS
-           ================================================== */
+        ================================================== */
 
         .card {
             padding: 20px;
@@ -415,6 +437,7 @@
             overflow: hidden;
         }
 
+
         .card::before {
             content: "";
 
@@ -435,23 +458,28 @@
                 );
         }
 
+
         .card h2 {
             margin-top: 0;
 
             color: var(--white);
         }
 
+
         .card p {
             color: #c7c7c7;
         }
+
 
         .card b {
             color: var(--gold-light);
         }
 
+
         /* ==================================================
            КЕНТЫ
-           ================================================== */
+           КУБКИ СПРАВА / ОТЧЁТ ПОД КУБКАМИ
+        ================================================== */
 
         .member {
             width: 100%;
@@ -484,9 +512,8 @@
             transition:
                 transform 0.15s ease,
                 border-color 0.15s ease;
-
-            position: relative;
         }
+
 
         .member:active {
             transform: scale(0.98);
@@ -495,6 +522,7 @@
                 rgba(214,177,92,0.25);
         }
 
+
         .member-name {
             font-size: 15px;
             font-weight: 700;
@@ -502,13 +530,8 @@
             margin-bottom: 4px;
 
             color: var(--white);
-
-            padding-right: 120px;
-
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
+
 
         .member-info {
             font-size: 12px;
@@ -516,68 +539,32 @@
             color: #777;
 
             line-height: 1.4;
-
-            padding-right: 120px;
         }
 
-        /* ==================================================
-           КУБКИ СПРАВА
-           ================================================== */
-
-        .member-stats {
-            position: absolute;
-
-            top: 12px;
-            right: 13px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: flex-end;
-
-            text-align: right;
-
-            min-width: 95px;
-        }
 
         .member-trophies {
             font-size: 13px;
 
             font-weight: 700;
 
-            margin-top: 0;
+            margin-top: 6px;
 
             color: var(--gold-light);
-
-            white-space: nowrap;
         }
 
+
         .member-daily {
-            font-size: 11px;
+            font-size: 12px;
 
             font-weight: 700;
 
             margin-top: 3px;
-
-            white-space: nowrap;
         }
 
-        .member-daily-label {
-            display: block;
-
-            font-size: 10px;
-
-            font-weight: 500;
-
-            opacity: 0.7;
-
-            margin-top: 1px;
-        }
 
         /* ==================================================
            ТОП
-           ================================================== */
+        ================================================== */
 
         .ranking-title {
             text-align: center;
@@ -593,9 +580,11 @@
             letter-spacing: 0.2px;
         }
 
+
         .ranking {
             margin-top: 10px;
         }
+
 
         .ranking-item {
             display: flex;
@@ -623,6 +612,7 @@
                 0 6px 20px rgba(0,0,0,0.25);
         }
 
+
         .ranking-left {
             display: flex;
 
@@ -630,6 +620,7 @@
 
             min-width: 0;
         }
+
 
         .ranking-number {
             width: 28px;
@@ -643,6 +634,7 @@
             flex-shrink: 0;
         }
 
+
         .ranking-name {
             font-size: 15px;
 
@@ -652,6 +644,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
 
         .ranking-value {
             font-size: 14px;
@@ -665,9 +658,10 @@
             color: var(--gold-light);
         }
 
+
         /* ==================================================
            СМАЙЛИК ПОБЕДИТЕЛЯ
-           ================================================== */
+        ================================================== */
 
         .winner-emoji {
             margin-left: 6px;
@@ -684,6 +678,7 @@
                 );
         }
 
+
         .profile-name-line {
             display: flex;
 
@@ -694,9 +689,10 @@
             flex-wrap: wrap;
         }
 
+
         /* ==================================================
            НАГРАДА
-           ================================================== */
+        ================================================== */
 
         .reward-winner {
             text-align: center;
@@ -711,6 +707,7 @@
                 );
         }
 
+
         .reward-message {
             text-align: center;
 
@@ -718,6 +715,7 @@
 
             color: #bdbdbd;
         }
+
 
         .emoji-grid {
             display: grid;
@@ -729,6 +727,7 @@
 
             margin-top: 18px;
         }
+
 
         .emoji-button {
             border:
@@ -759,12 +758,14 @@
                 border-color 0.15s ease;
         }
 
+
         .emoji-button:active {
             transform: scale(0.92);
 
             border-color:
                 rgba(214,177,92,0.35);
         }
+
 
         .reward-selected {
             text-align: center;
@@ -776,26 +777,30 @@
             color: var(--gold-light);
         }
 
+
         /* ==================================================
            PREMIUM SCROLLBAR
-           ================================================== */
+        ================================================== */
 
         ::-webkit-scrollbar {
             width: 4px;
         }
 
+
         ::-webkit-scrollbar-track {
             background: #050505;
         }
+
 
         ::-webkit-scrollbar-thumb {
             background: #292929;
             border-radius: 10px;
         }
 
+
         /* ==================================================
            SELECTION
-           ================================================== */
+        ================================================== */
 
         ::selection {
             background:
@@ -1191,8 +1196,11 @@
     const MY_CLAN_TAG =
         "GCGJ9VJV";
 
+    /*
+     * ГЛАВА ОПРЕДЕЛЯЕТСЯ ТОЛЬКО ПО ЭТОМУ ТЕГУ
+     */
     const LEADER_TAG =
-        "VPQRJ8LV";
+        "VPQRJ8LVG";
 
 
     // ==================================================
@@ -1815,8 +1823,9 @@
             );
 
         /*
-         * ГЛАВА ТОЛЬКО ПО ТЕГУ
-         * #VPQRJ8LV
+         * ГЛАВА ОПРЕДЕЛЯЕТСЯ ТОЛЬКО ПО TAG.
+         *
+         * Никаких проверок имени здесь нет.
          */
         const isLeader =
             tag === LEADER_TAG;
@@ -2315,6 +2324,7 @@
 
             `;
 
+
             html += `
 
                 <div class="ranking-title">
@@ -2324,6 +2334,7 @@
                 <div class="ranking">
 
             `;
+
 
             for (
                 let index = 0;
@@ -2406,9 +2417,11 @@
 
             }
 
+
             html += `
                 </div>
             `;
+
 
             html += `
 
@@ -2419,6 +2432,7 @@
                 <div class="ranking">
 
             `;
+
 
             for (
                 let index = 0;
@@ -2501,12 +2515,15 @@
 
             }
 
+
             html += `
                 </div>
             `;
 
+
             result.innerHTML =
                 html;
+
 
         } catch (error) {
 
@@ -2656,10 +2673,6 @@
                         member.trophies ??
                         "—";
 
-                    /*
-                     * Подсчёт изменения кубков
-                     * за последние сутки
-                     */
                     let dailyHtml =
                         "";
 
@@ -2680,8 +2693,7 @@
                             dailyHtml = `
                                 <div class="member-daily">
                                     🟢 +${change}
-
-                                    <span class="member-daily-label">
+                                    <span style="font-weight:500; opacity:0.7;">
                                         (за последние сутки)
                                     </span>
                                 </div>
@@ -2694,8 +2706,7 @@
                             dailyHtml = `
                                 <div class="member-daily">
                                     🔴 ${change}
-
-                                    <span class="member-daily-label">
+                                    <span style="font-weight:500; opacity:0.7;">
                                         (за последние сутки)
                                     </span>
                                 </div>
@@ -2706,8 +2717,7 @@
                             dailyHtml = `
                                 <div class="member-daily">
                                     ⚪ 0
-
-                                    <span class="member-daily-label">
+                                    <span style="font-weight:500; opacity:0.7;">
                                         (за последние сутки)
                                     </span>
                                 </div>
@@ -2722,6 +2732,11 @@
                         member.rewardEmoji ||
                         member.emoji ||
                         "";
+
+                    /*
+                     * КУБКИ ОСТАЮТСЯ СПРАВА,
+                     * А СУТОЧНЫЙ ОТЧЁТ ПОД НИМИ.
+                     */
 
                     html += `
 
@@ -2751,18 +2766,14 @@
 
                             </div>
 
-                            <div class="member-stats">
+                            <div class="member-trophies">
 
-                                <div class="member-trophies">
-
-                                    🏆
-                                    ${trophies}
-
-                                </div>
-
-                                ${dailyHtml}
+                                🏆
+                                ${trophies}
 
                             </div>
+
+                            ${dailyHtml}
 
                         </button>
 
