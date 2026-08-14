@@ -1849,10 +1849,166 @@
     // ==================================================
 
     function createPlayerCard(
-        data,
-        fallbackTag = "",
-        rewardEmoji = ""
-    ) {
+    data,
+    fallbackTag = "",
+    rewardEmoji = ""
+) {
+
+    const name =
+        data.name ||
+        "Без имени";
+
+    const tag =
+        normalizeTag(
+            data.tag ||
+            fallbackTag ||
+            ""
+        );
+
+    const clanTag =
+        normalizeTag(
+            data.clan?.tag ||
+            ""
+        );
+
+
+    // ==================================================
+    // УРОВЕНЬ КОЛЛЕКЦИИ
+    // ==================================================
+
+    const collectionLevel =
+        Number(
+            data.collectionLevel ??
+            data.collection_level ??
+            0
+        );
+
+
+    // ==================================================
+    // ГЛАВА ПРИВЯЗАН ТОЛЬКО К TAG
+    // ==================================================
+
+    const isLeader =
+        tag === LEADER_TAG;
+
+    const isClanMember =
+        clanTag === MY_CLAN_TAG;
+
+    let clanStatus;
+
+    if (isLeader) {
+
+        clanStatus = `
+            <p>
+                ⚜️ <b>Глава</b> ⚜️
+            </p>
+        `;
+
+    } else if (isClanMember) {
+
+        clanStatus = `
+            <p>
+                ✅ <b>Реальный кент клана!</b>
+            </p>
+        `;
+
+    } else {
+
+        clanStatus = `
+            <p>
+                😤 <b>Не кент клана.</b>
+            </p>
+        `;
+
+    }
+
+
+    return `
+        <div class="card">
+
+            <h2 class="profile-name-line">
+
+                <span>
+                    👤
+                    ${escapeHtml(name)}
+                </span>
+
+                ${rewardEmojiHtml(
+                    rewardEmoji
+                )}
+
+            </h2>
+
+
+            <p>
+                🏷 Тег:
+                <b>
+                    #${escapeHtml(tag)}
+                </b>
+            </p>
+
+
+            ${clanStatus}
+
+
+            <p>
+                🏆 Кубки:
+                <b>
+                    ${data.trophies ?? "—"}
+                </b>
+            </p>
+
+
+            <p>
+                📚 Уровень коллекции:
+                <b>
+                    ${
+                        collectionLevel > 0
+                            ? collectionLevel
+                            : "—"
+                    }
+                </b>
+            </p>
+
+
+            <p>
+                🏅 Лучшие кубки:
+                <b>
+                    ${data.bestTrophies ?? "—"}
+                </b>
+            </p>
+
+
+            <p>
+                ⚔️ Победы:
+                <b>
+                    ${data.wins ?? "—"}
+                </b>
+            </p>
+
+
+            <p>
+                💀 Поражения:
+                <b>
+                    ${data.losses ?? "—"}
+                </b>
+            </p>
+
+
+            <p>
+                🏰 Клан:
+                <b>
+                    ${escapeHtml(
+                        data.clan?.name ||
+                        "Без клана"
+                    )}
+                </b>
+            </p>
+
+        </div>
+    `;
+
+}
 
         const name =
             data.name ||
